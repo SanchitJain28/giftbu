@@ -1,0 +1,108 @@
+.gs-featured-collections-wrapper {
+  width: 100%;
+  background-color: transparent; /* Stripped out the beige background */
+  padding: 16px 0; /* Extremely compact vertical padding */
+}
+
+.gs-featured-collections {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.gs-featured-collections__container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center; /* Centers the whole block of 7 items */
+  gap: 40px; /* Much tighter spacing between items */
+  
+  /* Horizontal scrolling for mobile */
+  overflow-x: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gs-featured-collections__container::-webkit-scrollbar {
+  display: none; 
+}
+
+.gs-featured-collections__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px; /* Pulled the text much closer to the image */
+  text-decoration: none;
+  flex: 0 1 auto; /* Allows items to sit naturally based on their width */
+  width: 130px; /* Fixed compact width so exactly 7 items fit on desktop cleanly */
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-featured-collections__item:hover {
+  transform: translateY(-4px); /* Subtler hover effect */
+}
+
+.gs-featured-collections__image-wrap {
+  width: 110px; /* Tighter image container */
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gs-featured-collections__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.gs-featured-collections__item:hover .gs-featured-collections__img {
+  transform: scale(1.05);
+}
+
+.placeholder-svg {
+  width: 50px;
+  height: 50px;
+  fill: #6B5744;
+}
+
+.gs-featured-collections__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.3rem; /* ~15px strictly hardcoded rem */
+  color: #1A1209;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.gs-featured-collections__item:hover .gs-featured-collections__title {
+  color: #C49A3C;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 990px) {
+  .gs-featured-collections__container {
+    justify-content: flex-start; /* Switch back to left-align for horizontal scrolling */
+    gap: 20px;
+  }
+
+  .gs-featured-collections__item {
+    flex: 0 0 auto; 
+    width: 100px; /* Scale down widths strictly for mobile */
+  }
+
+  .gs-featured-collections__image-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .gs-featured-collections__title {
+    font-size:1.2 rem; /* ~13px strictly hardcoded rem */
+    white-space: normal;
+  }
+}

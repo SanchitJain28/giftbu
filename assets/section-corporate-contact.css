@@ -1,0 +1,211 @@
+/* Import Exact Fonts */
+
+.gs-contact-section-wrapper {
+  width: 100%;
+  padding: 30px 20px !important; /* Reduced main section padding */
+  display: flex;
+  justify-content: center;
+}
+
+.gs-contact-grid {
+  width: 100%;
+  max-width: 1200px !important; 
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px; /* Tighter gap between columns */
+  align-items: center; 
+}
+
+@media screen and (min-width: 990px) {
+  .gs-contact-grid {
+    grid-template-columns: 4fr 5.5fr; 
+    gap: 40px !important; /* Tighter column gap */
+    padding: 10px 0 !important;
+  }
+}
+
+/* --- LEFT COLUMN --- */
+.gs-contact-left {
+  text-align: center;
+}
+
+.gs-left-subheading {
+  font-family: "Cormorant Garamond", serif !important;
+  font-size: 18px !important; /* Slightly smaller */
+  color: #333333 !important;
+  margin: 0 0 2px 0 !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.gs-left-heading {
+  font-family: 'Alex Brush', cursive !important;
+  font-size: 64px !important; /* Reduced from 75px so it doesn't take too much height */
+  color: #1A1209 !important;
+  margin: -5px 0 24px 0 !important; /* Tighter bottom margin */
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  transform: rotate(-3deg);
+}
+
+.gs-buttons-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px !important;
+}
+
+/* Buttons */
+.gs-btn-solid,
+.gs-btn-outline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 24px !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  border-radius: 999px !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  height: 42px !important; /* Compact button height */
+  box-sizing: border-box !important;
+}
+
+.gs-btn-solid {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #000000 !important;
+}
+
+.gs-btn-solid:hover {
+  background-color: #333333 !important;
+}
+
+.gs-btn-outline {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+
+.gs-btn-outline:hover {
+  background-color: rgba(0,0,0,0.05) !important;
+}
+
+.gs-submit-btn {
+  width: 100% !important;
+  margin-top: 8px !important; /* Tighter spacing above button */
+}
+
+/* --- RIGHT COLUMN (FORM CARD) --- */
+.gs-form-card {
+  background-color: #FDFAF6 !important; 
+  border-radius: 20px !important;
+  padding: 24px !important; /* Heavily reduced internal padding */
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media screen and (min-width: 990px) {
+  .gs-form-card {
+    padding: 36px !important; /* Compact padding for desktop */
+  }
+}
+
+.gs-form-title {
+  font-family: "Cormorant Garamond", serif !important;
+  font-size: 22px !important; /* Smaller title */
+  color: #000000 !important;
+  margin: 0 0 8px 0 !important;
+  font-weight: 700 !important;
+}
+
+.gs-form-text {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 14px !important;
+  color: #1A1209 !important;
+  margin-bottom: 20px !important; /* Tighter spacing below text */
+  line-height: 1.5 !important;
+}
+
+.gs-form-text p {
+  margin: 0 !important;
+}
+
+.gs-form-text a {
+  color: #0000EE !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+}
+
+/* --- FORM INPUTS --- */
+.gs-custom-form {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.gs-input-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px; /* Tighter gap between input columns */
+  margin-bottom: 12px !important; /* Tighter margin below rows */
+}
+
+@media screen and (min-width: 600px) {
+  .gs-input-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.gs-input-group {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-bottom: 12px !important;
+}
+
+.gs-input-row .gs-input-group {
+  margin-bottom: 0 !important;
+}
+
+.gs-input-group label {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 13px !important; /* Smaller label font */
+  color: #1A1209 !important;
+  font-weight: 500 !important;
+  margin-bottom: 4px !important; /* Labels closer to inputs */
+  display: block !important;
+}
+
+.gs-input-group input,
+.gs-input-group textarea {
+  width: 100% !important;
+  padding: 10px 14px !important; /* Slimmer input height */
+  background-color: #FFFFFF !important;
+  border: 1px solid #E5E5E5 !important;
+  border-radius: 6px !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 13px !important;
+  color: #333333 !important;
+  box-sizing: border-box !important;
+  appearance: none !important;
+}
+
+.gs-input-group input:focus,
+.gs-input-group textarea:focus {
+  outline: none !important;
+  border-color: #000000 !important;
+}
+
+.gs-form-msg {
+  padding: 10px 14px !important;
+  border-radius: 6px !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 13px !important;
+  margin-bottom: 16px !important;
+}
+
+.gs-success { background-color: #e6f4ea !important; color: #1e4620 !important; }
+.gs-error { background-color: #fce8e6 !important; color: #c5221f !important; }

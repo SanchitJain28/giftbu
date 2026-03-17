@@ -1,0 +1,108 @@
+{%- comment -%}
+  Giftbu Sticky Add to Cart Bar
+  Appears at the bottom of the screen when scrolled past the main ATC button.
+{%- endcomment -%}
+
+{%- if section.settings.enable_sticky_atc -%}
+  {{ 'section-sticky-atc.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'section-sticky-atc.js' | asset_url }}" defer="defer"></script>
+
+  <div class="gs-sticky-atc" id="GsStickyATC">
+    <div class="gs-sticky-atc__container">
+      <!-- Promo Banner -->
+      {%- if section.settings.show_promo -%}
+        <div class="gs-sticky-promo">
+          <div class="gs-sticky-promo__left">
+            <span class="gs-sticky-promo__badge">{{ section.settings.promo_badge }}</span>
+            <span class="gs-sticky-promo__text">{{ section.settings.promo_text }}</span>
+          </div>
+          {%- if section.settings.promo_link_url != blank -%}
+            <a href="{{ section.settings.promo_link_url }}" class="gs-sticky-promo__link">
+              {{- section.settings.promo_link_text -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <!-- Action Buttons -->
+      <div class="gs-sticky-actions">
+        <button type="button" class="gs-sticky-btn gs-sticky-btn--secondary" id="GsStickySpecialBtn">
+          {{ section.settings.secondary_button_text }}
+        </button>
+        <button type="button" class="gs-sticky-btn gs-sticky-btn--primary" id="GsStickyAddBtn">
+          {{ section.settings.primary_button_text }}
+        </button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sticky Add to Cart",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_atc",
+      "label": "Enable Sticky Add to Cart",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Promo Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo",
+      "label": "Show Promo Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "promo_badge",
+      "label": "Badge Text",
+      "default": "Select ✨"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "promo_text",
+      "label": "Promo Text",
+      "default": "Save <strong>₹25</strong> on this order 💸",
+      "info": "Wrap the amount in bold to make it green."
+    },
+    {
+      "type": "text",
+      "id": "promo_link_text",
+      "label": "Link Text",
+      "default": "Get Select"
+    },
+    {
+      "type": "url",
+      "id": "promo_link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button",
+      "default": "MAKE IT EXTRA SPECIAL"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary Button",
+      "default": "ADD TO CART"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky Add to Cart"
+    }
+  ]
+}
+{% endschema %}

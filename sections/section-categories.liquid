@@ -1,0 +1,144 @@
+{{ 'section-categories.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-categories.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-categories-{{ section.id }}" class="gs-categories-wrapper">
+  <div class="gs-categories page-width">
+
+    <div class="gs-categories__header reveal-up">
+      {%- if section.settings.title != blank -%}
+        <h2 class="gs-categories__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="gs-categories__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="gs-categories__grid">
+      {%- for block in section.blocks -%}
+        {%- assign selected_collection = collections[block.settings.collection] -%}
+
+          <div class="gs-categories__card gs-categories-item-reveal" {{ block.shopify_attributes }}>
+
+          <!-- Card Image -->
+          <a
+            href="{{ selected_collection.url | default: '#' }}"
+            class="gs-categories__img-link"
+            aria-label="View {{ selected_collection.title | default: 'Category' }}">
+            <div class="gs-categories__img-wrap">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: block.settings.title, class: 'gs-categories__img' }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'gs-categories__img placeholder-svg' }}
+              {%- endif -%}
+            </div>
+          </a>
+
+          <!-- Card Content (List of Products) -->
+          <div class="gs-categories__content">
+            <h3 class="gs-categories__card-title">
+              <a href="{{ selected_collection.url | default: '#' }}">
+                {{ selected_collection.title | default: 'Category Name' }}
+              </a>
+            </h3>
+
+            <ul class="gs-categories__list">
+              {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
+                {%- for product in selected_collection.products limit: 4 -%}
+                  <li>
+                    <a
+                      href="{{ product.url }}"
+                      class="gs-categories__list-link"
+                      title="{{ product.title | escape }}">
+                      {{ product.title | escape }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              {%- else -%}
+                <!-- Fallback if no collection selected -->
+                <li>
+                  <a href="#" class="gs-categories__list-link">Example Product 1</a>
+                </li>
+                <li>
+                  <a href="#" class="gs-categories__list-link">Example Product 2</a>
+                </li>
+                <li>
+                  <a href="#" class="gs-categories__list-link">Example Product 3</a>
+                </li>
+                <li>
+                  <a href="#" class="gs-categories__list-link">Example Product 4</a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Categories Grid",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Categories"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "Wide range of gifts for your celebration"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "category_card",
+        "name": "Category Card",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Select Collection",
+            "info": "The card will automatically list the first 4 products from this collection."
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Custom Card Image",
+            "info": "Overrides the default collection image."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Categories Grid",
+        "blocks": [
+          {
+            "type": "category_card"
+          },
+          {
+            "type": "category_card"
+          },
+          {
+            "type": "category_card"
+          },
+          {
+            "type": "category_card"
+          },
+          {
+            "type": "category_card"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

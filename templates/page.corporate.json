@@ -1,0 +1,246 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-corporate",
+      "settings": {
+        "content": ""
+      }
+    },
+    "section_corporate_contact_zhfQ9C": {
+      "type": "section-corporate-contact",
+      "name": "Corporate Contact Setup",
+      "settings": {
+        "background_image": "shopify://shop_images/pngtree-simple-atmosphere-gift-background-banner-image_148442.jpg",
+        "subheading": "Our Corporate Gifts for your work family",
+        "heading": "that strengthens bonds",
+        "button_1_text": "Download Catalogue",
+        "button_1_link": "",
+        "button_2_text": "Talk to Our Concierge",
+        "button_2_link": "",
+        "form_heading": "Send an enquiry or reach out to us directly",
+        "form_text": "<p>For any further queries, call us at <a href=\"tel:+918369527929\">+91-83695-27929</a> / <a href=\"tel:+918108190591\">+91-81081-90591</a> / <a href=\"tel:+918818940003\">+91-88189-40003</a> or email us at <a href=\"mailto:contact@thegiftstudio.com\">contact@thegiftstudio.com</a>.</p>"
+      }
+    },
+    "section_category_grid_VUjXM4": {
+      "type": "section-category-grid",
+      "blocks": {
+        "category_item_P9xQUr": {
+          "type": "category_item",
+          "settings": {
+            "image": "shopify://shop_images/a-special-gift-cake.jpg",
+            "link": ""
+          }
+        },
+        "category_item_AnAMdM": {
+          "type": "category_item",
+          "settings": {
+            "image": "shopify://shop_images/pexels-element5-712323.jpg",
+            "link": ""
+          }
+        },
+        "category_item_UehHED": {
+          "type": "category_item",
+          "settings": {
+            "image": "shopify://shop_images/pexels-pixabay-264771.jpg",
+            "link": ""
+          }
+        },
+        "category_item_ytCjPH": {
+          "type": "category_item",
+          "settings": {
+            "image": "shopify://shop_images/pexels-matej-117839-1718168.jpg",
+            "link": ""
+          }
+        },
+        "category_item_i9TxHW": {
+          "type": "category_item",
+          "settings": {
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998.webp",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_item_P9xQUr",
+        "category_item_AnAMdM",
+        "category_item_UehHED",
+        "category_item_ytCjPH",
+        "category_item_i9TxHW"
+      ],
+      "name": "Category Image Grid",
+      "settings": {
+        "heading": "WHAT DO WE HAVE FOR YOU?"
+      }
+    },
+    "section_checkerboard_PRWngp": {
+      "type": "section-checkerboard",
+      "blocks": {
+        "feature_pair_GERFTN": {
+          "type": "feature_pair",
+          "settings": {
+            "desktop_layout": "text_left",
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998.webp",
+            "heading": "CORPORATE GIFTING",
+            "text": "Make a lasting impression on your clients and partners.",
+            "button_label": "SHOP NOW",
+            "button_link": ""
+          }
+        },
+        "feature_pair_7kPBgb": {
+          "type": "feature_pair",
+          "settings": {
+            "desktop_layout": "text_left",
+            "image": "shopify://shop_images/a-special-gift-cake.jpg",
+            "heading": "FESTIVE GIFTING",
+            "text": "Spread the joy of the season, perfect for celebrating any occasion.",
+            "button_label": "SHOP NOW",
+            "button_link": ""
+          }
+        },
+        "feature_pair_HGkLhQ": {
+          "type": "feature_pair",
+          "settings": {
+            "desktop_layout": "image_left",
+            "image": "shopify://shop_images/cmgifts48571.jpg",
+            "heading": "EMPLOYEE APPRECIATION",
+            "text": "Reward your team for their hard work and dedication.",
+            "button_label": "SHOP NOW",
+            "button_link": ""
+          }
+        },
+        "feature_pair_JMDHRJ": {
+          "type": "feature_pair",
+          "settings": {
+            "desktop_layout": "image_left",
+            "image": "shopify://shop_images/men-gift-hamper.jpg",
+            "heading": "JOINING KITS",
+            "text": "Welcome new hires with a thoughtful onboarding gift.",
+            "button_label": "SHOP NOW",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature_pair_GERFTN",
+        "feature_pair_7kPBgb",
+        "feature_pair_HGkLhQ",
+        "feature_pair_JMDHRJ"
+      ],
+      "name": "Checkerboard Features",
+      "settings": {}
+    },
+    "section_sticky_button_Mkm7Kz": {
+      "type": "section-sticky-button",
+      "name": "Sticky Side Button",
+      "settings": {
+        "text": "GET IN TOUCH",
+        "link": "",
+        "bg_color": "#ffc700",
+        "text_color": "#000000"
+      }
+    },
+    "section_build_box_jPC7K9": {
+      "type": "section-build-box",
+      "name": "Build Your Own Box",
+      "settings": {
+        "bg_image": "shopify://shop_images/360_F_421085379_3MQlfQNYJ33nMk6qLk3laEQ5JWyXflxY_1.png",
+        "image": "shopify://shop_images/varanasi-elephant-coasters-with-diyas-gift-set-1-zishta-gifting.jpg",
+        "subheading": "Can't decide what to gift?",
+        "heading": "Build Your Own Box!",
+        "heading_color": "#1075b5",
+        "text": "<p>With endless possibilities, you're the boss<br/>(with a little help from our gifting experts).</p>",
+        "button_label": "REQUEST A CALL BACK",
+        "button_link": ""
+      }
+    },
+    "section_trending_gifts_RQPkrJ": {
+      "type": "section-trending-gifts",
+      "blocks": {
+        "gift_card_m77Bjq": {
+          "type": "gift_card",
+          "settings": {
+            "image": "shopify://shop_images/pexels-pixabay-264771.jpg",
+            "script_text": "for your",
+            "main_text": "Success",
+            "link": ""
+          }
+        },
+        "gift_card_ezrVMT": {
+          "type": "gift_card",
+          "settings": {
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998.webp",
+            "script_text": "for your",
+            "main_text": "Every day tasks",
+            "link": ""
+          }
+        },
+        "gift_card_pVWy7Y": {
+          "type": "gift_card",
+          "settings": {
+            "image": "shopify://shop_images/varanasi-elephant-coasters-with-diyas-gift-set-1-zishta-gifting.jpg",
+            "script_text": "for your",
+            "main_text": "Festivals",
+            "link": ""
+          }
+        },
+        "gift_card_bwjYM4": {
+          "type": "gift_card",
+          "settings": {
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998_98f6a14f-21d6-4f66-8897-49d494e08580.webp",
+            "script_text": "for your",
+            "main_text": "happy moments",
+            "link": ""
+          }
+        },
+        "gift_card_qNWhcw": {
+          "type": "gift_card",
+          "settings": {
+            "image": "shopify://shop_images/prakriti-swarna-deepam-gift-set-1-zishta-gifting.webp",
+            "script_text": "for your",
+            "main_text": "STAR PERFORMER",
+            "link": ""
+          }
+        },
+        "gift_card_LXF7fP": {
+          "type": "gift_card",
+          "settings": {
+            "image": "shopify://shop_images/71SyL1YLbhL._AC_SX679.jpg",
+            "script_text": "at your",
+            "main_text": "CONFERENCES",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "gift_card_m77Bjq",
+        "gift_card_ezrVMT",
+        "gift_card_pVWy7Y",
+        "gift_card_bwjYM4",
+        "gift_card_qNWhcw",
+        "gift_card_LXF7fP"
+      ],
+      "name": "Trending Gifts Grid",
+      "settings": {
+        "title": "Trending Gifts at The Gift Studio"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_corporate_contact_zhfQ9C",
+    "section_category_grid_VUjXM4",
+    "section_checkerboard_PRWngp",
+    "section_sticky_button_Mkm7Kz",
+    "section_build_box_jPC7K9",
+    "section_trending_gifts_RQPkrJ"
+  ]
+}

@@ -11,25 +11,70 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "section_footer_jba7Qy": {
+      "type": "section-footer",
+      "blocks": {
+        "link_group_FNPLh9": {
+          "type": "link_group",
+          "settings": {
+            "title": "Know About Us:",
+            "menu": ""
+          }
+        },
+        "link_group_qTQian": {
+          "type": "link_group",
+          "settings": {
+            "title": "Know About Us:",
+            "menu": ""
+          }
+        },
+        "link_group_PYzfGU": {
+          "type": "link_group",
+          "settings": {
+            "title": "Know About Us:",
+            "menu": ""
+          }
+        }
+      },
+      "block_order": [
+        "link_group_FNPLh9",
+        "link_group_qTQian",
+        "link_group_PYzfGU"
+      ],
+      "name": "Global Footer",
+      "settings": {
+        "show_newsletter": true,
+        "newsletter_heading": "Subscribe to our Newsletter",
+        "stat_1_num": "400+",
+        "stat_1_text": "Cities having same day delivery",
+        "stat_2_num": "100+",
+        "stat_2_text": "Countries being served with happiness",
+        "stat_3_num": "5 Million+",
+        "stat_3_text": "Gift boxes delivered across the globe",
+        "play_store_link": "",
+        "app_store_link": "",
+        "show_social": true,
+        "show_payment": true
+      }
+    },
     "footer": {
       "type": "footer",
+      "disabled": true,
       "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "phone": "+91-89764-49556",
+        "email": "contact@thegiftstudio.com",
+        "menu_1": "",
+        "menu_2": "",
+        "menu_3": "",
+        "social_title": "Follow us on",
+        "social_fb": "",
+        "social_ig": "",
+        "social_yt": ""
       }
     }
   },
   "order": [
+    "section_footer_jba7Qy",
     "footer"
   ]
 }

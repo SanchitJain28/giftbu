@@ -1,5 +1,20 @@
 [
   {
+    "name": "Cloudinary",
+    "settings": [
+      {
+        "type": "text",
+        "id": "cloudinary_cloud_name",
+        "label": "Cloudinary Cloud Name"
+      },
+      {
+        "type": "text",
+        "id": "cloudinary_upload_preset",
+        "label": "Cloudinary Upload Preset"
+      }
+    ]
+  },
+  {
     "name": "theme_info",
     "theme_name": "Dawn",
     "theme_version": "15.4.1",

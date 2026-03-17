@@ -1,0 +1,205 @@
+.gs-hero-carousel-wrapper {
+  width: 100%;
+  background-color: transparent;
+  padding: 16px 0; /* Compact padding */
+}
+
+.gs-hero-carousel {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.gs-hero-carousel__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Gap between slide image and the pagination dots below */
+}
+
+.gs-hero-carousel__track-container {
+  position: relative;
+  width: 100%;
+  border-radius: 12px; /* Smooth rounded corners matching your image */
+  overflow: hidden;
+  /* Adjust this aspect ratio based on your exact photography. 
+     21/7 roughly translates to a wide panoramic banner */
+  aspect-ratio: 24 / 8; 
+  background-color: #F8F4EF; /* Fallback for empty spaces */
+}
+
+/* Fallback for older browsers */
+@supports not (aspect-ratio: 24 / 8) {
+  .gs-hero-carousel__track-container {
+    height: 460px;
+  }
+}
+
+.gs-hero-carousel__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-hero-carousel__slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.gs-hero-carousel__image-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.gs-hero-carousel__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  fill: #D9CABB;
+}
+
+/* 
+ * Text Overlay 
+ * Positioned on the left perfectly matching your reference image 
+ */
+.gs-hero-carousel__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 64px;
+}
+
+.gs-hero-carousel__title {
+  font-family: "Jost", sans-serif;
+  font-size: 2.25rem; /* Strict hardcoded REM */
+  font-weight: 700;
+  color: #FF4466; /* Vibrant Coral Pink strictly matching the image */
+  margin: 0 0 12px 0;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.gs-hero-carousel__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1.25rem; /* Strict hardcoded REM */
+  font-weight: 500;
+  color: #1A1209; /* Deep blackish tone */
+  margin: 0 0 24px 0;
+}
+
+.gs-hero-carousel__btn {
+  display: inline-block;
+  background-color: #FF4466; /* Matching title pink */
+  color: #FFFFFF;
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem; /* Strict hardcoded REM */
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 50px; /* Pill shape */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.gs-hero-carousel__btn:hover {
+  background-color: #E63554;
+  transform: translateY(-2px);
+}
+
+.gs-hero-carousel__bottom-text {
+  position: absolute;
+  bottom: 24px;
+  left: 64px;
+  font-family: "Jost", sans-serif;
+  font-size: 1rem; /* Strict hardcoded REM */
+  font-weight: 500;
+  color: #1A1209;
+}
+
+/* 
+ * Pagination Dots
+ * Elongated active state + circular inactive strictly matching image 
+ */
+.gs-hero-carousel__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.gs-carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #E2E8F0; /* Very light grey */
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-carousel-dot.is-active {
+  width: 20px;
+  border-radius: 4px; /* Creates the elongated pill shape */
+  background-color: #8B9EB2; /* The exact slate/blue-grey from the reference image */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 990px) {
+  .gs-hero-carousel__track-container {
+    aspect-ratio: auto;
+    height: 380px; 
+  }
+  .gs-hero-carousel__content {
+    padding: 32px;
+  }
+  .gs-hero-carousel__title {
+    font-size: 1.75rem;
+  }
+  .gs-hero-carousel__subtitle {
+    font-size: 1rem;
+  }
+  .gs-hero-carousel__bottom-text {
+    bottom: 24px;
+    left: 32px;
+    font-size: 0.875rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-hero-carousel__track-container {
+    height: 420px;
+  }
+  .gs-hero-carousel__content {
+    padding: 24px;
+    justify-content: flex-start;
+    padding-top: 48px; /* Pushes content down slightly on mobile so it doesn't clip top edges */
+    background: linear-gradient(180deg, rgba(253, 250, 246, 0.8) 0%, rgba(253, 250, 246, 0) 100%); /* Helps readibility if image is busy */
+  }
+  .gs-hero-carousel__title {
+    font-size: 1.5rem;
+  }
+  .gs-hero-carousel__bottom-text {
+    position: static; /* Stack naturally at the bottom of the flex container on mobile */
+    margin-top: auto;
+    font-size: 0.75rem;
+    padding-bottom: 12px;
+  }
+}

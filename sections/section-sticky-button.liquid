@@ -1,0 +1,45 @@
+{{ 'section-sticky-button.css' | asset_url | stylesheet_tag }}
+
+<a
+  href="{{ section.settings.link | default: '/pages/contact' }}"
+  class="gs-sticky-button"
+  aria-label="{{ section.settings.text }}"
+  style="--bg-color: {{ section.settings.bg_color }}; --text-color: {{ section.settings.text_color }};">
+  {{ section.settings.text }}
+</a>
+
+{% schema %}
+  {
+    "name": "Sticky Side Button",
+    "tag": "section",
+    "class": "section-floating",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Button Text",
+        "default": "GET IN TOUCH"
+      }, {
+        "type": "url",
+        "id": "link",
+        "label": "Button Link",
+        "info": "Links to your contact page by default."
+      }, {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#FFC700"
+      }, {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#000000"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Sticky Side Button"
+      }
+    ]
+  }
+{% endschema %}

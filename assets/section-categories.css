@@ -1,0 +1,234 @@
+.gs-categories-wrapper {
+  width: 100%;
+  background-color: transparent; 
+  padding: 48px 0; /* Strict hardcoded vertical padding */
+}
+
+.gs-categories {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header Alignment */
+.gs-categories__header {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.gs-categories__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.875rem; /* Strict hardcoded REM (~30px) */
+  font-weight: 700;
+  color: #262130; /* Dark slate matching image */
+  margin: 0;
+  line-height: 1.2;
+}
+
+.gs-categories__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem; /* Strict hardcoded REM (~16px) */
+  font-weight: 400;
+  color: #8C8A8C; 
+  margin: 0;
+}
+
+/* 
+ * Complex CSS Grid for the 5-item mixed layout 
+ */
+.gs-categories__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 column base */
+  gap: 20px;
+}
+
+/* Base Card Styles */
+.gs-categories__card {
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1; /* Soft grayish-blue border */
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.gs-categories__card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+}
+
+.gs-categories__img-link {
+  display: block;
+}
+
+.gs-categories__img-wrap {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #F4F4F4;
+}
+
+.gs-categories__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-categories__card:hover .gs-categories__img {
+  transform: scale(1.05); /* Gentle image zoom */
+}
+
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  fill: #D9CABB;
+}
+
+/* 
+ * Layout Specifics using nth-child strictly matching the image 
+ */
+
+/* TOP ROW (Items 1 & 2): Span 3 columns each (50% / 50%) */
+.gs-categories__card:nth-child(1),
+.gs-categories__card:nth-child(2) {
+  grid-column: span 3;
+}
+
+/* Item 2 reversed layout (text left, image right) */
+.gs-categories__card:nth-child(2) {
+  flex-direction: row-reverse;
+}
+
+.gs-categories__card:nth-child(1) .gs-categories__img-link,
+.gs-categories__card:nth-child(2) .gs-categories__img-link {
+  width: 55%; /* Image takes up slightly more space on wide cards */
+}
+.gs-categories__card:nth-child(1) .gs-categories__img-wrap,
+.gs-categories__card:nth-child(2) .gs-categories__img-wrap {
+  aspect-ratio: 16 / 9; /* Wide landscape images */
+}
+
+.gs-categories__card:nth-child(1) .gs-categories__content,
+.gs-categories__card:nth-child(2) .gs-categories__content {
+  width: 45%;
+}
+
+/* BOTTOM ROW (Items 3, 4, 5): Span 2 columns each (33.3% / 33.3% / 33.3%) */
+.gs-categories__card:nth-child(n+3) {
+  grid-column: span 2;
+}
+
+.gs-categories__card:nth-child(n+3) .gs-categories__img-link {
+  width: 45%;
+}
+.gs-categories__card:nth-child(n+3) .gs-categories__img-wrap {
+  aspect-ratio: 1 / 1; /* Square images for the bottom row */
+}
+.gs-categories__card:nth-child(n+3) .gs-categories__content {
+  width: 55%;
+}
+
+/* Typography & Lists */
+.gs-categories__card-title {
+  margin: 0 0 16px 0;
+  font-family: "Jost", sans-serif;
+}
+
+.gs-categories__card-title a {
+  font-size: 1.75rem; /* Strict REM (~20px) */
+  font-weight: 700;
+  color: #262130;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.gs-categories__card-title a:hover {
+  color: #C49A3C;
+}
+
+.gs-categories__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Space between product links */
+}
+
+.gs-categories__list-link {
+  font-family: "Jost", sans-serif;
+  font-size: 1.1375rem; /* Strict REM (~15px) */
+  font-weight: 400;
+  color: #8B9EB2; /* Slate grayish-blue text exactly like the image */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  
+  /* Prevents long product names from breaking the tight layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.gs-categories__list-link:hover {
+  color: #C49A3C; /* Accent gold on hover */
+}
+
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1100px) {
+  /* Switch to a 2-column grid instead of 3 for better readability */
+  .gs-categories__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .gs-categories__card:nth-child(1),
+  .gs-categories__card:nth-child(2) {
+    grid-column: span 1;
+  }
+  
+  .gs-categories__card:nth-child(n+3) {
+    grid-column: span 1;
+  }
+  
+  /* Reset row-reverse so all look consistent on smaller screens */
+  .gs-categories__card:nth-child(2) {
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-categories-wrapper {
+    padding: 32px 0;
+  }
+  
+  .gs-categories__title {
+    font-size: 1.5rem;
+  }
+
+  /* Stack everything to 1 column */
+  .gs-categories__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gs-categories__card {
+    flex-direction: column !important; /* Stack image on top of list */
+    gap: 16px;
+  }
+
+  .gs-categories__img-link,
+  .gs-categories__content {
+    width: 100% !important; /* Full width inside stacked card */
+  }
+
+  .gs-categories__img-wrap {
+    aspect-ratio: 16 / 9 !important; /* Make all images landscape on mobile */
+  }
+}

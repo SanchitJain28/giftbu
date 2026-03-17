@@ -1,0 +1,173 @@
+{% schema %}
+{
+  "name": "Global Header",
+  "class": "section-header-wrapper",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Width (Desktop)",
+      "default": 120
+    },
+    {
+      "type": "link_list",
+      "id": "drawer_menu",
+      "label": "Mobile Drawer Menu",
+      "default": "main-menu",
+      "info": "Select the menu to display in the sidebar."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Global Header"
+    }
+  ]
+}
+{% endschema %}
+
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-header.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'section-wishlist.js' | asset_url }}" defer="defer"></script>
+
+<header class="gs-header">
+  <div class="gs-header__container">
+    <!-- Left: Hamburger & Logo -->
+    <div class="gs-header__left">
+      <button class="gs-header__menu-btn js-drawer-open" aria-label="Open Menu">
+        <i
+          class="fa-solid fa-bars"
+          style="font-size: 24px;"
+        ></i>
+      </button>
+
+      <a href="{{ routes.root_url }}" class="gs-header__logo">
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: 300
+            | image_tag: alt: shop.name, class: 'gs-logo-img', style: 'width: '
+            | append: section.settings.logo_width
+            | append: 'px;'
+          }}
+        {%- else -%}
+          <span class="gs-header__logo-text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+
+      <!-- Desktop nav sits here, hidden on mobile via CSS -->
+      <nav class="gs-header__desktop-nav" aria-label="Main navigation">
+        {%- for link in linklists[section.settings.drawer_menu].links -%}
+          <div class="gs-desktop-nav__item{% if link.links != blank %} has-dropdown{% endif %}">
+            <a href="{{ link.url }}" class="gs-desktop-nav__link">{{ link.title }}</a>
+            {%- if link.links != blank -%}
+              <div class="gs-desktop-nav__dropdown">
+                {%- for childlink in link.links -%}
+                  <a href="{{ childlink.url }}" class="gs-desktop-nav__dropdown-link">{{ childlink.title }}</a>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </nav>
+    </div>
+    <!-- Desktop Nav (hidden on mobile) -->
+
+    <!-- Center: Custom Search Snippet -->
+    <div class="gs-header__center">
+      {% render 'gs-header-search' %}
+    </div>
+
+    <!-- Right: Icons -->
+    <div class="gs-header__right">
+      <a href="/pages/wishlist" class="gs-icon-link gs-icon-wishlist" aria-label="Wishlist">
+        <i class="fa-regular fa-heart" style="font-size: 24px;"></i>
+        <span class="gs-wishlist-count gs-cart-count" hidden>0</span>
+      </a>
+
+      <a href="{{ routes.cart_url }}" class="gs-icon-link gs-icon-cart" aria-label="Cart">
+        <i class="fa-solid fa-cart-shopping" style="font-size: 24px;"></i>
+        {%- if cart.item_count > 0 -%}
+          <span class="gs-cart-count">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+
+      <a
+        href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+        class="gs-icon-link"
+        aria-label="Account"
+      >
+        <i class="fa-regular fa-user" style="font-size: 24px;"></i>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Sidebar Menu Drawer -->
+<div class="gs-menu-overlay js-drawer-overlay"></div>
+<nav class="gs-menu-drawer js-menu-drawer">
+  <div class="gs-drawer__header">
+    <span class="gs-drawer__title">Menu</span>
+    <button class="gs-drawer__close js-drawer-close" aria-label="Close Menu">
+      <i class="fa-solid fa-xmark" style="font-size: 24px;"></i>
+    </button>
+  </div>
+
+  <div class="gs-drawer__body">
+    {%- if section.settings.drawer_menu.links == blank -%}
+      <div class="gs-drawer__empty">Please select a menu in the header settings.</div>
+    {%- else -%}
+      <ul class="gs-drawer__nav-list">
+        {%- for link in section.settings.drawer_menu.links -%}
+          <li class="gs-drawer__nav-item">
+            <div class="gs-drawer__link-row">
+              <a href="{{ link.url }}" class="gs-drawer__link">{{ link.title }}</a>
+              {%- if link.links != blank -%}
+                <button class="gs-drawer__toggle-btn js-toggle-submenu" aria-label="Toggle submenu">
+                  <i class="fa-solid fa-chevron-down" style="font-size: 24px;"></i>
+                </button>
+              {%- endif -%}
+            </div>
+
+            {%- if link.links != blank -%}
+              <ul class="gs-drawer__sub-list">
+                {%- for childlink in link.links -%}
+                  <li class="gs-drawer__sub-item">
+                    <div class="gs-drawer__link-row">
+                      <a href="{{ childlink.url }}" class="gs-drawer__sub-link">{{ childlink.title }}</a>
+                      {%- if childlink.links != blank -%}
+                        <button class="gs-drawer__toggle-btn js-toggle-submenu" aria-label="Toggle sub-submenu">
+                          <i class="fa-solid fa-chevron-down" style="font-size: 24px;"></i>
+                        </button>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if childlink.links != blank -%}
+                      <ul class="gs-drawer__sub-list">
+                        {%- for grandchildlink in childlink.links -%}
+                          <li class="gs-drawer__sub-item">
+                            <a href="{{ grandchildlink.url }}" class="gs-drawer__sub-link gs-drawer__sub-link--nested">
+                              {{- grandchildlink.title -}}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</nav>

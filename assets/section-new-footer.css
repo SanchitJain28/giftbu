@@ -1,0 +1,373 @@
+/* ============================================================================
+   GLOBAL FOOTER STYLES
+   ============================================================================ */
+.section-footer-wrapper {
+  background-color: var(--color-bg-primary); /* #F5EFE6 or your brand cream */
+  border-top: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.gs-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================================
+   1. SEO / INLINE NAVIGATION LINKS
+   ============================================================================ */
+.gs-footer__top {
+  padding: 40px 0;
+  background-color: var(--color-bg-primary);
+}
+
+.gs-footer-links {
+  margin-bottom: 24px;
+}
+
+.gs-footer-links:last-child {
+  margin-bottom: 0;
+}
+
+.gs-footer-links__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.gs-footer-links__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gs-footer-links__list li {
+  display: flex;
+  align-items: center;
+}
+
+.gs-footer-links__list li:not(:last-child)::after {
+  content: '|';
+  margin: 0 10px;
+  color: var(--color-border);
+  font-size: 0.875rem;
+}
+
+.gs-footer-links__list a {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.gs-footer-links__list a:hover {
+  color: var(--color-accent-gold);
+}
+
+/* ============================================================================
+   2. STATS SECTION (Perfect Match to Image)
+   ============================================================================ */
+.gs-footer__stats-wrapper {
+  background-color: #ffffff;
+  padding: 60px 0;
+}
+
+.gs-footer-stats {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.gs-footer-stats__heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.gs-footer-stats__title {
+  font-family: "Jost", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #D32F2F; /* Matches the exact red in your image */
+  text-transform: uppercase;
+  transform: rotate(-90deg);
+  margin-right: -20px;
+}
+
+.gs-footer-stats__line {
+  width: 6px;
+  height: 120px;
+  background-color: #D32F2F;
+  border-radius: 4px;
+}
+
+.gs-footer-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.gs-stat-item {
+  text-align: center;
+}
+
+.gs-stat-item__num {
+  font-family: "Jost", sans-serif;
+  font-size: 4.5rem;
+  font-weight: 600;
+  color: #BDBDBD; /* Silver/Grey color from image */
+  line-height: 1;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.gs-stat-item__num span {
+  font-size: 1.5rem; /* For the "Million" text */
+  margin: 0 4px;
+  color: #9E9E9E;
+}
+
+.gs-stat-item__text {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #D32F2F;
+  margin: 0;
+}
+
+/* ============================================================================
+   3. BOTTOM ROW (Newsletter, Apps, Logo, Socials)
+   ============================================================================ */
+.gs-footer__bottom {
+  background-color: var(--color-bg-primary); /* F5EFE6 */
+  padding: 40px 0 20px 0;
+}
+
+/* Newsletter (Clean & Integrated) */
+.gs-footer-newsletter {
+  text-align: center;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gs-footer-newsletter__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 16px 0;
+}
+
+.gs-newsletter-form {
+  display: flex;
+  gap: 8px;
+}
+
+.gs-newsletter__input {
+  flex-grow: 1;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  background: var(--color-surface);
+  outline: none;
+}
+
+.gs-newsletter__input:focus {
+  border-color: var(--color-accent-gold);
+}
+
+.gs-newsletter__btn {
+  height: 48px;
+  padding: 0 24px;
+  background-color: var(--color-accent-dark);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-family: "Jost", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.gs-newsletter__btn:hover {
+  background-color: var(--color-accent-gold);
+}
+
+/* Main 3-Column Row */
+.gs-footer-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 40px;
+  margin-bottom: 24px;
+}
+
+.gs-footer-apps__title,
+.gs-footer-social__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 12px 0;
+}
+
+.gs-footer-apps__buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.gs-footer-apps__buttons img {
+  display: block;
+}
+
+.gs-footer-logo img {
+  max-width: 120px;
+  height: auto;
+}
+
+.gs-footer-logo__text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.5rem;
+  color: var(--color-accent-rose);
+  margin: 0;
+}
+
+/* Social Icons specific brand colors as per image */
+.gs-footer-social__icons {
+  display: flex;
+  gap: 12px;
+}
+
+.gs-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.gs-social-icon:hover {
+  transform: translateY(-3px);
+  opacity: 0.9;
+}
+
+.gs-social--fb { background-color: #3b5998; }
+.gs-social--tw { background-color: #1da1f2; }
+.gs-social--ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.gs-social--li { background-color: #0077b5; }
+.gs-social--yt { background-color: #ff0000; }
+
+/* Copyright & Payments */
+.gs-footer-copyright-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gs-copyright-text {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.gs-payment-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gs-payment-title {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.list-payment {
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.list-payment__item svg {
+  width: 38px;
+  height: 24px;
+}
+
+/* ============================================================================
+   RESPONSIVE OVERRIDES
+   ============================================================================ */
+@media screen and (max-width: 990px) {
+  .gs-footer-stats {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .gs-footer-stats__heading {
+    flex-direction: column;
+  }
+
+  .gs-footer-stats__title {
+    transform: none;
+    margin-right: 0;
+  }
+
+  .gs-footer-stats__line {
+    width: 100px;
+    height: 4px;
+  }
+
+  .gs-footer-stats__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .gs-footer-main-row {
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .gs-footer-apps__buttons,
+  .gs-footer-social__icons {
+    justify-content: center;
+  }
+
+  .gs-footer-copyright-row {
+    flex-direction: column-reverse;
+    gap: 16px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-stat-item__num {
+    font-size: 3.5rem;
+  }
+}

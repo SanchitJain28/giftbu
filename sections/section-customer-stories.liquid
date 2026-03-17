@@ -1,0 +1,203 @@
+{{ 'section-customer-stories.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-customer-stories.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-stories-{{ section.id }}" class="gs-stories-wrapper">
+  <div class="gs-stories page-width">
+
+    <!-- Header Area -->
+    <div class="gs-stories__header reveal-up">
+      {%- if section.settings.title != blank -%}
+        <h2 class="gs-stories__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="gs-stories__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Carousel Container -->
+    <div class="gs-stories__slider-container reveal-up">
+      <div class="gs-stories__track" data-carousel-track>
+
+        {%- for block in section.blocks -%}
+          <div class="gs-stories__slide" {{ block.shopify_attributes }}>
+            <!-- Outer border wrapper to create the padded outline effect -->
+            <div class="gs-stories__card-outline">
+              <div class="gs-stories__card">
+
+                <!-- Left Quote -->
+                <svg
+                  class="gs-stories__quote gs-stories__quote--left"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true">
+                  <path d="M10 8c0-2.21-1.79-4-4-4S2 5.79 2 8c0 1.99 1.46 3.64 3.38 3.93L4 16h3l1.83-5.5C9.55 10.15 10 9.13 10 8zm12 0c0-2.21-1.79-4-4-4s-4 1.79-4 4c0 1.99 1.46 3.64 3.38 3.93L16 16h3l1.83-5.5c.72-.35 1.17-1.37 1.17-2.5z" />
+                </svg>
+
+                <!-- Product Image -->
+                <div class="gs-stories__img-wrap">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.author, class: 'gs-stories__img' }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'gs-stories__img placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+
+                <!-- Meta: Stars & Date -->
+                <div class="gs-stories__meta">
+                  <div class="gs-stories__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                    {%- for i in (1..5) -%}
+                      {%- if i <= block.settings.rating -%}
+                        <span class="gs-stories__star is-filled">★</span>
+                      {%- else -%}
+                        <span class="gs-stories__star">★</span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  <span class="gs-stories__divider">|</span>
+                  <span class="gs-stories__date">{{ block.settings.date }}</span>
+                </div>
+
+                <!-- Review Text -->
+                <blockquote class="gs-stories__text">
+                  {{ block.settings.review }}
+                </blockquote>
+
+                <!-- Author -->
+                <div class="gs-stories__author">
+                  -{{ block.settings.author }}</div>
+
+                <!-- Right Quote -->
+                <svg
+                  class="gs-stories__quote gs-stories__quote--right"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true">
+                  <path d="M14 16c0 2.21 1.79 4 4 4s4-1.79 4-4c0-1.99-1.46-3.64-3.38-3.93L20 8h-3l-1.83 5.5c-.72.35-1.17 1.37-1.17 2.5zm-12 0c0 2.21 1.79 4 4 4s4-1.79 4-4c0-1.99-1.46-3.64-3.38-3.93L8 8H5l-1.83 5.5C2.45 13.85 2 14.87 2 16z" />
+                </svg>
+
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Customers Stories",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Customers Stories"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "(Rated 4.8/5 based on 131007 ratings)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "review",
+        "name": "Review",
+        "limit": 12,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Product Image"
+          },
+          {
+            "type": "range",
+            "id": "rating",
+            "min": 1,
+            "max": 5,
+            "step": 1,
+            "label": "Star Rating",
+            "default": 5
+          },
+          {
+            "type": "text",
+            "id": "date",
+            "label": "Date",
+            "default": "10 March 2026"
+          },
+          {
+            "type": "textarea",
+            "id": "review",
+            "label": "Review Text",
+            "default": "Thanks for delivering on time!"
+          },
+          {
+            "type": "text",
+            "id": "author",
+            "label": "Author Name",
+            "default": "sarfaraj shaikh"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Customers Stories",
+        "blocks": [
+          {
+            "type": "review",
+            "settings": {
+              "author": "sarfaraj shaikh",
+              "review": "Thanks for delivering on time!",
+              "date": "10 March 2026"
+            }
+          },
+          {
+            "type": "review",
+            "settings": {
+              "author": "Sajid khan",
+              "review": "Good",
+              "date": "10 March 2026"
+            }
+          },
+          {
+            "type": "review",
+            "settings": {
+              "author": "Harsh patel",
+              "review": "Its a good service",
+              "date": "10 March 2026"
+            }
+          },
+          {
+            "type": "review",
+            "settings": {
+              "author": "Rahul sharma",
+              "review": "Loved the premium packaging!",
+              "date": "11 March 2026"
+            }
+          },
+          {
+            "type": "review",
+            "settings": {
+              "author": "Priya singh",
+              "review": "Beautiful and fresh flowers. Highly recommended.",
+              "date": "12 March 2026"
+            }
+          },
+          {
+            "type": "review",
+            "settings": {
+              "author": "Amit kumar",
+              "review": "The midnight delivery was a perfect surprise.",
+              "date": "14 March 2026"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

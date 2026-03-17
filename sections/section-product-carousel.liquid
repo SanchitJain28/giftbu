@@ -1,0 +1,108 @@
+{{ 'section-product-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-product-carousel.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-product-carousel-{{ section.id }}" class="gs-product-carousel-wrapper">
+  <div class="gs-product-carousel page-width" data-infinite="{{ section.settings.enable_infinite }}">
+    
+    <!-- Header Area -->
+    <div class="gs-product-carousel__header reveal-up">
+      {%- if section.settings.title != blank -%}
+        <h2 class="gs-product-carousel__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="gs-product-carousel__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Carousel Container -->
+    <div class="gs-product-carousel__slider-container reveal-up">
+      
+      <!-- Left Arrow -->
+      <button class="gs-carousel-nav gs-carousel-prev" aria-label="Scroll Previous">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <!-- Scrollable Track -->
+      <div class="gs-product-carousel__track" data-carousel-track>
+        {%- assign collection = section.settings.collection -%}
+        
+        {%- if collection != blank and collection.products_count > 0 -%}
+          {%- for product in collection.products limit: section.settings.product_limit -%}
+            <div class="gs-product-carousel__item">
+              {% render 'card-product', card_product: product %}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Placeholder state if no collection is selected -->
+          {%- for i in (1..6) -%}
+            <div class="gs-product-carousel__item">
+              {% render 'card-product', card_product: empty %}
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      <!-- Right Arrow -->
+      <button class="gs-carousel-nav gs-carousel-next" aria-label="Scroll Next">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Carousel",
+  "tag": "section",
+  "class": "section",
+  "settings":[
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Best Selling Gifts"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Packed with love"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "label": "Maximum products to show",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_infinite",
+      "label": "Enable Infinite Carousel Loop",
+      "default": true,
+      "info": "When reaching the end, clicking next will smoothly loop back to the start."
+    }
+  ],
+  "presets":[
+    {
+      "name": "Product Carousel",
+      "settings": {
+        "title": "Best Selling Gifts",
+        "subtitle": "Packed with love"
+      }
+    }
+  ]
+}
+{% endschema %}

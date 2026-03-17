@@ -15,6 +15,11 @@
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  {{ 'section-personalization-modal.css' | asset_url | stylesheet_tag }}
+  {{ 'block-product-tabs.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'block-product-tabs.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'section-personalization-modal.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'section-wishlist.js' | asset_url }}" defer="defer"></script>
 
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -73,7 +78,7 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  <div class="page-width">
+  <div class="">
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="grid__item product__media-wrapper">
         {% render 'product-media-gallery', variant_images: variant_images %}
@@ -82,11 +87,282 @@
         <section
           id="ProductInfo-{{ section.id }}"
           class="product__info-container{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
+          style="padding: 20px;"
         >
           {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
           {%- for block in section.blocks -%}
             {%- case block.type -%}
+              {%- when 'promo_banner' -%}
+                <div
+                  class="gs-promo-banner"
+                  style="--promo-bg: {{ block.settings.bg_color }}; --promo-text: {{ block.settings.text_color }};"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="gs-promo-banner__icon">
+                    {%- if block.settings.icon_image != blank -%}
+                      {{
+                        block.settings.icon_image
+                        | image_url: width: 80
+                        | image_tag: loading: 'lazy', class: 'gs-promo-icon-img'
+                      }}
+                    {%- else -%}
+                      <span class="gs-promo-emoji">💌</span>
+                    {%- endif -%}
+                  </div>
+                  <div class="gs-promo-banner__text">
+                    {{ block.settings.promo_text }}
+                  </div>
+                </div>
+              {%- when 'sticky_atc' -%}
+                {{ 'block-sticky-atc.css' | asset_url | stylesheet_tag }}
+                <script src="{{ 'block-sticky-atc.js' | asset_url }}" defer="defer"></script>
+
+                <div class="gs-sticky-atc" id="GsStickyATC-{{ section.id }}" {{ block.shopify_attributes }}>
+                  <div class="gs-sticky-atc__container">
+                    <!-- Promo Banner -->
+                    {%- if block.settings.show_promo -%}
+                      <div class="gs-sticky-promo">
+                        <div class="gs-sticky-promo__left">
+                          <span class="gs-sticky-promo__badge">{{ block.settings.promo_badge }}</span>
+                          <span class="gs-sticky-promo__text">{{ block.settings.promo_text }}</span>
+                        </div>
+                        {%- if block.settings.promo_link_url != blank -%}
+                          <a href="{{ block.settings.promo_link_url }}" class="gs-sticky-promo__link">
+                            {{- block.settings.promo_link_text -}}
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+
+                    <!-- Action Buttons -->
+                    <div class="gs-sticky-actions">
+                      <button
+                        type="button"
+                        class="gs-sticky-btn gs-sticky-btn--secondary"
+                        id="GsStickySpecialBtn-{{ section.id }}"
+                      >
+                        {{ block.settings.secondary_button_text }}
+                      </button>
+                      <button
+                        type="button"
+                        class="gs-sticky-btn gs-sticky-btn--primary"
+                        id="GsStickyAddBtn-{{ section.id }}"
+                      >
+                        {{ block.settings.primary_button_text }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              {%- when 'price_and_quantity' -%}
+                <div class="gs-price-qty-row" {{ block.shopify_attributes }}>
+                  <!-- Price Section (Using dynamic ID so Dawn JS auto-updates it) -->
+                  <div id="price-{{ section.id }}" role="status" class="gs-price-container">
+                    {%- assign target = product.selected_or_first_available_variant -%}
+                    <div class="gs-custom-price">
+                      <span class="gs-price-current">{{ target.price | money }}</span>
+
+                      {%- if target.compare_at_price > target.price -%}
+                        <span class="gs-price-compare">{{ target.compare_at_price | money }}</span>
+
+                        {%- assign saving = target.compare_at_price
+                          | minus: target.price
+                          | times: 100.0
+                          | divided_by: target.compare_at_price
+                          | round
+                        -%}
+                        <span class="gs-price-discount">{{ saving }}% OFF</span>
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  <!-- Quantity Selector Section -->
+                  <div class="gs-custom-qty">
+                    {%- assign cart_qty = cart
+                      | item_count_for_variant: product.selected_or_first_available_variant.id
+                    -%}
+                    <quantity-input class="gs-quantity" data-url="{{ product.url }}" data-section="{{ section.id }}">
+                      <button class="gs-quantity__button gs-quantity__minus" name="minus" type="button">
+                        <span class="visually-hidden">Decrease</span>
+                        <svg width="14" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 1H14" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                      </button>
+
+                      <input
+                        class="gs-quantity__input"
+                        type="number"
+                        name="quantity"
+                        id="Quantity-{{ section.id }}"
+                        data-cart-quantity="{{ cart_qty }}"
+                        data-min="{{ target.quantity_rule.min | default: 1 }}"
+                        min="{{ target.quantity_rule.min | default: 1 }}"
+                        {% if target.quantity_rule.max != null %}
+                          data-max="{{ target.quantity_rule.max }}"
+                          max="{{ target.quantity_rule.max }}"
+                        {% endif %}
+                        step="{{ target.quantity_rule.increment | default: 1 }}"
+                        value="{{ target.quantity_rule.min | default: 1 }}"
+                        form="{{ product_form_id }}"
+                      >
+
+                      <button class="gs-quantity__button gs-quantity__plus" name="plus" type="button">
+                        <span class="visually-hidden">Increase</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M7 0V14M0 7H14" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                      </button>
+                    </quantity-input>
+                  </div>
+                </div>
+              {%- when 'product_tabs' -%}
+                {%- liquid
+                  assign has_description = false
+                  assign has_details = false
+                  assign has_more = false
+                  assign active_tab = ''
+
+                  if product.description != blank
+                    assign has_description = true
+                    assign active_tab = 'description'
+                  elsif product.metafields.custom.product_details.value != blank
+                    assign has_details = true
+                    assign active_tab = 'details'
+                  elsif product.metafields.custom.more_details.value != blank
+                    assign has_more = true
+                    assign active_tab = 'more'
+                  endif
+                -%}
+
+                {%- if has_description or has_details or has_more -%}
+                  <div class="gs-product-tabs" {{ block.shopify_attributes }}>
+                    <!-- Tab Navigation -->
+                    <div class="gs-tabs__nav" role="tablist">
+                      {%- if has_description -%}
+                        <button
+                          class="gs-tabs__btn {% if active_tab == 'description' %}is-active{% endif %}"
+                          role="tab"
+                          aria-selected="{% if active_tab == 'description' %}true{% else %}false{% endif %}"
+                          aria-controls="panel-description-{{ block.id }}"
+                          id="tab-description-{{ block.id }}"
+                        >
+                          Description
+                        </button>
+                      {%- endif -%}
+
+                      {%- if has_details -%}
+                        <button
+                          class="gs-tabs__btn {% if active_tab == 'details' %}is-active{% endif %}"
+                          role="tab"
+                          aria-selected="{% if active_tab == 'details' %}true{% else %}false{% endif %}"
+                          aria-controls="panel-details-{{ block.id }}"
+                          id="tab-details-{{ block.id }}"
+                        >
+                          Product Info
+                        </button>
+                      {%- endif -%}
+
+                      {%- if has_more -%}
+                        <button
+                          class="gs-tabs__btn {% if active_tab == 'more' %}is-active{% endif %}"
+                          role="tab"
+                          aria-selected="{% if active_tab == 'more' %}true{% else %}false{% endif %}"
+                          aria-controls="panel-more-{{ block.id }}"
+                          id="tab-more-{{ block.id }}"
+                        >
+                          More Info
+                        </button>
+                      {%- endif -%}
+                    </div>
+
+                    <!-- Tab Content Panels -->
+                    <div class="gs-tabs__content">
+                      {%- if has_description -%}
+                        <div
+                          class="gs-tabs__panel {% if active_tab == 'description' %}is-active{% endif %} rte"
+                          role="tabpanel"
+                          id="panel-description-{{ block.id }}"
+                          aria-labelledby="tab-description-{{ block.id }}"
+                        >
+                          {{ product.description }}
+                        </div>
+                      {%- endif -%}
+
+                      {%- if has_details -%}
+                        <div
+                          class="gs-tabs__panel {% if active_tab == 'details' %}is-active{% endif %} rte"
+                          role="tabpanel"
+                          id="panel-details-{{ block.id }}"
+                          aria-labelledby="tab-details-{{ block.id }}"
+                        >
+                          {{ product.metafields.custom.product_details | metafield_tag }}
+                        </div>
+                      {%- endif -%}
+
+                      {%- if has_more -%}
+                        <div
+                          class="gs-tabs__panel {% if active_tab == 'more' %}is-active{% endif %} rte"
+                          role="tabpanel"
+                          id="panel-more-{{ block.id }}"
+                          aria-labelledby="tab-more-{{ block.id }}"
+                        >
+                          {{ product.metafields.custom.more_details | metafield_tag }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- when 'breadcrumb' -%}
+                <nav class="gs-breadcrumb" aria-label="breadcrumbs" {{ block.shopify_attributes }}>
+                  <a href="{{ routes.root_url }}" class="gs-breadcrumb__link">Home</a>
+
+                  <span class="gs-breadcrumb__separator">
+                    <svg
+                      viewBox="0 0 14 10"
+                      fill="none"
+                      aria-hidden="true"
+                      focusable="false"
+                      class="icon icon-caret"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
+                    </svg>
+                  </span>
+
+                  {%- if collection.url -%}
+                    <a href="{{ collection.url }}" class="gs-breadcrumb__link">{{ collection.title }}</a>
+                    <span class="gs-breadcrumb__separator">
+                      <svg
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        aria-hidden="true"
+                        focusable="false"
+                        class="icon icon-caret"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
+                      </svg>
+                    </span>
+                  {%- elsif product.collections.size > 0 -%}
+                    <a href="{{ product.collections.first.url }}" class="gs-breadcrumb__link">
+                      {{- product.collections.first.title -}}
+                    </a>
+                    <span class="gs-breadcrumb__separator">
+                      <svg
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        aria-hidden="true"
+                        focusable="false"
+                        class="icon icon-caret"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
+                      </svg>
+                    </span>
+                  {%- endif -%}
+
+                  <span class="gs-breadcrumb__current" aria-current="page">{{ product.title }}</span>
+                </nav>
               {%- when '@app' -%}
                 {% render block %}
               {%- when 'text' -%}
@@ -485,6 +761,30 @@
                   section_id: section.id,
                   show_pickup_availability: true
                 -%}
+                <button
+                  type="button"
+                  class="gs-pdp-wishlist-btn gs-wishlist-btn"
+                  data-product-id="{{ product.id }}"
+                  data-product-title="{{ product.title | escape }}"
+                  data-product-image="{{ product.featured_media | image_url: width: 600 }}"
+                  data-product-url="{{ product.url }}"
+                  data-product-price="{{ product.price | money }}"
+                  aria-label="Add to wishlist"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                  <span class="gs-pdp-wishlist-btn__label">Add to Wishlist</span>
+                </button>
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
                   <div class="rating-wrapper">
@@ -744,6 +1044,100 @@
   "tag": "section",
   "class": "section",
   "blocks": [
+    {
+      "type": "promo_banner",
+      "name": "Promo Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image",
+          "info": "Upload the 3D envelope graphic here"
+        },
+        {
+          "type": "text",
+          "id": "promo_text",
+          "label": "Text",
+          "default": "Say what you feel with a FREE greeting card at checkout"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#F6F3F8"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#1A1209"
+        }
+      ]
+    },
+    {
+      "type": "sticky_atc",
+      "name": "Sticky Add to Cart",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_promo",
+          "label": "Show Promo Banner",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "promo_badge",
+          "label": "Badge Text",
+          "default": "Select ✨"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "promo_text",
+          "label": "Promo Text",
+          "default": "Save <strong>₹25</strong> on this order 💸",
+          "info": "Wrap the amount in bold to make it green."
+        },
+        {
+          "type": "text",
+          "id": "promo_link_text",
+          "label": "Link Text",
+          "default": "Get Select"
+        },
+        {
+          "type": "url",
+          "id": "promo_link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "text",
+          "id": "secondary_button_text",
+          "label": "Secondary Button",
+          "default": "MAKE IT EXTRA SPECIAL"
+        },
+        {
+          "type": "text",
+          "id": "primary_button_text",
+          "label": "Primary Button",
+          "default": "ADD TO CART"
+        }
+      ]
+    },
+    {
+      "type": "price_and_quantity",
+      "name": "Price & Qty (Row Layout)",
+      "limit": 1
+    },
+    {
+      "type": "product_tabs",
+      "name": "Product Tabs",
+      "limit": 1
+    },
+    {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "limit": 1
+    },
     {
       "type": "@app"
     },

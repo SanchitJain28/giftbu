@@ -1,0 +1,178 @@
+/* Container Layout */
+.gs-media-gallery {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start; /* Aligns items to top on desktop */
+  position: sticky;
+  top: 40px;
+  padding-left: var(--space-6, 32px); 
+}
+
+/* Thumbnails Column (Left) */
+.gs-media-gallery__thumbnails {
+  width: 80px;
+  flex-shrink: 0;
+  max-height: 650px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.gs-media-gallery__thumbnails::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.gs-thumbnail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Thumbnail Items */
+.gs-thumbnail-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease;
+  overflow: hidden;
+}
+
+.gs-thumbnail-btn:hover {
+  border-color: var(--color-accent-gold);
+}
+
+.gs-thumbnail-btn.is-active {
+  border: 2px solid var(--color-accent-rose); 
+}
+
+.gs-thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+/* Main Viewer (Right) */
+.gs-media-gallery__main {
+  flex-grow: 1;
+  width: 100%;
+  min-width: 0; /* Prevents flex children from overflowing width */
+  background: var(--color-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+}
+
+.gs-main-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  position: relative;
+}
+
+.gs-main-list__item {
+  display: none;
+  width: 100%;
+  animation: gsFadeIn 0.4s ease-out forwards;
+}
+
+.gs-main-list__item.is-active {
+  display: block;
+}
+
+.gs-main-img {
+  width: 100%;
+  height: auto;
+  max-height: 700px;
+  object-fit: cover;
+  display: block;
+}
+
+.gs-main-media-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.gs-main-media-tag {
+  width: 100%;
+  max-height: 700px;
+  border-radius: 8px;
+}
+
+/* Animations */
+@keyframes gsFadeIn {
+  from {
+    opacity: 0.4;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Adaptation */
+@media screen and (max-width: 749px) {
+  .gs-media-gallery {
+    flex-direction: column-reverse;
+    
+    /* FIX: This forces the image container to stretch full width on mobile */
+    align-items: stretch; 
+    
+    gap: 12px;
+    padding-left: var(--space-4, 16px);
+    padding-right: var(--space-4, 16px);
+  }
+  
+  .gs-media-gallery__thumbnails {
+    width: 100%;
+    max-height: none; /* Changed from auto to none for valid CSS */
+    overflow-x: auto;
+  }
+  
+  .gs-thumbnail-list {
+    flex-direction: row;
+  }
+  
+  .gs-thumbnail-btn {
+    width: 60px;
+    flex-shrink: 0; /* FIX: Prevents thumbnails from shrinking horizontally */
+  }
+}
+
+.gs-pers-thumb-wrap[hidden],
+.gs-main-list__item[hidden] {
+  display: none !important;
+}
+
+.gs-pers-thumb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.gs-pers-separator {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 16px 0;
+  width: 100%;
+}

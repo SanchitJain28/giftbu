@@ -1,0 +1,146 @@
+{% assign config = product.metafields.custom.personalization_config.value %}
+{% assign is_personalizable = product.metafields.custom.is_personalizable.value %}
+{% assign preview_image = product.metafields.custom.preview_image.value %}
+
+{% if is_personalizable and config %}
+  <div
+    class="gs-pers-modal"
+    id="gs-pers-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Personalize {{ product.title }}"
+    hidden
+  >
+    <div class="gs-pers-modal__backdrop" id="gs-pers-backdrop">.</div>
+
+    <div class="gs-pers-modal__panel">
+      <!-- Left: Canvas Preview -->
+      <div class="gs-pers-modal__preview">
+        <canvas
+          class="gs-pers-modal__canvas"
+          id="gs-pers-canvas"
+          width="600"
+          height="600"
+          aria-label="Live personalization preview"
+        ></canvas>
+      </div>
+
+      <!-- Right: Form Drawer -->
+      <div class="gs-pers-modal__form">
+        <!-- Title & Close -->
+        <div class="gs-pers-modal__header">
+          <h2 class="gs-pers-modal__product-title">{{ product.title }}</h2>
+          <button class="gs-pers-modal__close" id="gs-pers-close" aria-label="Close personalisation" type="button">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Subheader & Reset -->
+        <div class="gs-pers-modal__subheader">
+          <span class="gs-pers-modal__start-text">Start Personalizing</span>
+          <button type="button" class="gs-pers-modal__reset-btn">Reset All</button>
+        </div>
+
+        <!-- Info & Progress -->
+        <div class="gs-pers-modal__info-row">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>It takes just about a minute</span>
+        </div>
+
+        <div class="gs-pers-modal__progress-bar">
+          <div class="gs-pers-modal__progress-fill" id="gs-pers-progress" style="width: 100%"></div>
+        </div>
+
+        <!-- Fields -->
+        <div class="gs-pers-modal__fields" id="gs-pers-fields">
+          {% for field in config.fields %}
+            <div class="gs-pers-modal__field" data-field-index="{{ forloop.index0 }}">
+              <label class="gs-pers-modal__label" for="gs-pers-field-{{ forloop.index0 }}">
+                {{ field.label }}
+                {% if field.type == 'text' %}
+                  (Upto {{ field.maxChars }} characters)
+                {% endif %}
+              </label>
+
+              {% if field.type == 'text' %}
+                <div class="gs-pers-modal__input-wrapper">
+                  <input
+                    class="gs-pers-modal__input"
+                    type="text"
+                    id="gs-pers-field-{{ forloop.index0 }}"
+                    data-field-label="{{ field.label }}"
+                    data-field-type="text"
+                    maxlength="{{ field.maxChars }}"
+                    placeholder="{{ field.placeholder }}"
+                    aria-label="{{ field.label }}"
+                  >
+                  <button type="button" class="gs-pers-modal__update-btn">UPDATE</button>
+                </div>
+
+              {% elsif field.type == 'image' %}
+                <div class="gs-pers-modal__upload-wrap" id="gs-upload-wrap-{{ forloop.index0 }}">
+                  <input
+                    class="gs-pers-modal__upload-input"
+                    type="file"
+                    id="gs-pers-field-{{ forloop.index0 }}"
+                    data-field-label="{{ field.label }}"
+                    data-field-type="image"
+                    accept="image/jpeg,image/png,image/webp"
+                    aria-label="{{ field.label }}"
+                  >
+                  <label class="gs-pers-modal__upload-label" for="gs-pers-field-{{ forloop.index0 }}">
+                    <span class="gs-pers-modal__upload-text" id="gs-upload-text-{{ forloop.index0 }}"
+                      >Click to upload photo</span
+                    >
+                  </label>
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Notes -->
+        <ul class="gs-pers-modal__notes">
+          <li>Please upload good quality image.</li>
+          <li>Please ensure you have rights to use the image.</li>
+          <li>Emoticons are not allowed.</li>
+        </ul>
+
+        <!-- CTA -->
+        <button
+          class="gs-pers-modal__save"
+          id="gs-pers-save"
+          type="button"
+          aria-label="Save personalisation and review"
+        >
+          <span id="gs-pers-save-text">SAVE &amp; REVIEW</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.TGSPersonalization = {
+      previewImageUrl: '{{ preview_image | image_url: width: 600 }}',
+      cloudName: '{{ settings.cloudinary_cloud_name }}',
+      uploadPreset: '{{ settings.cloudinary_upload_preset }}',
+      personalizationConfig: {{ product.metafields.custom.personalization_config.value | json }},
+      productTitle: {{ product.title | json }},
+      productId: {{ product.id | json }}
+    };
+  </script>
+{% endif %}

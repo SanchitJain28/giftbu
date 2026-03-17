@@ -1,0 +1,156 @@
+.gs-spoil-wrapper {
+  width: 100%;
+  background-color: transparent; 
+  padding: 48px 0; /* Strict hardcoded vertical padding */
+}
+
+.gs-spoil {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header matched exactly to your reference */
+.gs-spoil__header {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.gs-spoil__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.875rem; /* Strict hardcoded REM (~30px) */
+  font-weight: 700;
+  color: #262130; /* Dark slate matching image */
+  margin: 0;
+  line-height: 1.2;
+}
+
+.gs-spoil__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem; /* Strict hardcoded REM (~16px) */
+  font-weight: 400;
+  color: #8C8A8C; 
+  margin: 0;
+}
+
+/* 
+ * Desktop CSS Grid Masonry
+ * Relies on strict DOM Order: 
+ * 1 (Tall), 2 (Short), 3 (Tall), 4 (Short), 5 (Short), 6 (Short)
+ */
+.gs-spoil__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 220px; /* Forces uniform heights so the blocks stack perfectly */
+  gap: 20px;
+}
+
+/* Make Item 1 and Item 3 span 2 rows vertically */
+.gs-spoil__item:nth-child(1),
+.gs-spoil__item:nth-child(3) {
+  grid-row: span 2;
+}
+
+/* Card Styling */
+.gs-spoil__item {
+  display: flex;
+  flex-direction: column;
+  background-color: #FA3E5A; /* The vibrant pink-red from your image */
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+}
+
+.gs-spoil__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(250, 62, 90, 0.15); /* Soft red shadow glow */
+}
+
+/* Image Wrap flexes to push the red bar strictly to the bottom */
+.gs-spoil__img-wrap {
+  flex: 1 1 auto;
+  width: 100%;
+  overflow: hidden;
+  background-color: #F4F4F4; /* Fallback for transparency */
+}
+
+.gs-spoil__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-spoil__item:hover .gs-spoil__img {
+  transform: scale(1.05); /* Soft zoom on hover */
+}
+
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  fill: #D9CABB;
+  padding: 24px;
+}
+
+/* Red Label Bar at the bottom */
+.gs-spoil__label {
+  flex: 0 0 auto;
+  background-color: #FA3E5A;
+  color: #FFFFFF;
+  font-family: "Jost", sans-serif;
+  font-size: 0.9375rem; /* Strict hardcoded REM (~15px) */
+  font-weight: 500;
+  text-align: center;
+  padding: 12px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+
+/* Responsive Adjustments & Mobile Masonry Restructuring */
+@media screen and (max-width: 990px) {
+  .gs-spoil__grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets and mobile */
+    grid-auto-rows: 180px; /* Slightly shorter rows for mobile screens */
+    gap: 16px;
+  }
+
+  /* 
+   * Custom mapped grid areas to preserve the masonry feel on a 2-column layout.
+   * Keeps the related items grouped together!
+   */
+  .gs-spoil__item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; } /* Left Tall */
+  .gs-spoil__item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; } /* Right Short Top */
+  .gs-spoil__item:nth-child(5) { grid-area: 2 / 2 / 3 / 3; } /* Right Short Bottom */
+  
+  .gs-spoil__item:nth-child(3) { grid-area: 3 / 2 / 5 / 3; } /* Right Tall */
+  .gs-spoil__item:nth-child(4) { grid-area: 3 / 1 / 4 / 2; } /* Left Short Top */
+  .gs-spoil__item:nth-child(6) { grid-area: 4 / 1 / 5 / 2; } /* Left Short Bottom */
+}
+
+@media screen and (max-width: 768px) {
+  .gs-spoil-wrapper {
+    padding: 32px 0;
+  }
+  .gs-spoil__title {
+    font-size: 1.5rem;
+  }
+  .gs-spoil__label {
+    font-size: 0.8125rem; /* ~13px */
+    padding: 10px 4px; /* Tighter padding on mobile */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .gs-spoil__grid {
+    grid-auto-rows: 150px; /* Keep squares relatively balanced on small phones */
+    gap: 12px;
+  }
+}

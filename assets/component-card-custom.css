@@ -1,0 +1,333 @@
+/* Card Container */
+.custom-card-wrapper {
+  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.custom-product-card {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0; /* Soft gray border exactly like image */
+  border-radius: 16px; /* High border radius */
+  overflow: hidden; /* Clips the image cleanly to the radius */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.custom-product-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+.custom-card-link {
+  display: block;
+  text-decoration: none;
+  height: 100%;
+}
+
+/* Image Area */
+.custom-card-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5; /* Matches the slightly taller-than-square aspect ratio */
+  background: #F4F4F4; 
+  overflow: hidden;
+}
+
+.custom-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+}
+
+.custom-product-card:hover .custom-card-image {
+  transform: scale(1.05); /* Gentle zoom effect */
+}
+
+.custom-card-image-secondary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+.custom-product-card:hover .custom-card-image-secondary {
+  opacity: 1;
+}
+
+/* Wishlist Button (Top Right rounded cutout look) */
+.custom-wishlist-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  background: #F8F9FA; /* Matches the slight off-white color from the image */
+  border: none;
+  border-bottom-left-radius: 16px; /* Creates the strict cutout shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.custom-wishlist-btn:hover {
+  background: #FFFFFF;
+}
+
+.custom-wishlist-btn:hover svg {
+  stroke: #FF4466; /* Changes to brand pink on hover */
+  fill: #FF4466;
+}
+
+.custom-wishlist-btn svg {
+  transition: all 0.2s ease;
+}
+
+/* Content Area */
+.custom-card-content {
+  padding: 0px 12px 12px 12px;  
+  text-align: left;
+  background-color: #FFFFFF;
+}
+
+.custom-card-title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.625rem; /* Strict hardcoded REM (~18px) */
+  font-weight: 600;
+  color: #8B9EB2; /* Slate gray exactly matching the reference */
+  line-height: 1.3;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-card-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+
+.custom-card-price {
+  font-family: "Jost", sans-serif;
+  font-weight: 700;
+  color: #1A1209; /* Deep blackish color */
+  font-size: 1.55rem; /* Strict hardcoded REM (~20px) */
+  display: inline-block;
+}
+
+/* Meta Area (Rating & Badge Row) */
+.custom-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Spacing between rating and delivery badge */
+}
+
+.custom-card-rating {
+  font-family: "Jost", sans-serif;
+  font-size: 0.9375rem; /* Strict hardcoded REM (~15px) */
+  color: #71717A; /* Muted gray for the rating text */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.custom-rating-star {
+  color: #EAB308; /* Perfect gold for the star */
+  font-size: 1rem;
+}
+
+.custom-rating-count {
+  color: #A0AEC0; /* Slightly lighter gray for the bracket text */
+}
+
+.custom-delivery-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #F5EEFF; /* Very light lavender/purple background */
+  color: #6D28D9; /* Deep violet/purple text matching reference */
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: "Jost", sans-serif;
+  font-size: 0.75rem; /* Strict hardcoded REM (~12px) */
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.custom-delivery-badge svg {
+  flex-shrink: 0;
+}
+
+/* ============================
+   MODAL STYLES (Preserved exactly as requested)
+   ============================ */
+.qa-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.qa-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.qa-modal__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.qa-modal__content {
+  position: relative;
+  background: #fff;
+  width: 90%;
+  max-width: 700px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.qa-modal.is-open .qa-modal__content {
+  transform: translateY(0);
+}
+
+.qa-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+}
+
+.qa-modal__body {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 750px) {
+  .qa-modal__body {
+    flex-direction: row;
+  }
+}
+
+.qa-product-image {
+  flex: 1;
+  background: #f4f4f4;
+}
+
+.qa-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.qa-product-details {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#qa-title {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.qa-price-wrapper {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+#qa-price {
+  font-weight: bold;
+}
+
+#qa-compare-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.qa-variant-group {
+  margin-bottom: 15px;
+}
+
+.qa-variant-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.qa-variant-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.qa-add-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  padding: 15px;
+  border: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.qa-add-btn:hover {
+  background: #333;
+}
+
+.qa-add-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.qa-error-msg {
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+  display: none;
+}
+.custom-wishlist-btn.is-wishlisted svg {
+  fill: #FF4466;
+  stroke: #FF4466;
+}

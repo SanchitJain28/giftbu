@@ -62,14 +62,14 @@ product-info {
 
 @media screen and (min-width: 990px) {
   .product--large:not(.product--no-media) .product__media-wrapper {
-    max-width: 65%;
-    width: calc(65% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
   }
 
   .product--large:not(.product--no-media) .product__info-wrapper {
     padding: 0 0 0 4rem;
-    max-width: 35%;
-    width: calc(35% - var(--grid-desktop-horizontal-spacing) / 2);
+    max-width: 50%;
+    width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2);
   }
 
   .product--large:not(.product--no-media).product--right .product__info-wrapper {
@@ -245,17 +245,29 @@ a.product__text {
   text-transform: uppercase;
 }
 
-.product__title {
-  word-break: break-word;
-  margin-bottom: 1.5rem;
+/* Giftbu Product Title Styling */
+.product__title h1 {
+  font-family: 'Jost', sans-serif; /* Forces the sans-serif from your design system */
+  font-size: 36px; /* Explicit size, no variables */
+  font-weight: 800; /* Extra bold weight matching the screenshot */
+  color: var(--color-text-primary);
+  line-height: 1.1; /* Tight line height for multi-line titles */
+  letter-spacing: -0.5px; /* Slight negative tracking for that dense, modern look */
+  margin: 0 0 12px 0; /* Compact bottom margin */
+  text-transform: capitalize;
 }
 
-.product__title > * {
-  margin: 0;
-}
-
+/* Hide the duplicate link-based title that Dawn includes by default */
 .product__title > a {
-  display: none;
+  display: none !important;
+}
+
+/* Mobile Adaptation */
+@media screen and (max-width: 749px) {
+  .product__title h1 {
+    font-size: 28px; /* Slightly smaller for mobile screens */
+    letter-spacing: -0.25px;
+  }
 }
 
 .product__title + .product__text.caption-with-letter-spacing {
@@ -363,9 +375,6 @@ a.product__text {
   margin-bottom: 1.2rem;
 }
 
-.product-form__buttons {
-  max-width: 44rem;
-}
 
 .product--no-media .product__info-container > modal-opener {
   display: block;
@@ -1491,4 +1500,355 @@ a.product__text {
   .recipient-form > input[type='checkbox']:checked + label .icon-checkmark {
     border: none;
   }
+}
+
+/* Giftbu Breadcrumb Block */
+.gs-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px; /* Using explicit compact spacing */
+  margin-bottom: 16px; 
+}
+
+.gs-breadcrumb__link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.gs-breadcrumb__link:hover {
+  color: var(--color-accent-dark);
+}
+
+.gs-breadcrumb__separator {
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  opacity: 0.6;
+}
+
+.gs-breadcrumb__separator svg {
+  width: 10px;
+  height: 10px;
+  transform: rotate(-90deg); /* Rotates Dawn's default down-caret to point right */
+}
+
+.gs-breadcrumb__current {
+  color: var(--color-text-primary);
+}
+
+/* Layout Row */
+.gs-price-qty-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+/* Price Section */
+.gs-custom-price {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gs-price-current {
+  font-size: 26px; /* Matched to screenshot */
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.gs-price-compare {
+  font-size: 18px;
+  color: #a3a3a3; /* Subdued grey */
+  text-decoration: line-through;
+  line-height: 1;
+}
+
+.gs-price-discount {
+  color: #0b8c36; /* Authentic green */
+  border: 1px solid #0b8c36;
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Quantity Section */
+.gs-quantity {
+  display: flex;
+  height: 44px;
+  border-radius: 4px;
+  overflow: hidden; /* Clips the background colors beautifully */
+  border: 1px solid var(--color-border);
+}
+
+.gs-quantity__button {
+  width: 44px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.gs-quantity__button:hover {
+  opacity: 0.8;
+}
+
+/* Minus Button */
+.gs-quantity__minus {
+  background-color: #F0F0F0;
+  color: #7A7A7A;
+}
+
+/* Input Field */
+.gs-quantity__input {
+  width: 48px;
+  border: none;
+  background-color: #FAFAFA;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  -moz-appearance: textfield; /* Hides native arrows in Firefox */
+  padding: 0;
+}
+
+.gs-quantity__input::-webkit-outer-spin-button,
+.gs-quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Hides native arrows in Chrome/Safari */
+  margin: 0;
+}
+
+/* Plus Button */
+.gs-quantity__plus {
+  background-color: #E32A4B; /* Matched exactly to the pink/red in your pic */
+  color: #FFFFFF;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 749px) {
+  .gs-price-qty-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+
+.gs-personalization-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+/* 1. Reset Dawn's native button pseudo-elements to fix border glitches */
+.gs-btn-add-to-cart::after,
+.gs-btn-add-to-cart::before,
+.gs-pers-trigger::after,
+.gs-pers-trigger::before,
+.shopify-payment-button__button--unbranded::after,
+.shopify-payment-button__button--unbranded::before {
+  display: none !important;
+  box-shadow: none !important;
+}
+
+/* 2. Global Shared Button Styling */
+.gs-btn-add-to-cart,
+.gs-pers-trigger,
+.shopify-payment-button__button--unbranded {
+  flex: 1;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px;
+  min-height: 48px !important;
+  height: 48px !important;
+  font-family: 'Jost', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+  padding: 0 16px !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+
+/* Primary Button: Add to Cart */
+.gs-btn-add-to-cart {
+  background-color: #E32A4B !important;
+  color: #FFFFFF !important;
+  border: 1px solid #E32A4B !important;
+}
+.gs-btn-add-to-cart:hover {
+  background-color: #C92542 !important;
+  border-color: #C92542 !important;
+}
+.gs-btn-add-to-cart[disabled] {
+  background-color: #E0E0E0 !important;
+  border-color: #E0E0E0 !important;
+  color: #999999 !important;
+  cursor: not-allowed;
+}
+
+/* Secondary Button: Edit Personalization */
+.gs-pers-trigger {
+  background-color: var(--color-surface, #FDFAF6) !important;
+  color: var(--color-text-primary, #1A1209) !important;
+  border: 1px solid #C4C4C4 !important;
+}
+.gs-pers-trigger:hover {
+  border-color: var(--color-text-primary, #1A1209) !important;
+}
+.gs-pers-trigger svg {
+  flex-shrink: 0;
+}
+
+/* Dynamic Checkout / Buy It Now Button */
+.shopify-payment-button__button--unbranded {
+  background-color: var(--color-text-primary, #1A1209) !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--color-text-primary, #1A1209) !important;
+  margin-top: 0 !important;
+}
+.shopify-payment-button__button--unbranded:hover {
+  background-color: var(--color-text-secondary, #6B5744) !important;
+  border-color: var(--color-text-secondary, #6B5744) !important;
+}
+
+/* Make Add To Cart full width if it's the only button */
+.gs-personalization-actions button:only-child {
+  flex: none;
+  width: 100%;
+}
+
+/* Loading Spinner Overrides */
+.gs-btn-add-to-cart .loading-overlay__spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.gs-btn-add-to-cart.loading .loading-overlay__spinner {
+  display: block;
+}
+.gs-btn-add-to-cart.loading span,
+.gs-btn-add-to-cart.loading svg:not(.spinner) {
+  visibility: hidden;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 749px) {
+  .gs-personalization-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gs-btn-add-to-cart,
+  .gs-pers-trigger,
+  .shopify-payment-button__button--unbranded {
+    width: 100%;
+  }
+}
+
+/* --- Giftbu Promo Banner Block --- */
+.gs-promo-banner {
+  display: flex;
+  align-items: center;
+  background-color: var(--promo-bg, #F6F3F8); /* Pulls from Customizer */
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  gap: 14px;
+  width: 100%;
+}
+
+.gs-promo-banner__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  background-color: transparent; /* Changed to transparent so icon blends better */
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.gs-promo-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Changed to contain so 3D icons don't get cropped */
+}
+
+.gs-promo-emoji {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.gs-promo-banner__text {
+  font-family: 'Jost', sans-serif;
+  font-size: 15px;
+  color: var(--promo-text, #1A1209); /* Pulls from Customizer */
+  line-height: 1.3;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 749px) {
+  .gs-promo-banner {
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  
+  .gs-promo-banner__icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .gs-promo-banner__text {
+    font-size: 14px;
+  }
+}
+.gs-pdp-wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: "Jost", sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s, color 0.2s;
+  margin-top: 12px;
+}
+
+.gs-pdp-wishlist-btn:hover,
+.gs-pdp-wishlist-btn.is-wishlisted {
+  border-color: #FF4466;
+  color: #FF4466;
+}
+
+.gs-pdp-wishlist-btn.is-wishlisted svg {
+  fill: #FF4466;
+  stroke: #FF4466;
 }

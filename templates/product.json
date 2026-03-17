@@ -12,19 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
+        "breadcrumb_mqb4WA": {
+          "type": "breadcrumb",
+          "settings": {}
         },
         "title": {
           "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
           "settings": {}
         },
         "variant_picker": {
@@ -34,9 +27,17 @@
             "swatch_shape": "circle"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
+        "price_and_quantity_riUhmC": {
+          "type": "price_and_quantity",
           "settings": {}
+        },
+        "promo_banner_n8wQgq": {
+          "type": "promo_banner",
+          "settings": {
+            "promo_text": "Say what you feel with a FREE greeting card at checkout",
+            "bg_color": "#f6f3f8",
+            "text_color": "#1a1209"
+          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
@@ -45,26 +46,28 @@
             "show_gift_card_recipient": true
           }
         },
-        "description": {
-          "type": "description",
+        "product_tabs_jPcwRa": {
+          "type": "product_tabs",
           "settings": {}
         },
-        "share": {
-          "type": "share",
+        "promo_banner_UekXAj": {
+          "type": "promo_banner",
           "settings": {
-            "share_label": "Share"
+            "promo_text": "Say what you feel with a FREE greeting card at checkout",
+            "bg_color": "#f8f3f3",
+            "text_color": "#1a1209"
           }
         }
       },
       "block_order": [
-        "vendor",
+        "breadcrumb_mqb4WA",
         "title",
-        "price",
         "variant_picker",
-        "quantity_selector",
+        "price_and_quantity_riUhmC",
+        "promo_banner_n8wQgq",
         "buy_buttons",
-        "description",
-        "share"
+        "product_tabs_jPcwRa",
+        "promo_banner_UekXAj"
       ],
       "settings": {
         "enable_sticky_info": true,

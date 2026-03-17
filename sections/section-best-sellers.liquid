@@ -1,0 +1,126 @@
+{{ 'section-best-sellers.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-best-sellers.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-best-sellers-{{ section.id }}" class="gs-best-sellers-wrapper">
+  <div class="gs-best-sellers page-width">
+
+    <div class="gs-best-sellers__header reveal-up">
+      {%- if section.settings.title != blank -%}
+        <h2 class="gs-best-sellers__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="gs-best-sellers__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="gs-best-sellers__grid">
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.link | default: '#' }}"
+          class="gs-best-sellers__item gs-best-sellers-item-reveal"
+          aria-label="{{ block.settings.title }}"
+          {{ block.shopify_attributes }}>
+          <div class="gs-best-sellers__img-wrap">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: block.settings.title, class: 'gs-best-sellers__img' }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'gs-best-sellers__img placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <span class="gs-best-sellers__label">{{ block.settings.title }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Best Sellers Grid",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Best-Selling Gifts"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "Our most loved picks, chosen time and again by gift-givers"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "gift_item",
+        "name": "Gift Category",
+        "limit": 6,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Item Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Label",
+            "default": "Category Name"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Best Sellers Grid",
+        "blocks": [
+          {
+            "type": "gift_item",
+            "settings": {
+              "title": "BIRTHDAY CAKES"
+            }
+          },
+          {
+            "type": "gift_item",
+            "settings": {
+              "title": "BIRTHDAY FLOWERS"
+            }
+          },
+          {
+            "type": "gift_item",
+            "settings": {
+              "title": "CARICATURES"
+            }
+          },
+          {
+            "type": "gift_item",
+            "settings": {
+              "title": "PHOTO GIFTS"
+            }
+          },
+          {
+            "type": "gift_item",
+            "settings": {
+              "title": "PLANTS"
+            }
+          },
+          {
+            "type": "gift_item",
+            "settings": {
+              "title": "HAMPERS"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

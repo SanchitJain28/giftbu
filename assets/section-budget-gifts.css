@@ -1,0 +1,181 @@
+.gs-budget-wrapper {
+  width: 100%;
+  background-color: transparent; 
+  padding: 48px 0; /* Strict hardcoded vertical padding */
+}
+
+.gs-budget {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header matched exactly to your reference */
+.gs-budget__header {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.gs-budget__title {
+  font-family: "Jost", sans-serif;
+  font-size: 2.2 rem; /* ~30px */
+  font-weight: 700;
+  color: #262130; 
+  margin: 0;
+  line-height: 1.2;
+}
+
+.gs-budget__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1.7rem; /* ~16px */
+  font-weight: 400;
+  color: #8C8A8C; 
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* 
+ * 0-Gap Continuous Grid strictly matching the reference
+ */
+.gs-budget__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0; /* Strict zero gap for flush edges */
+  border-radius: 4px; /* Optional: Slight rounding to the overall continuous bar */
+  overflow: hidden;
+}
+
+.gs-budget__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  aspect-ratio: 1 / 1; /* Creates perfect squares */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Theme 1: Vibrant Coral Red */
+.gs-budget__item--red {
+  background-color: #FA3E5A; 
+}
+.gs-budget__item--red .gs-budget__content {
+  color: #FFFFFF;
+}
+.gs-budget__item--red .gs-budget__bg-text {
+  color: #FFFFFF;
+  opacity: 0.08; /* Highly subtle white watermark */
+}
+
+/* Theme 2: Warm Cream */
+.gs-budget__item--cream {
+  background-color: #F1EAE1; 
+}
+.gs-budget__item--cream .gs-budget__content {
+  color: #FA3E5A;
+}
+.gs-budget__item--cream .gs-budget__bg-text {
+  color: #DED3C6; /* Deeper beige for the watermark */
+  opacity: 0.4;
+}
+
+/* Foreground Typography */
+.gs-budget__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-budget__item:hover .gs-budget__content {
+  transform: scale(1.08); /* Gentle scale pop on hover */
+}
+
+.gs-budget__top-text {
+  font-family: "Jost", sans-serif;
+  font-size: 1.875rem; /* ~30px */
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.gs-budget__main-text {
+  font-family: "Jost", sans-serif;
+  font-size: 4rem; /* ~64px Huge bold text */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Styles the dynamic ₹ injected via Liquid replace */
+.gs-budget__currency {
+  font-size: 2rem; /* Half the size of the number */
+  font-weight: 700;
+  margin-right: 4px;
+  margin-top: 6px; /* Aligns to top of the big numbers */
+  letter-spacing: 0;
+}
+
+/* Faint Background Repeating Text */
+.gs-budget__bg-text {
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  right: -20%;
+  bottom: -20%;
+  z-index: 1;
+  font-family: "Jost", sans-serif;
+  font-size: 4.5rem; /* Huge dense text */
+  font-weight: 800;
+  line-height: 0.85;
+  text-align: center;
+  word-wrap: break-word;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1100px) {
+  .gs-budget__top-text { font-size: 1.5rem; }
+  .gs-budget__main-text { font-size: 3rem; }
+  .gs-budget__currency { font-size: 1.5rem; margin-top: 4px; }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-budget-wrapper {
+    padding: 32px 0;
+  }
+  .gs-budget__title {
+    font-size: 2rem;
+  }
+  
+  /* Break into 2x2 grid on mobile to keep squares perfectly legible */
+  .gs-budget__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .gs-budget__top-text { font-size: 1.5rem; }
+  .gs-budget__main-text { font-size: 3.5rem; }
+  .gs-budget__currency { font-size: 1.75rem; }
+}
+
+@media screen and (max-width: 480px) {
+  .gs-budget__top-text { font-size: 1.25rem; }
+  .gs-budget__main-text { font-size: 2.75rem; }
+  .gs-budget__currency { font-size: 1.25rem; margin-top: 2px; }
+  .gs-budget__bg-text { font-size: 3rem; }
+}

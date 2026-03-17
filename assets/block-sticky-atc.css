@@ -1,0 +1,121 @@
+/* Sticky Bar Container */
+.gs-sticky-atc {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-surface);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08); /* Soft shadow above */
+  z-index: 999;
+  transform: translateY(110%); /* Hidden by default */
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  padding: 12px 16px;
+  box-sizing: border-box;
+  border-top: 1px solid var(--color-border);
+}
+
+.gs-sticky-atc.is-visible {
+  transform: translateY(0); /* Slides up into view */
+}
+
+.gs-sticky-atc__container {
+  max-width: 800px; /* Aligns with standard center widths */
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Promo Banner */
+.gs-sticky-promo {
+  background: linear-gradient(90deg, #FDECB4 0%, #F5D783 100%);
+  border-radius: 4px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.gs-sticky-promo__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Custom Tag Shape Badge */
+.gs-sticky-promo__badge {
+  background: linear-gradient(135deg, #E6B950, #C49A3C);
+  color: #FFFFFF;
+  padding: 4px 18px 4px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 4px 0 0 4px;
+  /* Creates the sharp "tag" arrow pointing right */
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+}
+
+.gs-sticky-promo__text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+/* Targets the <strong> tag to make the price green */
+.gs-sticky-promo__text strong {
+  color: #0b8c36; 
+}
+
+.gs-sticky-promo__link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Action Buttons Row */
+.gs-sticky-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.gs-sticky-btn {
+  flex: 1;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.gs-sticky-btn:hover {
+  opacity: 0.85;
+}
+
+/* Left Button */
+.gs-sticky-btn--secondary {
+  background-color: var(--color-surface);
+  border: 1px solid #C4C4C4;
+  color: #555555;
+}
+
+/* Right Button */
+.gs-sticky-btn--primary {
+  background-color: #E32A4B; /* Matches your specific pinkish red */
+  border: none;
+  color: #FFFFFF;
+}
+
+/* Desktop Sizing Adjustments */
+@media screen and (min-width: 750px) {
+  .gs-sticky-atc {
+    padding: 16px 32px;
+  }
+  .gs-sticky-promo {
+    padding: 10px 16px;
+  }
+}

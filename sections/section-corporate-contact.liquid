@@ -1,0 +1,185 @@
+{{ 'section-corporate-contact.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-corporate-contact.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    {% if section.settings.background_image != blank %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 2000 }}');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    {% else %}
+      background-color: #F5EFE6;
+    {% endif %}
+  }
+{%- endstyle -%}
+
+<div class="gs-contact-section-wrapper">
+  <div class="gs-contact-grid">
+
+    <!-- Left Column: Content -->
+    <div class="gs-contact-left reveal-up">
+      {%- if section.settings.subheading != blank -%}
+        <h3 class="gs-left-subheading">{{ section.settings.subheading }}</h3>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="gs-left-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      <div class="gs-buttons-wrapper">
+        {%- if section.settings.button_1_text != blank -%}
+          <a href="{{ section.settings.button_1_link }}" class="gs-btn-solid">
+            {{ section.settings.button_1_text }}
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.button_2_text != blank -%}
+          <a href="{{ section.settings.button_2_link }}" class="gs-btn-outline">
+            {{ section.settings.button_2_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Right Column: Form Card -->
+    <div class="gs-contact-right reveal-up">
+      <div class="gs-form-card">
+        {%- if section.settings.form_heading != blank -%}
+          <h3 class="gs-form-title">{{ section.settings.form_heading }}</h3>
+        {%- endif -%}
+
+        {%- if section.settings.form_text != blank -%}
+          <div class="gs-form-text">
+            {{ section.settings.form_text }}
+          </div>
+        {%- endif -%}
+
+        {%- form 'contact'
+          , id: 'CorporateContactForm'
+          , class: 'gs-custom-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="gs-form-msg gs-success">Thank you for your enquiry. Our concierge will get back to you shortly.</div>
+          {%- elsif form.errors -%}
+            <div class="gs-form-msg gs-error">Please fix the errors below and try again.</div>
+          {%- endif -%}
+
+          <div class="gs-input-row">
+            <div class="gs-input-group">
+              <label for="ContactForm-name">Full Name*</label>
+              <input
+                type="text"
+                id="ContactForm-name"
+                name="contact[name]"
+                placeholder="Enter Full Name here"
+                required>
+            </div>
+            <div class="gs-input-group">
+              <label for="ContactForm-email">Email ID*</label>
+              <input
+                type="email"
+                id="ContactForm-email"
+                name="contact[email]"
+                placeholder="Enter Email ID here"
+                required>
+            </div>
+          </div>
+
+          <div class="gs-input-row">
+            <div class="gs-input-group">
+              <label for="ContactForm-phone">Phone Number*</label>
+              <input
+                type="tel"
+                id="ContactForm-phone"
+                name="contact[phone]"
+                placeholder="Enter Phone Number"
+                required>
+            </div>
+            <div class="gs-input-group">
+              <label for="ContactForm-city">City*</label>
+              <input
+                type="text"
+                id="ContactForm-city"
+                name="contact[city]"
+                placeholder="Enter City"
+                required>
+            </div>
+          </div>
+
+          <div class="gs-input-group">
+            <label for="ContactForm-body">Tell us a little about what you're looking for (Optional)</label>
+            <textarea
+              rows="4"
+              id="ContactForm-body"
+              name="contact[body]"
+              placeholder="Tell us about your gifting requirements..."></textarea>
+          </div>
+
+          <button type="submit" class="gs-btn-solid gs-submit-btn">Submit Enquiry</button>
+        {%- endform -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Corporate Contact Setup",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Our Corporate Gifts for your work family"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Script Heading",
+        "default": "that strengthens bonds"
+      },
+      {
+        "type": "text",
+        "id": "button_1_text",
+        "label": "Button 1 Text",
+        "default": "Download Catalogue"
+      }, {
+        "type": "url",
+        "id": "button_1_link",
+        "label": "Button 1 Link"
+      }, {
+        "type": "text",
+        "id": "button_2_text",
+        "label": "Button 2 Text",
+        "default": "Talk to Our Concierge"
+      }, {
+        "type": "url",
+        "id": "button_2_link",
+        "label": "Button 2 Link"
+      }, {
+        "type": "text",
+        "id": "form_heading",
+        "label": "Form Heading",
+        "default": "Send an enquiry or reach out to us directly"
+      }, {
+        "type": "richtext",
+        "id": "form_text",
+        "label": "Contact Details Text",
+        "default": "<p>For any further queries, call us at <a href='tel:+918369527929'>+91-83695-27929</a> / <a href='tel:+918108190591'>+91-81081-90591</a> / <a href='tel:+918818940003'>+91-88189-40003</a> or email us at <a href='mailto:contact@thegiftstudio.com'>contact@thegiftstudio.com</a>.</p>"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Corporate Contact Setup"
+      }
+    ]
+  }
+{% endschema %}

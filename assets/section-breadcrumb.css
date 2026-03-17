@@ -1,0 +1,67 @@
+/* Container Layout */
+.gs-breadcrumb-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  /* Matches the compact padding of the product media gallery exactly */
+  padding: 16px 32px; 
+  margin: 0 auto;
+}
+
+/* Breadcrumb List */
+.gs-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Breadcrumb Items */
+.gs-breadcrumb__item {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem; /* 14px - explicitly avoiding font-size variables as requested */
+  letter-spacing: 0.03em;
+  font-family: inherit; /* Inherits Jost/Body font */
+}
+
+/* Links */
+.gs-breadcrumb__link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.gs-breadcrumb__link:hover {
+  color: var(--color-accent-dark);
+}
+
+/* Separator (Caret) */
+.gs-breadcrumb__separator {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+}
+
+.gs-breadcrumb__separator svg {
+  width: 8px;
+  height: 8px;
+  transform: rotate(-90deg); /* Points Dawn's down-caret to the right */
+}
+
+/* Current Page */
+.gs-breadcrumb__current {
+  color: var(--color-text-primary);
+}
+
+/* Mobile Adaptation */
+@media screen and (max-width: 749px) {
+  .gs-breadcrumb-wrapper {
+    padding: 12px 16px; /* Matches mobile gallery padding */
+  }
+}

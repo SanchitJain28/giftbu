@@ -1,0 +1,146 @@
+.gs-celebrations-wrapper {
+  width: 100%;
+  background-color: transparent; 
+  padding: 16px 0; /* Extremely tight outer padding */
+}
+
+.gs-celebrations {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.gs-celebrations__header {
+  margin-bottom: 16px; /* Reduced gap below the header */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px; 
+}
+
+.gs-celebrations__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.875rem; /* Strict hardcoded REM */
+  font-weight: 700;
+  color: #262130; 
+  margin: 0;
+  line-height: 0.8;
+}
+
+.gs-celebrations__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1.6rem; /* Strict hardcoded REM */
+  font-weight: 400;
+  color: #8C8A8C; 
+  margin: 0;
+}
+
+.gs-celebrations__grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px; /* Tighter gap between the column items */
+  
+  /* Horizontal scrolling for mobile */
+  overflow-x: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 12px;
+}
+
+.gs-celebrations__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.gs-celebrations__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px; /* FIXED: Drastically reduced gap between image and text */
+  text-decoration: none;
+  flex: 0 1 auto; /* Stops items from stretching out massively on wide screens */
+  min-width: 140px; 
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-celebrations__item:hover {
+  transform: translateY(-4px);
+}
+
+.gs-celebrations__image-wrap {
+  width: 160px; /* FIXED: Strict width so images don't blow up */
+  height: 160px; /* FIXED: Strict height to keep them uniform */
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gs-celebrations__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Keeps transparent PNGs crisp without cropping */
+  transition: transform 0.4s ease;
+}
+
+.gs-celebrations__item:hover .gs-celebrations__img {
+  transform: scale(1.05);
+}
+
+.placeholder-svg {
+  width: 50px;
+  height: 50px;
+  fill: #D9CABB;
+}
+
+.gs-celebrations__label {
+  font-family: "Jost", sans-serif;
+  font-size: 1.525rem; /* FIXED: Increased text size (~18px strictly REM) */
+  color: #1A1209; 
+  font-weight: 500; /* Bolder to make it readable */
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.gs-celebrations__item:hover .gs-celebrations__label {
+  color: #C49A3C; 
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 990px) {
+  .gs-celebrations__grid {
+    justify-content: flex-start; 
+    gap: 0px;
+  }
+
+  .gs-celebrations__item {
+    flex: 0 0 140px; 
+  }
+  
+  .gs-celebrations__image-wrap {
+    width: 120px; /* Scale down image on mobile */
+    height: 120px;
+  }
+
+  .gs-celebrations__label {
+    font-size: 1.5rem; /* ~16px strictly hardcoded REM for mobile */
+    white-space: normal;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .gs-celebrations__item {
+    flex: 0 0 120px; 
+  }
+  .gs-celebrations__image-wrap {
+    width: 100px; 
+    height: 100px;
+  }
+  .gs-celebrations__label {
+    font-size: 1.45rem; /* ~15px strictly REM */
+  }
+}

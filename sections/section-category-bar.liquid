@@ -1,0 +1,120 @@
+{{ 'section-category-bar.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-category-bar.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-category-bar-{{ section.id }}" class="gs-category-bar-wrapper">
+  <div class="gs-category-bar reveal-up page-width">
+    <div class="gs-category-bar__container">
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.link | default: '#' }}"
+          class="gs-category-bar__item gs-category-item-reveal"
+          aria-label="{{ block.settings.title }}"
+          {{ block.shopify_attributes }}>
+          <div class="gs-category-bar__icon-wrap">
+            <span class="gs-category-bar__blob"></span>
+            {%- if block.settings.icon != blank -%}
+              {{ block.settings.icon | image_url: width: 80 | image_tag: loading: 'lazy', alt: block.settings.title, class: 'gs-category-bar__img' }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'gs-category-bar__img placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <span class="gs-category-bar__title">{{ block.settings.title }}</span>
+        </a>
+
+        {%- unless forloop.last -%}
+          <div class="gs-category-bar__divider" aria-hidden="true"></div>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Category Feature Bar",
+    "tag": "section",
+    "class": "section",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "category",
+        "name": "Category Item",
+        "limit": 8,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "icon",
+            "label": "Icon Image",
+            "info": "Transparent PNG or SVG recommended. 80x80px."
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Label",
+            "default": "Category Name"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Category Feature Bar",
+        "blocks": [
+          {
+            "type": "category",
+            "settings": {
+              "title": "Same Day Delivery"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "Cakes"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "Flowers"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "Personalized"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "Plants"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "New Arrivals"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "International"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "Corp. Gifts"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -9,76 +9,833 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "section_category_bar_WGhLWi": {
+      "type": "section-category-bar",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "category_hKHQWy": {
+          "type": "category",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "icon": "shopify://shop_images/same_day_delivery_d_tiles_5_1752491524627.avif",
+            "title": "Same Day Delivery",
+            "link": ""
           }
         },
-        "button": {
-          "type": "buttons",
+        "category_9nzn9r": {
+          "type": "category",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "icon": "shopify://shop_images/cakes_d_tiles_5_1752491586517.avif",
+            "title": "Cakes",
+            "link": ""
+          }
+        },
+        "category_N34eEc": {
+          "type": "category",
+          "settings": {
+            "icon": "shopify://shop_images/flowers_d_tiles_5_1752491548433.avif",
+            "title": "Flowers",
+            "link": ""
+          }
+        },
+        "category_MCajDQ": {
+          "type": "category",
+          "settings": {
+            "icon": "shopify://shop_images/personalized_d_tiles_5_1752491616977.avif",
+            "title": "Personalized",
+            "link": ""
+          }
+        },
+        "category_WxMtAn": {
+          "type": "category",
+          "settings": {
+            "icon": "shopify://shop_images/plants_d_tiles_5_1752491632143.avif",
+            "title": "Plants",
+            "link": ""
+          }
+        },
+        "category_RrpA9h": {
+          "type": "category",
+          "settings": {
+            "icon": "shopify://shop_images/new_arrivals_d_tiles_5_1754895238100.avif",
+            "title": "New Arrivals",
+            "link": ""
+          }
+        },
+        "category_Czh6De": {
+          "type": "category",
+          "settings": {
+            "icon": "shopify://shop_images/international_d_tiles_5_1752491645111.avif",
+            "title": "International",
+            "link": ""
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "category_hKHQWy",
+        "category_9nzn9r",
+        "category_N34eEc",
+        "category_MCajDQ",
+        "category_WxMtAn",
+        "category_RrpA9h",
+        "category_Czh6De"
       ],
+      "name": "Category Feature Bar",
+      "settings": {}
+    },
+    "section_featured_collections_tdtybW": {
+      "type": "section-featured-collections",
+      "blocks": {
+        "collection_Wjk9y3": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/prakriti-swarna-deepam-gift-set-1-zishta-gifting.webp",
+            "title": "Collection Name",
+            "link": ""
+          }
+        },
+        "collection_jbAePn": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/71SyL1YLbhL._AC_SX679.jpg",
+            "title": "Collection Name",
+            "link": ""
+          }
+        },
+        "collection_mHwEfz": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/varanasi-elephant-coasters-with-diyas-gift-set-1-zishta-gifting.jpg",
+            "title": "Collection Name",
+            "link": ""
+          }
+        },
+        "collection_6YAjdV": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/41eteGPMrCL._SY300_SX300_QL70_FMwebp.webp",
+            "title": "Photo frames",
+            "link": ""
+          }
+        },
+        "collection_KB6LTQ": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/81AGMPlkiwL._SL1500.jpg",
+            "title": "IGP Luxe",
+            "link": ""
+          }
+        },
+        "collection_EdAN6r": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/100472057_2-haldirams-gift-box-royal-fiesta.webp",
+            "title": "Gudi Padwa",
+            "link": ""
+          }
+        },
+        "collection_3B8Bpe": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/elegant-corporate-gift-set-500x500.webp",
+            "title": "Ramadan Eid Gifts",
+            "link": ""
+          }
+        },
+        "collection_PJTR8g": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/10822_3_4a6a8a03-8804-484c-9b5a-f6e0b93c3807.webp",
+            "title": "Freshly Arrived Cakes",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_Wjk9y3",
+        "collection_jbAePn",
+        "collection_mHwEfz",
+        "collection_6YAjdV",
+        "collection_KB6LTQ",
+        "collection_EdAN6r",
+        "collection_3B8Bpe",
+        "collection_PJTR8g"
+      ],
+      "name": "Featured Collections",
+      "settings": {}
+    },
+    "section_hero_carousel_iwApNf": {
+      "type": "section-hero-carousel",
+      "blocks": {
+        "slide_GpF7GG": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/birthday_d_banners_5_1772175584366.avif",
+            "title": "",
+            "subtitle": "",
+            "btn_text": "",
+            "btn_link": "",
+            "bottom_text": ""
+          }
+        },
+        "slide_WnNEYh": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/igp_now_d_banners_5_1771568147825.avif",
+            "title": "",
+            "subtitle": "",
+            "btn_text": "",
+            "btn_link": "",
+            "bottom_text": ""
+          }
+        },
+        "slide_PyPrDM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/anniversary_d_banners_5_1764571652983.avif",
+            "title": "",
+            "subtitle": "",
+            "btn_text": "",
+            "btn_link": "",
+            "bottom_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_GpF7GG",
+        "slide_WnNEYh",
+        "slide_PyPrDM"
+      ],
+      "name": "Hero Carousel",
+      "settings": {}
+    },
+    "section_celebrations_JP9mYy": {
+      "type": "section-celebrations",
+      "blocks": {
+        "category_ejR6cN": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Midnight-Rose-On-Petals_1458ac21-b4e1-4824-9e87-afc72109268c.webp",
+            "title": "Delivery in 60 Mins",
+            "link": ""
+          }
+        },
+        "category_qt7DPn": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/81AGMPlkiwL._SL1500.jpg",
+            "title": "Birthday Gifts",
+            "link": ""
+          }
+        },
+        "category_dhTKPH": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/elegant-corporate-gift-set-500x500.webp",
+            "title": "Balloon Gifts & Decor",
+            "link": ""
+          }
+        },
+        "category_4C8nEN": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998.webp",
+            "title": "Anniversary Gifts",
+            "link": ""
+          }
+        },
+        "category_GP393w": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/a-special-gift-cake.jpg",
+            "title": "Wedding Gifts",
+            "link": ""
+          }
+        },
+        "category_yQmeUT": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/men-gift-hamper.jpg",
+            "title": "House Warming",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_ejR6cN",
+        "category_qt7DPn",
+        "category_dhTKPH",
+        "category_4C8nEN",
+        "category_GP393w",
+        "category_yQmeUT"
+      ],
+      "name": "Celebrations Grid",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "title": "Surprises for Every Celebration",
+        "subtitle": "Curated gift ideas for every occasion, big or small"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "section_best_sellers_xpCD8z": {
+      "type": "section-best-sellers",
+      "blocks": {
+        "gift_item_x9KhKh": {
+          "type": "gift_item",
+          "settings": {
+            "image": "shopify://shop_images/81AGMPlkiwL._SL1500.jpg",
+            "title": "BIRTHDAY CAKES",
+            "link": ""
+          }
+        },
+        "gift_item_7kYRV3": {
+          "type": "gift_item",
+          "settings": {
+            "image": "shopify://shop_images/81MBqMhdh8L._SL1500.jpg",
+            "title": "BIRTHDAY FLOWERS",
+            "link": ""
+          }
+        },
+        "gift_item_DTtCWJ": {
+          "type": "gift_item",
+          "settings": {
+            "image": "shopify://shop_images/cmgifts48571.jpg",
+            "title": "CARICATURES",
+            "link": ""
+          }
+        },
+        "gift_item_qQ4JDD": {
+          "type": "gift_item",
+          "settings": {
+            "image": "shopify://shop_images/prakriti-swarna-deepam-gift-set-1-zishta-gifting.webp",
+            "title": "PHOTO GIFTS",
+            "link": ""
+          }
+        },
+        "gift_item_gBWmc6": {
+          "type": "gift_item",
+          "settings": {
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998.webp",
+            "title": "PLANTS",
+            "link": ""
+          }
+        },
+        "gift_item_jaXJKd": {
+          "type": "gift_item",
+          "settings": {
+            "image": "shopify://shop_images/men-gift-hamper.jpg",
+            "title": "HAMPERS",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "gift_item_x9KhKh",
+        "gift_item_7kYRV3",
+        "gift_item_DTtCWJ",
+        "gift_item_qQ4JDD",
+        "gift_item_gBWmc6",
+        "gift_item_jaXJKd"
+      ],
+      "name": "Best Sellers Grid",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "title": "Best-Selling Gifts",
+        "subtitle": "Our most loved picks, chosen time and again by gift-givers"
+      }
+    },
+    "section_product_carousel_rN9ihh": {
+      "type": "section-product-carousel",
+      "name": "Product Carousel",
+      "settings": {
+        "title": "Best Selling Gifts",
+        "subtitle": "Packed with love",
+        "collection": "gift-hamper",
+        "product_limit": 12,
+        "enable_infinite": true
+      }
+    },
+    "section_celebrations_CnY4nK": {
+      "type": "section-celebrations",
+      "blocks": {
+        "category_KyqGGh": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/same_day_delivery_d_tiles_5_1752491524627.avif",
+            "title": "Delivery in 60 Mins",
+            "link": ""
+          }
+        },
+        "category_qyy3Rg": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/new_arrivals_d_tiles_5_1754895238100.avif",
+            "title": "Birthday Gifts",
+            "link": ""
+          }
+        },
+        "category_aCTDwJ": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/flowers_d_tiles_5_1752491548433.avif",
+            "title": "Balloon Gifts & Decor",
+            "link": ""
+          }
+        },
+        "category_tJM3Lc": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/international_d_tiles_5_1752491645111.avif",
+            "title": "Anniversary Gifts",
+            "link": ""
+          }
+        },
+        "category_tGeGdf": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/cakes_d_tiles_5_1752491586517.avif",
+            "title": "Wedding Gifts",
+            "link": ""
+          }
+        },
+        "category_MjG4x7": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/plants_d_tiles_5_1752491632143.avif",
+            "title": "House Warming",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_KyqGGh",
+        "category_qyy3Rg",
+        "category_aCTDwJ",
+        "category_tJM3Lc",
+        "category_tGeGdf",
+        "category_MjG4x7"
+      ],
+      "name": "Celebrations Grid",
+      "settings": {
+        "title": "Surprises for Every Celebration",
+        "subtitle": "Curated gift ideas for every occasion, big or small"
+      }
+    },
+    "section_need_today_bUFJjG": {
+      "type": "section-need-today",
+      "blocks": {
+        "category_henJUk": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Midnight-Rose-On-Petals_1458ac21-b4e1-4824-9e87-afc72109268c.webp",
+            "title": "BIRTHDAY GIFTS",
+            "link": ""
+          }
+        },
+        "category_DRMrwq": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/p-festive-joy-diwali-hamper-190215-m.avif",
+            "title": "ANNIVERSARY GIFTS",
+            "link": ""
+          }
+        },
+        "category_jwXj6U": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/81MJ-5opFwL._SX679.jpg",
+            "title": "PERSONALIZED GIFTS",
+            "link": ""
+          }
+        },
+        "category_AfcaTn": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/10822_5.webp",
+            "title": "PREMIUM GIFTS",
+            "link": ""
+          }
+        },
+        "category_EgQewC": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/men-gift-hamper.jpg",
+            "title": "CAKES",
+            "link": ""
+          }
+        },
+        "category_FXQWPb": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/varanasi-elephant-coasters-with-diyas-gift-set-1-zishta-gifting.jpg",
+            "title": "FLOWERS",
+            "link": ""
+          }
+        },
+        "category_3mVw6d": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/prakriti-swarna-deepam-gift-set-1-zishta-gifting.webp",
+            "title": "PLANTS",
+            "link": ""
+          }
+        },
+        "category_G43xLQ": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/pexels-pixabay-264771.jpg",
+            "title": "HAMPERS",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_henJUk",
+        "category_DRMrwq",
+        "category_jwXj6U",
+        "category_AfcaTn",
+        "category_EgQewC",
+        "category_FXQWPb",
+        "category_3mVw6d",
+        "category_G43xLQ"
+      ],
+      "name": "Need It Today Grid",
+      "settings": {
+        "title": "Need It Today?",
+        "subtitle": "Same day delivery gifts to save every celebration"
+      }
+    },
+    "section_product_carousel_7NiLF3": {
+      "type": "section-product-carousel",
+      "name": "Product Carousel",
+      "settings": {
+        "title": "Newly Added Gifts",
+        "subtitle": "Packed with love",
+        "collection": "scented-candles",
+        "product_limit": 8,
+        "enable_infinite": true
+      }
+    },
+    "section_celebrations_ikQqWP": {
+      "type": "section-celebrations",
+      "blocks": {
+        "category_46yKhB": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Gateway-monument-India-entrance-Mumbai-Harbour-coast.webp",
+            "title": "Mumbai",
+            "link": ""
+          }
+        },
+        "category_tmmfVQ": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/images_41.jpg",
+            "title": "Delhi",
+            "link": ""
+          }
+        },
+        "category_dUeCwp": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/kolkata-DIY.avif",
+            "title": "Kolkata",
+            "link": ""
+          }
+        },
+        "category_JHAzdw": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/BCC-2024-EXPLORER-BANGALORE-THINGS_TO_DO_AT_NIGHT-HEADER-MOBILE.webp",
+            "title": "Bangalore",
+            "link": ""
+          }
+        },
+        "category_Le36xe": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Pune_West_skyline_-_March_2017.jpg",
+            "title": "Pune",
+            "link": ""
+          }
+        },
+        "category_HLwLQA": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/images_42.jpg",
+            "title": "chennai",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_46yKhB",
+        "category_tmmfVQ",
+        "category_dUeCwp",
+        "category_JHAzdw",
+        "category_Le36xe",
+        "category_HLwLQA"
+      ],
+      "name": "Celebrations Grid",
+      "settings": {
+        "title": "Delivery All over india",
+        "subtitle": "Curated gift ideas for every occasion, big or small"
+      }
+    },
+    "section_budget_gifts_VALPGT": {
+      "type": "section-budget-gifts",
+      "blocks": {
+        "budget_block_VGxNwg": {
+          "type": "budget_block",
+          "settings": {
+            "color_theme": "red",
+            "top_text": "UNDER",
+            "main_text": "₹999",
+            "bg_text": "999",
+            "link": ""
+          }
+        },
+        "budget_block_XcFiyD": {
+          "type": "budget_block",
+          "settings": {
+            "color_theme": "cream",
+            "top_text": "UNDER",
+            "main_text": "₹1499",
+            "bg_text": "1499",
+            "link": ""
+          }
+        },
+        "budget_block_9cXkA6": {
+          "type": "budget_block",
+          "settings": {
+            "color_theme": "red",
+            "top_text": "UNDER",
+            "main_text": "₹2499",
+            "bg_text": "2499",
+            "link": ""
+          }
+        },
+        "budget_block_KUP6nV": {
+          "type": "budget_block",
+          "settings": {
+            "color_theme": "cream",
+            "top_text": "PREMIUM",
+            "main_text": "GIFTS",
+            "bg_text": "GIFTS",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "budget_block_VGxNwg",
+        "budget_block_XcFiyD",
+        "budget_block_9cXkA6",
+        "budget_block_KUP6nV"
+      ],
+      "name": "Budget Gifts Grid",
+      "settings": {
+        "title": "Budget-Friendly Gifts",
+        "subtitle": "Thoughtful picks that fit every budget without compromising on joy"
+      }
+    },
+    "section_spoil_yourself_t6bkEY": {
+      "type": "section-spoil-yourself",
+      "blocks": {
+        "masonry_item_67mqEf": {
+          "type": "masonry_item",
+          "settings": {
+            "image": "shopify://shop_images/varanasi-elephant-coasters-with-diyas-gift-set-1-zishta-gifting.jpg",
+            "title": "CHERISH SWEET SURPRISES",
+            "link": ""
+          }
+        },
+        "masonry_item_gWVN8a": {
+          "type": "masonry_item",
+          "settings": {
+            "image": "shopify://shop_images/71v_pzunf8L._SL1500.jpg",
+            "title": "SAVOR WHOLESOME SNACKS",
+            "link": ""
+          }
+        },
+        "masonry_item_FVqLw7": {
+          "type": "masonry_item",
+          "settings": {
+            "image": "shopify://shop_images/pexels-pixabay-264771.jpg",
+            "title": "SELF-PAMPERING ESSENTIALS",
+            "link": ""
+          }
+        },
+        "masonry_item_TrKDnY": {
+          "type": "masonry_item",
+          "settings": {
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998.webp",
+            "title": "ELEVATE YOUR WORKSPACE",
+            "link": ""
+          }
+        },
+        "masonry_item_HxXKYM": {
+          "type": "masonry_item",
+          "settings": {
+            "image": "shopify://shop_images/a-special-gift-cake.jpg",
+            "title": "UNLOCK CULINARY BLISS",
+            "link": ""
+          }
+        },
+        "masonry_item_knKAEi": {
+          "type": "masonry_item",
+          "settings": {
+            "image": "shopify://shop_images/pexels-element5-712323.jpg",
+            "title": "JOURNAL YOUR THOUGHTS",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "masonry_item_67mqEf",
+        "masonry_item_gWVN8a",
+        "masonry_item_FVqLw7",
+        "masonry_item_TrKDnY",
+        "masonry_item_HxXKYM",
+        "masonry_item_knKAEi"
+      ],
+      "name": "Spoil Yourself Masonry",
+      "settings": {
+        "title": "Spoil Yourself, Guilt-Free",
+        "subtitle": "Self-care gifts across cakes, snacks, lifestyle, and more"
+      }
+    },
+    "section_categories_Ai6Kdy": {
+      "type": "section-categories",
+      "blocks": {
+        "category_card_eem8XW": {
+          "type": "category_card",
+          "settings": {
+            "collection": "gift-hamper",
+            "image": "shopify://shop_images/sustainable-eco-friendly-christmas-gifts-set-christmas-gift-hampers-by-thenga-at-brownliving-777998_98f6a14f-21d6-4f66-8897-49d494e08580.webp"
+          }
+        },
+        "category_card_PzNh9c": {
+          "type": "category_card",
+          "settings": {
+            "collection": "personlized-mugs",
+            "image": "shopify://shop_images/20210210_193040.webp"
+          }
+        },
+        "category_card_NRAJ4M": {
+          "type": "category_card",
+          "settings": {
+            "collection": "picture-frames",
+            "image": "shopify://shop_images/71v_pzunf8L._SL1500.jpg"
+          }
+        },
+        "category_card_7QmQfN": {
+          "type": "category_card",
+          "settings": {
+            "collection": "scented-candles",
+            "image": "shopify://shop_images/Midnight-Rose-Candle-with-Box.webp"
+          }
+        }
+      },
+      "block_order": [
+        "category_card_eem8XW",
+        "category_card_PzNh9c",
+        "category_card_NRAJ4M",
+        "category_card_7QmQfN"
+      ],
+      "name": "Categories Grid",
+      "settings": {
+        "title": "Categories",
+        "subtitle": "Wide range of gifts for your celebration"
+      }
+    },
+    "section_customer_stories_4LDDgK": {
+      "type": "section-customer-stories",
+      "blocks": {
+        "review_eqDc43": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/Midnight-Rose-On-Petals.webp",
+            "rating": 5,
+            "date": "10 March 2026",
+            "review": "Thanks for delivering on time!",
+            "author": "sarfaraj shaikh"
+          }
+        },
+        "review_hAbGWf": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/varanasi-elephant-coasters-with-diyas-gift-set-1-zishta-gifting.jpg",
+            "rating": 5,
+            "date": "10 March 2026",
+            "review": "Good",
+            "author": "Sajid khan"
+          }
+        },
+        "review_T9ddAN": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/71v_pzunf8L._SL1500.jpg",
+            "rating": 5,
+            "date": "10 March 2026",
+            "review": "Its a good service",
+            "author": "Harsh patel"
+          }
+        },
+        "review_QcLb3w": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/prakriti-swarna-deepam-gift-set-1-zishta-gifting.webp",
+            "rating": 5,
+            "date": "11 March 2026",
+            "review": "Loved the premium packaging!",
+            "author": "Rahul sharma"
+          }
+        },
+        "review_pPTaHK": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/a-special-gift-cake.jpg",
+            "rating": 5,
+            "date": "12 March 2026",
+            "review": "Beautiful and fresh flowers. Highly recommended.",
+            "author": "Priya singh"
+          }
+        },
+        "review_E9pekd": {
+          "type": "review",
+          "settings": {
+            "image": "shopify://shop_images/pexels-element5-712323.jpg",
+            "rating": 5,
+            "date": "14 March 2026",
+            "review": "The midnight delivery was a perfect surprise.",
+            "author": "Amit kumar"
+          }
+        }
+      },
+      "block_order": [
+        "review_eqDc43",
+        "review_hAbGWf",
+        "review_T9ddAN",
+        "review_QcLb3w",
+        "review_pPTaHK",
+        "review_E9pekd"
+      ],
+      "name": "Customers Stories",
+      "settings": {
+        "title": "Customers Stories",
+        "subtitle": "(Rated 4.8/5 based on 131007 ratings)"
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "section_category_bar_WGhLWi",
+    "section_featured_collections_tdtybW",
+    "section_hero_carousel_iwApNf",
+    "section_celebrations_JP9mYy",
+    "section_best_sellers_xpCD8z",
+    "section_product_carousel_rN9ihh",
+    "section_celebrations_CnY4nK",
+    "section_need_today_bUFJjG",
+    "section_product_carousel_7NiLF3",
+    "section_celebrations_ikQqWP",
+    "section_budget_gifts_VALPGT",
+    "section_spoil_yourself_t6bkEY",
+    "section_categories_Ai6Kdy",
+    "section_customer_stories_4LDDgK"
   ]
 }

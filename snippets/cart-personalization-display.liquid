@@ -1,0 +1,81 @@
+{% comment %}
+  Include inside cart line item loop.
+  Usage: {% render 'cart-personalization-display', item: item %}
+{% endcomment %}
+
+{% assign has_props = false %}
+{% for property in item.properties %}
+  {% unless property.last == blank %}
+    {% assign has_props = true %}
+  {% endunless %}
+{% endfor %}
+
+{% if has_props %}
+  <ul class="gs-cart-personalization">
+    {% for property in item.properties %}
+      {% unless property.last == blank %}
+        <li class="gs-cart-personalization__item">
+          <span class="gs-cart-personalization__key">{{ property.first }}:</span>
+
+          {% assign val = property.last %}
+          {% if val contains 'res.cloudinary.com' %}
+            <a
+              class="gs-cart-personalization__photo-link"
+              href="{{ val }}"
+              target="_blank"
+              rel="noopener"
+              aria-label="View uploaded personalisation photo">
+              <img
+                class="gs-cart-personalization__photo"
+                src="{{ val }}"
+                alt="Personalisation photo"
+                width="48"
+                height="48"
+                loading="lazy" />
+            </a>
+          {% else %}
+            <span class="gs-cart-personalization__value">{{ val }}</span>
+          {% endif %}
+
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<style>
+  .gs-cart-personalization {
+    list-style: none;
+    margin: var(--space-2) 0 0;
+    padding: var(--space-3);
+    background: var(--color-bg-secondary);
+    border-left: 2px solid var(--color-accent-gold);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .gs-cart-personalization__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+  }
+
+  .gs-cart-personalization__key {
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  .gs-cart-personalization__value {
+    color: var(--color-text-primary);
+  }
+
+  .gs-cart-personalization__photo {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+  }
+</style>

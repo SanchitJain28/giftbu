@@ -1,0 +1,236 @@
+.gs-stories-wrapper {
+  width: 100%;
+  background-color: #4A4E5C; /* Dark slate background strictly matching image */
+  padding: 64px 0; /* Generous padding to let the dark background breathe */
+}
+
+.gs-stories {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+}
+
+/* Header matched exactly to your reference */
+.gs-stories__header {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.gs-stories__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.875rem; /* ~30px */
+  font-weight: 700;
+  color: #FFFFFF; /* White text on dark BG */
+  margin: 0;
+  line-height: 1.2;
+}
+
+.gs-stories__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem; /* ~16px */
+  font-weight: 400;
+  color: #F1F5F9; /* Off-white for subheading */
+  margin: 0;
+}
+
+/* Slider Container */
+.gs-stories__slider-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Native Scroll Track */
+.gs-stories__track {
+  display: flex;
+  gap: 24px; 
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  padding: 10px 0; 
+}
+
+.gs-stories__track::-webkit-scrollbar {
+  display: none; 
+}
+
+/* Individual Slide Items */
+.gs-stories__slide {
+  flex: 0 0 calc(33.333% - 16px); /* Exactly 3 items visible on desktop */
+  scroll-snap-align: start;
+  min-width: 0; 
+}
+
+/* 
+ * The distinct double-border layout:
+ * Outer wrapper handles the white border and gap padding 
+ */
+.gs-stories__card-outline {
+  border: 2px solid #FFFFFF;
+  border-radius: 16px;
+  padding: 6px; /* Creates the transparent gap */
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gs-stories__card-outline:hover {
+  transform: translateY(-4px);
+}
+
+/* Inner white card */
+.gs-stories__card {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  padding: 32px 48px 24px 48px; /* High horizontal padding prevents text colliding with quotes */
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+/* Quotes */
+.gs-stories__quote {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  fill: #4A4E5C; /* Matched to the dark slate background */
+  opacity: 0.9;
+}
+
+.gs-stories__quote--left {
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+}
+
+.gs-stories__quote--right {
+  bottom: 24px;
+  right: 20px;
+}
+
+/* Top Product Image */
+.gs-stories__img-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  padding: 3px; /* Creates the faint inner white gap around the image */
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.gs-stories__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.placeholder-svg {
+  width: 100%;
+  height: 100%;
+  fill: #94A3B8;
+  background-color: #F1F5F9;
+  border-radius: 8px;
+}
+
+/* Meta Data (Stars and Date) */
+.gs-stories__meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.gs-stories__stars {
+  display: flex;
+  gap: 2px;
+}
+
+.gs-stories__star {
+  color: #E2E8F0; /* Empty star gray */
+  font-size: 1.125rem; /* ~18px */
+  line-height: 1;
+}
+
+.gs-stories__star.is-filled {
+  color: #FFC107; /* Bright gold */
+}
+
+.gs-stories__divider {
+  color: #CBD5E1; /* Light gray pipe */
+  font-size: 0.875rem; /* ~14px */
+}
+
+.gs-stories__date {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem; /* ~14px */
+  color: #64748B; /* Slate gray */
+}
+
+/* Review Text */
+.gs-stories__text {
+  font-family: "Jost", sans-serif;
+  font-size: 1.125rem; /* ~18px */
+  font-style: italic; /* Mimics the script/italic feel from the image */
+  color: #334155; 
+  margin: 0 0 32px 0; /* Pushes author to the bottom */
+  line-height: 1.4;
+  flex-grow: 1; /* Allows the card to stretch evenly if text lengths vary */
+}
+
+/* Author */
+.gs-stories__author {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem; /* ~14px */
+  color: #475569;
+  margin-top: auto;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 1100px) {
+  .gs-stories__slide {
+    flex: 0 0 calc(50% - 12px); /* 2 items on tablets */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-stories-wrapper {
+    padding: 48px 0;
+  }
+  
+  .gs-stories__title {
+    font-size: 1.5rem;
+  }
+
+  .gs-stories__slide {
+    flex: 0 0 calc(85% - 12px); /* Peek next card on mobile */
+  }
+
+  .gs-stories__card {
+    padding: 32px 36px 24px 36px; /* Slightly reduce inner padding */
+  }
+
+  .gs-stories__quote {
+    width: 24px;
+    height: 24px;
+  }
+
+  .gs-stories__quote--left {
+    left: 12px;
+  }
+
+  .gs-stories__quote--right {
+    right: 12px;
+    bottom: 16px;
+  }
+}

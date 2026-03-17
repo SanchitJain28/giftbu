@@ -1,0 +1,128 @@
+
+.gs-build-box {
+  width: 100% !important;
+  padding: 0 !important; /* STRICTLY 0 top/bottom padding */
+  margin: 0 !important;
+  overflow: hidden !important;
+  /* Background image/color is handled via Liquid inline style */
+}
+
+.gs-build-box__container {
+  width: 100% !important;
+  max-width: 100% !important; /* Edge to edge */
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important; /* Removes gap between image and text */
+  align-items: stretch !important; /* Forces the image column to match the text column height */
+}
+
+@media screen and (min-width: 990px) {
+  .gs-build-box__container {
+    grid-template-columns: 1fr 1fr !important; /* 50/50 Split */
+  }
+}
+
+/* --- Left Image Column --- */
+.gs-build-box__image-col {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: flex-start !important; /* Flushes image to the left */
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.gs-build-box__img {
+  width: 100% !important;
+  height: 100% !important; 
+  max-height: 500px !important; /* Keeps it compact on large screens */
+  object-fit: cover !important; /* Stretches the image nicely to fill the left corner */
+  object-position: center !important;
+  display: block !important;
+}
+
+/* --- Right Text Column --- */
+.gs-build-box__text-col {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding: 40px 20px !important; /* Internal padding so text doesn't touch edges */
+  z-index: 2 !important;
+}
+
+@media screen and (min-width: 990px) {
+  .gs-build-box__text-col {
+    padding: 60px 8% !important; /* Adds nice breathing room next to the image */
+  }
+}
+
+.gs-build-box__content {
+  max-width: 500px !important;
+}
+
+.gs-build-box__subheading {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
+  margin: 0 0 8px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.gs-build-box__heading {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 42px !important;
+  font-weight: 700 !important;
+  margin: 0 0 16px 0 !important;
+  line-height: 1.1 !important;
+}
+
+.gs-build-box__text {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #000000 !important;
+  margin: 0 0 24px 0 !important;
+  line-height: 1.5 !important;
+}
+
+.gs-build-box__text p {
+  margin: 0 !important;
+}
+
+.gs-build-box__btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #FFC700 !important; 
+  color: #000000 !important;
+  font-family: 'Jost', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  padding: 14px 32px !important;
+  border-radius: 999px !important; 
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  transition: transform 0.3s ease, filter 0.3s ease !important;
+}
+
+.gs-build-box__btn:hover {
+  transform: translateY(-3px) !important;
+  filter: brightness(0.95) !important;
+}
+
+/* --- Responsive Downsizing --- */
+@media screen and (max-width: 1024px) {
+  .gs-build-box__subheading { font-size: 22px !important; }
+  .gs-build-box__heading { font-size: 34px !important; }
+  .gs-build-box__text { font-size: 15px !important; }
+}
+
+@media screen and (max-width: 767px) {
+  .gs-build-box__subheading { font-size: 20px !important; }
+  .gs-build-box__heading { font-size: 30px !important; margin-bottom: 12px !important; }
+  .gs-build-box__text { font-size: 14px !important; margin-bottom: 20px !important; }
+  .gs-build-box__img { max-height: 350px !important; }
+}

@@ -1,0 +1,47 @@
+.gs-sticky-button {
+  /* Positioning */
+  position: fixed !important;
+  top: 50% !important;
+  right: 0 !important;
+  transform: translateY(-50%) !important;
+  z-index: 9999 !important; /* Forces it above all other content */
+  
+  /* Text Orientation */
+  writing-mode: vertical-rl !important;
+  text-orientation: mixed !important;
+  text-align: center !important;
+  
+  /* Typography */
+  font-family: 'Jost', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  color: var(--text-color, #000000) !important;
+  
+  /* Styling */
+  background-color: var(--bg-color, #FFC700) !important;
+  padding: 24px 10px !important; /* Top/Bottom padding becomes Left/Right visually due to writing-mode */
+  border-radius: 8px 0 0 8px !important; /* Rounds the top-left and bottom-left corners */
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15) !important;
+  
+  /* Interaction */
+  transition: padding-right 0.3s ease, background-color 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+/* Hover Effect: makes the button pop out slightly */
+.gs-sticky-button:hover {
+  padding-right: 16px !important; /* Pushes the button out from the wall slightly */
+  filter: brightness(0.95) !important; /* Slightly darkens the yellow */
+}
+
+/* Mobile Adjustments */
+@media screen and (max-width: 767px) {
+  .gs-sticky-button {
+    font-size: 14px !important;
+    padding: 18px 8px !important;
+    border-radius: 6px 0 0 6px !important;
+  }
+}

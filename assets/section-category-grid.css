@@ -1,0 +1,140 @@
+.gs-category-grid {
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gs-category-grid__wrapper {
+  width: 100% !important;
+  max-width: 100% !important; /* Allows it to stretch to the screen edges */
+  padding: 0 16px !important; /* Small padding for mobile */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 990px) {
+  .gs-category-grid__wrapper {
+    padding: 0 40px !important; /* Gives a nice 40px breathing room on the left/right of large PC monitors */
+  }
+}
+
+/* --- Mobile / Tablet: Horizontal Scroll --- */
+.gs-category-grid__list {
+  display: flex !important;
+  gap: 16px !important;
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory !important;
+  padding-bottom: 20px !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border, #D9CABB) transparent;
+}
+
+.gs-category-grid__list::-webkit-scrollbar {
+  height: 6px;
+}
+.gs-category-grid__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.gs-category-grid__list::-webkit-scrollbar-thumb {
+  background-color: var(--color-border, #D9CABB);
+  border-radius: 10px;
+}
+
+.gs-category-grid__item {
+  flex: 0 0 80% !important; 
+  scroll-snap-align: center !important;
+}
+
+/* --- Desktop: Exact 5-Column Stretch Grid --- */
+@media screen and (min-width: 990px) {
+  .gs-category-grid__list {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 24px !important; /* Slightly larger gap since images are bigger */
+    overflow-x: visible !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .gs-category-grid__item {
+    flex: none !important;
+  }
+}
+
+/* --- Image Styling --- */
+.gs-category-grid__link {
+  display: block !important;
+  width: 100% !important;
+  border-radius: 20px !important; /* Slightly rounder for larger PC images */
+  overflow: hidden !important;
+  position: relative !important;
+  aspect-ratio: 4 / 3 !important;
+  background-color: #F8F8F8 !important; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.gs-category-grid__link:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0px 14px 28px rgba(0,0,0,0.1) !important;
+}
+
+.gs-category-grid__image,
+.gs-category-grid__placeholder {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; 
+  object-position: center !important;
+  display: block !important;
+  transition: transform 0.5s ease !important;
+}
+
+.gs-category-grid__link:hover .gs-category-grid__image {
+  transform: scale(1.05) !important; 
+}
+
+/* --- Heading with Divider Lines --- */
+.gs-category-grid__heading-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 50px !important; /* Pushed down slightly more to balance bigger images */
+  width: 100% !important;
+}
+
+.gs-category-grid__heading-wrapper::before,
+.gs-category-grid__heading-wrapper::after {
+  content: "" !important;
+  flex: 1 !important;
+  height: 1px !important;
+  background-color: #1A1209 !important; 
+}
+
+.gs-category-grid__heading-wrapper::before {
+  margin-right: 30px !important;
+}
+
+.gs-category-grid__heading-wrapper::after {
+  margin-left: 30px !important;
+}
+
+.gs-category-grid__heading {
+  font-family: 'Jost', sans-serif !important;
+  font-size: 26px !important; /* Made the heading slightly larger for PC */
+  font-weight: 700 !important;
+  color: #1A1209 !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  white-space: nowrap !important;
+}
+
+/* Scale down text for mobile */
+@media screen and (max-width: 767px) {
+  .gs-category-grid__heading {
+    font-size: 16px !important;
+    letter-spacing: 1px !important;
+  }
+  .gs-category-grid__heading-wrapper::before { margin-right: 16px !important; }
+  .gs-category-grid__heading-wrapper::after { margin-left: 16px !important; }
+}

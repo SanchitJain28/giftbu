@@ -1,0 +1,78 @@
+.gs-wishlist-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.gs-wishlist-page__title {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--color-text-primary);
+  margin-bottom: 32px;
+}
+
+.gs-wishlist-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.gs-wishlist-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gs-wishlist-card__img-link img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  display: block;
+}
+
+.gs-wishlist-card__info {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gs-wishlist-card__title {
+  font-family: "Jost", sans-serif;
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gs-wishlist-card__price {
+  font-family: "Jost", sans-serif;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+}
+
+.gs-wishlist-card__remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+
+.gs-wishlist-card__remove:hover {
+  color: #FF4466;
+}

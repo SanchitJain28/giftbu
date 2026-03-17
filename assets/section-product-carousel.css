@@ -1,0 +1,131 @@
+.gs-product-carousel-wrapper {
+  width: 100%;
+  background-color: transparent;
+  padding: 48px 0; /* Hardcoded robust padding */
+}
+
+.gs-product-carousel {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+}
+
+/* Header Alignment */
+.gs-product-carousel__header {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.gs-product-carousel__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.875rem; /* Strict hardcoded REM (~30px) */
+  font-weight: 700;
+  color: #262130; 
+  margin: 0;
+  line-height: 1.2;
+}
+
+.gs-product-carousel__subtitle {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem; /* Strict hardcoded REM (~16px) */
+  font-weight: 400;
+  color: #8C8A8C; 
+  margin: 0;
+}
+
+/* Slider Container */
+.gs-product-carousel__slider-container {
+  position: relative;
+  width: 100%;
+}
+
+/* The Native Scroll Track */
+.gs-product-carousel__track {
+  display: flex;
+  gap: 20px; 
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  padding: 10px 0; /* Prevents box-shadows on cards from clipping */
+}
+
+.gs-product-carousel__track::-webkit-scrollbar {
+  display: none; 
+}
+
+/* Individual Slide Items */
+.gs-product-carousel__item {
+  flex: 0 0 calc(25% - 15px); /* Exactly 4 items visible on desktop */
+  scroll-snap-align: start;
+  min-width: 0; 
+}
+
+/* Navigation Arrows perfectly styled to match the image */
+.gs-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  color: #8B9EB2; 
+  transition: all 0.3s ease;
+}
+
+.gs-carousel-nav:hover {
+  background-color: #F8F9FA;
+  color: #1A1209;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.gs-carousel-nav.is-disabled {
+  opacity: 0;
+  pointer-events: none; 
+}
+
+.gs-carousel-prev { left: -24px; }
+.gs-carousel-next { right: -24px; }
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 1200px) {
+  .gs-product-carousel__item {
+    flex: 0 0 calc(33.333% - 14px); /* 3 items */
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .gs-product-carousel__item {
+    flex: 0 0 calc(50% - 10px); /* 2 items */
+  }
+  .gs-carousel-prev { left: -12px; }
+  .gs-carousel-next { right: -12px; }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-product-carousel-wrapper {
+    padding: 32px 0;
+  }
+  .gs-product-carousel__title {
+    font-size: 1.5rem;
+  }
+  .gs-product-carousel__item {
+    flex: 0 0 calc(85% - 10px); /* Show 1 full card, and peek the next one */
+  }
+  .gs-carousel-nav {
+    display: none; /* Native swipe preferred on mobile */
+  }
+}

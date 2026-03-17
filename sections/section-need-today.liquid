@@ -1,0 +1,138 @@
+{{ 'section-need-today.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-need-today.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-need-today-{{ section.id }}" class="gs-need-today-wrapper">
+  <div class="gs-need-today page-width">
+
+    <div class="gs-need-today__header reveal-up">
+      {%- if section.settings.title != blank -%}
+        <h2 class="gs-need-today__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="gs-need-today__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="gs-need-today__grid">
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.link | default: '#' }}"
+          class="gs-need-today__item gs-need-today-item-reveal"
+          aria-label="{{ block.settings.title }}"
+          {{ block.shopify_attributes }}>
+          <div class="gs-need-today__img-wrap">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.title, class: 'gs-need-today__img' }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'gs-need-today__img placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <span class="gs-need-today__label">{{ block.settings.title }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Need It Today Grid",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Need It Today?"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "Same day delivery gifts to save every celebration"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "category",
+        "name": "Category Item",
+        "limit": 8,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Item Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Label",
+            "default": "CATEGORY NAME"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Need It Today Grid",
+        "blocks": [
+          {
+            "type": "category",
+            "settings": {
+              "title": "BIRTHDAY GIFTS"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "ANNIVERSARY GIFTS"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "PERSONALIZED GIFTS"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "PREMIUM GIFTS"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "CAKES"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "FLOWERS"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "PLANTS"
+            }
+          },
+          {
+            "type": "category",
+            "settings": {
+              "title": "HAMPERS"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

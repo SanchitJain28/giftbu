@@ -1,0 +1,22 @@
+.gs-pers-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  background: transparent;
+  border: 1.5px solid var(--color-accent-gold);
+  color: var(--color-accent-gold);
+  font-family: "Cormorant Garamond", serif;
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.gs-pers-trigger:hover {
+  background: var(--color-accent-gold);
+  color: var(--color-surface);
+}

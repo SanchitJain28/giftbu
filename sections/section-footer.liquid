@@ -1,0 +1,290 @@
+{% schema %}
+{
+  "name": "Global Footer",
+  "class": "section-footer-wrapper",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter Form",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Subscribe to our Newsletter"
+    },
+    {
+      "type": "header",
+      "content": "Stats Section"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_num",
+      "label": "Stat 1 Number",
+      "default": "400+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_text",
+      "label": "Stat 1 Text",
+      "default": "Cities having same day delivery"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_num",
+      "label": "Stat 2 Number",
+      "default": "100+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_text",
+      "label": "Stat 2 Text",
+      "default": "Countries being served with happiness"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_num",
+      "label": "Stat 3 Number",
+      "default": "5 Million+"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_text",
+      "label": "Stat 3 Text",
+      "default": "Gift boxes delivered across the globe"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Center Logo"
+    },
+    {
+      "type": "url",
+      "id": "play_store_link",
+      "label": "Google Play Link"
+    },
+    {
+      "type": "url",
+      "id": "app_store_link",
+      "label": "App Store Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show Social Icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "Show Payment Icons",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_group",
+      "name": "Link Group",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Group Title",
+          "default": "Know About Us:"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Global Footer",
+      "blocks": [{ "type": "link_group" }, { "type": "link_group" }]
+    }
+  ]
+}
+{% endschema %}
+
+{{ 'section-new-footer.css' | asset_url | stylesheet_tag }}
+
+<footer class="gs-footer">
+  <!-- 1. SEO & Navigation Link Groups -->
+  <div class="gs-footer__top">
+    <div class="gs-container">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_group' and block.settings.menu != blank -%}
+          <div class="gs-footer-links" {{ block.shopify_attributes }}>
+            <h4 class="gs-footer-links__title">{{ block.settings.title }}</h4>
+            <ul class="gs-footer-links__list">
+              {%- for link in block.settings.menu.links -%}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- 2. Stats Section -->
+  <div class="gs-footer__stats-wrapper">
+    <div class="gs-container">
+      <div class="gs-footer-stats">
+        <div class="gs-footer-stats__heading">
+          <span class="gs-footer-stats__title">Stats</span>
+          <div class="gs-footer-stats__line"></div>
+        </div>
+
+        <div class="gs-footer-stats__grid">
+          <div class="gs-stat-item">
+            <h3 class="gs-stat-item__num">{{ section.settings.stat_1_num }}</h3>
+            <p class="gs-stat-item__text">{{ section.settings.stat_1_text }}</p>
+          </div>
+          <div class="gs-stat-item">
+            <h3 class="gs-stat-item__num">{{ section.settings.stat_2_num }}</h3>
+            <p class="gs-stat-item__text">{{ section.settings.stat_2_text }}</p>
+          </div>
+          <div class="gs-stat-item">
+            <h3 class="gs-stat-item__num">
+              {{ section.settings.stat_3_num | replace: 'Million+', '<span>Million</span>+' }}
+            </h3>
+            <p class="gs-stat-item__text">{{ section.settings.stat_3_text }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Bottom Area (Newsletter, Apps, Logo, Socials) -->
+  <div class="gs-footer__bottom">
+    <div class="gs-container">
+      {%- if section.settings.show_newsletter -%}
+        <div class="gs-footer-newsletter">
+          <p class="gs-footer-newsletter__title">{{ section.settings.newsletter_heading }}</p>
+          {% form 'customer', class: 'gs-newsletter-form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <input
+              type="email"
+              name="contact[email]"
+              class="gs-newsletter__input"
+              placeholder="Enter your email address"
+              required
+            >
+            <button type="submit" class="gs-newsletter__btn">Subscribe</button>
+          {% endform %}
+        </div>
+      {%- endif -%}
+
+      <div class="gs-footer-main-row">
+        <!-- Apps -->
+        <div class="gs-footer-apps">
+          <p class="gs-footer-apps__title">Download our app for a better experience !!</p>
+          <div class="gs-footer-apps__buttons">
+            {%- if section.settings.play_store_link != blank -%}
+              <a href="{{ section.settings.play_store_link }}" target="_blank" aria-label="Google Play">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0550/5024/0056/files/google-play-badge.png"
+                  alt="Get it on Google Play"
+                  loading="lazy"
+                  width="135"
+                  height="40"
+                >
+              </a>
+            {%- endif -%}
+            {%- if section.settings.app_store_link != blank -%}
+              <a href="{{ section.settings.app_store_link }}" target="_blank" aria-label="App Store">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0550/5024/0056/files/app-store-badge.png"
+                  alt="Download on the App Store"
+                  loading="lazy"
+                  width="135"
+                  height="40"
+                >
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!-- Central Logo -->
+        <div class="gs-footer-logo">
+          <a href="{{ routes.root_url }}">
+            {%- if section.settings.footer_logo != blank -%}
+              {{ section.settings.footer_logo | image_url: width: 200 | image_tag: alt: shop.name, loading: 'lazy' }}
+            {%- else -%}
+              <h2 class="gs-footer-logo__text">{{ shop.name }}</h2>
+            {%- endif -%}
+          </a>
+        </div>
+
+        <!-- Socials -->
+        <div class="gs-footer-social">
+          {%- if section.settings.show_social -%}
+            <p class="gs-footer-social__title">Follow us on:</p>
+            <div class="gs-footer-social__icons">
+              {%- if settings.social_facebook_link != blank -%}
+                <a href="{{ settings.social_facebook_link }}" class="gs-social-icon gs-social--fb" target="_blank"
+                  ><i class="fa-brands fa-facebook-f"></i
+                ></a>
+              {%- endif -%}
+              {%- if settings.social_twitter_link != blank -%}
+                <a href="{{ settings.social_twitter_link }}" class="gs-social-icon gs-social--tw" target="_blank"
+                  ><i class="fa-brands fa-twitter"></i
+                ></a>
+              {%- endif -%}
+              {%- if settings.social_instagram_link != blank -%}
+                <a href="{{ settings.social_instagram_link }}" class="gs-social-icon gs-social--ig" target="_blank"
+                  ><i class="fa-brands fa-instagram"></i
+                ></a>
+              {%- endif -%}
+              {%- if settings.social_linkedin_link != blank -%}
+                <a href="{{ settings.social_linkedin_link }}" class="gs-social-icon gs-social--li" target="_blank"
+                  ><i class="fa-brands fa-linkedin-in"></i
+                ></a>
+              {%- endif -%}
+              {%- if settings.social_youtube_link != blank -%}
+                <a href="{{ settings.social_youtube_link }}" class="gs-social-icon gs-social--yt" target="_blank"
+                  ><i class="fa-brands fa-youtube"></i
+                ></a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Copyright & Payment -->
+      <div class="gs-footer-copyright-row">
+        <p class="gs-copyright-text">Copyright © {{ 'now' | date: '%Y' }}. {{ shop.name }}. All rights reserved.</p>
+
+        {%- if section.settings.show_payment -%}
+          <div class="gs-payment-icons">
+            <span class="gs-payment-title">Payment Methods:</span>
+            <ul class="list list-payment" role="list">
+              {%- for type in shop.enabled_payment_types -%}
+                <li class="list-payment__item">
+                  {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>

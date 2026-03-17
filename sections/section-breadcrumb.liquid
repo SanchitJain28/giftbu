@@ -1,0 +1,83 @@
+{%- comment -%}
+  Giftbu Custom Breadcrumb Section
+  Displays dynamic breadcrumbs based on the current template.
+{%- endcomment -%}
+
+{{ 'section-breadcrumb.css' | asset_url | stylesheet_tag }}
+
+{%- unless template == 'index' or template == 'cart' -%}
+  <div class="gs-breadcrumb-wrapper">
+    <nav class="gs-breadcrumb" aria-label="breadcrumbs">
+      <ol class="gs-breadcrumb__list">
+        
+        <!-- Home Link -->
+        <li class="gs-breadcrumb__item">
+          <a href="{{ routes.root_url }}" class="gs-breadcrumb__link">Home</a>
+        </li>
+        
+        <!-- Product Page Logic -->
+        {%- if template contains 'product' -%}
+          {%- if collection.url -%}
+            <li class="gs-breadcrumb__separator" aria-hidden="true">
+              <svg viewBox="0 0 14 10" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path></svg>
+            </li>
+            <li class="gs-breadcrumb__item">
+              <a href="{{ collection.url }}" class="gs-breadcrumb__link">{{ collection.title }}</a>
+            </li>
+          {%- elsif product.collections.size > 0 -%}
+            <li class="gs-breadcrumb__separator" aria-hidden="true">
+              <svg viewBox="0 0 14 10" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path></svg>
+            </li>
+            <li class="gs-breadcrumb__item">
+              <a href="{{ product.collections.first.url }}" class="gs-breadcrumb__link">{{ product.collections.first.title }}</a>
+            </li>
+          {%- endif -%}
+          <li class="gs-breadcrumb__separator" aria-hidden="true">
+            <svg viewBox="0 0 14 10" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path></svg>
+          </li>
+          <li class="gs-breadcrumb__item gs-breadcrumb__current" aria-current="page">
+            {{ product.title }}
+          </li>
+
+        <!-- Collection Page Logic -->
+        {%- elsif template contains 'collection' and collection.handle -%}
+          <li class="gs-breadcrumb__separator" aria-hidden="true">
+            <svg viewBox="0 0 14 10" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path></svg>
+          </li>
+          <li class="gs-breadcrumb__item gs-breadcrumb__current" aria-current="page">
+            {{ collection.title }}
+          </li>
+
+        <!-- Standard Page Logic -->
+        {%- elsif template contains 'page' -%}
+          <li class="gs-breadcrumb__separator" aria-hidden="true">
+            <svg viewBox="0 0 14 10" fill="none" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path></svg>
+          </li>
+          <li class="gs-breadcrumb__item gs-breadcrumb__current" aria-current="page">
+            {{ page.title }}
+          </li>
+        {%- endif -%}
+
+      </ol>
+    </nav>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "tag": "section",
+  "class": "section",
+  "settings":[
+    {
+      "type": "paragraph",
+      "content": "Breadcrumbs automatically generate links based on the current page (Product, Collection, or Page). Colors and sizing are controlled globally by the Giftbu design system."
+    }
+  ],
+  "presets":[
+    {
+      "name": "Breadcrumb"
+    }
+  ]
+}
+{% endschema %}

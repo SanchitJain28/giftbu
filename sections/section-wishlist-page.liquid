@@ -1,0 +1,17 @@
+{{ 'section-wishlist-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-wishlist.js' | asset_url }}" defer></script>
+<script src="{{ 'section-wishlist-page.js' | asset_url }}" defer></script>
+
+<div class="gs-wishlist-page">
+  <h1 class="gs-wishlist-page__title">My Wishlist</h1>
+  <div class="gs-wishlist-page__grid" id="gs-wishlist-grid">
+    <p class="gs-wishlist-page__empty hidden">Your wishlist is empty.</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Wishlist Page",
+  "presets": [{ "name": "Wishlist Page" }]
+}
+{% endschema %}

@@ -1,0 +1,160 @@
+{{ 'section-budget-gifts.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-budget-gifts.js' | asset_url }}" defer="defer"></script>
+
+<div id="gs-budget-{{ section.id }}" class="gs-budget-wrapper">
+  <div class="gs-budget page-width">
+
+    <div class="gs-budget__header reveal-up">
+      {%- if section.settings.title != blank -%}
+        <h2 class="gs-budget__title">{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="gs-budget__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- 0-Gap Grid Container -->
+    <div class="gs-budget__grid">
+      {%- for block in section.blocks -%}
+        {%- assign theme_class = 'gs-budget__item--' | append: block.settings.color_theme -%}
+
+          <a
+          href="{{ block.settings.link | default: '#' }}"
+          class="gs-budget__item {{ theme_class }} gs-budget-item-reveal"
+          aria-label="{{ block.settings.top_text }} {{ block.settings.main_text }}"
+          {{ block.shopify_attributes }}>
+          <!-- Faint Repeating Background Text -->
+          <div class="gs-budget__bg-text" aria-hidden="true">
+            {%- for i in (1..25) -%}
+              {{ block.settings.bg_text }}&nbsp;
+            {%- endfor -%}
+          </div>
+
+          <!-- Foreground Content -->
+          <div class="gs-budget__content">
+            <span class="gs-budget__top-text">{{ block.settings.top_text }}</span>
+            <span class="gs-budget__main-text">
+              {%- comment -%} Automatically wraps the Rupee symbol to make it superscript {%- endcomment -%}
+              {{ block.settings.main_text | replace: '₹', '<span class="gs-budget__currency">₹</span>' }}
+            </span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Budget Gifts Grid",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Budget-Friendly Gifts"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "Thoughtful picks that fit every budget without compromising on joy"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "budget_block",
+        "name": "Budget Block",
+        "limit": 4,
+        "settings": [
+          {
+            "type": "select",
+            "id": "color_theme",
+            "label": "Color Theme",
+            "options": [
+              {
+                "value": "red",
+                "label": "Red Background (White Text)"
+              },
+              {
+                "value": "cream",
+                "label": "Cream Background (Red Text)"
+              }
+            ],
+            "default": "red"
+          },
+          {
+            "type": "text",
+            "id": "top_text",
+            "label": "Top Line",
+            "default": "UNDER"
+          },
+          {
+            "type": "text",
+            "id": "main_text",
+            "label": "Main Line (Price)",
+            "default": "₹999",
+            "info": "Use ₹ to automatically style the currency symbol."
+          },
+          {
+            "type": "text",
+            "id": "bg_text",
+            "label": "Background Repeating Text",
+            "default": "999"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Budget Gifts Grid",
+        "blocks": [
+          {
+            "type": "budget_block",
+            "settings": {
+              "color_theme": "red",
+              "top_text": "UNDER",
+              "main_text": "₹999",
+              "bg_text": "999"
+            }
+          },
+          {
+            "type": "budget_block",
+            "settings": {
+              "color_theme": "cream",
+              "top_text": "UNDER",
+              "main_text": "₹1499",
+              "bg_text": "1499"
+            }
+          },
+          {
+            "type": "budget_block",
+            "settings": {
+              "color_theme": "red",
+              "top_text": "UNDER",
+              "main_text": "₹2499",
+              "bg_text": "2499"
+            }
+          },
+          {
+            "type": "budget_block",
+            "settings": {
+              "color_theme": "cream",
+              "top_text": "PREMIUM",
+              "main_text": "GIFTS",
+              "bg_text": "GIFTS"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
