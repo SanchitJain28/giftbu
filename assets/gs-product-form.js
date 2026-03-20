@@ -1,7 +1,6 @@
 class GsProductForm extends HTMLElement {
   constructor() {
     super();
-    //? get the form element
     this.form = this.querySelector("form");
     this.form.querySelector("[name=id]").disabled = false;
     this.form.addEventListener("submit", this.onSubmitHandler.bind(this));
@@ -17,19 +16,9 @@ class GsProductForm extends HTMLElement {
     if (spinner) spinner.classList.remove("hidden");
 
     const formData = new FormData(this.form);
-    formData.append("sections", "cart-notification-product");
+    // [MODIFIED] Ask for the header section at the same time
+    formData.append("sections", "cart-notification-product,section-header");
     formData.append("sections_url", window.location.pathname);
-
-    // Helper to safely parse Shopify responses
-    const safeParseResponse = async (res) => {
-      const contentType = res.headers.get("content-type") || "";
-      if (contentType.includes("application/json")) {
-        return res.json();
-      } else {
-        const text = await res.text();
-        throw new Error(text || res.statusText);
-      }
-    };
 
     // Helper to run the success UI logic
     const handleSuccessUI = (parsedState) => {
@@ -38,28 +27,22 @@ class GsProductForm extends HTMLElement {
         return;
       }
 
-      // Update Cart Bubble
-      fetch(window.Shopify.routes.root + "cart.js")
-        .then(safeParseResponse)
-        .then((cartData) => {
-          const cartIconLink = document.querySelector(".gs-icon-cart");
-          if (cartIconLink) {
-            let countSpan = cartIconLink.querySelector(".gs-cart-count");
-            if (cartData.item_count > 0) {
-              if (!countSpan) {
-                countSpan = document.createElement("span");
-                countSpan.className = "gs-cart-count";
-                cartIconLink.appendChild(countSpan);
-              }
-              countSpan.textContent = cartData.item_count;
-            } else {
-              if (countSpan) countSpan.remove();
-            }
-          }
-        })
-        .catch((err) => console.error("Error fetching cart data:", err));
+      // [REMOVED] Old manual cart bubble update logic
+      // The entire fetch('/cart.js') block has been removed.
 
-      // Update and Show Notification Popup
+      // [ADDED] New, reliable bubble update using Section Rendering API
+      const htmlHeader = parsedState.sections["section-header"];
+      if (htmlHeader) {
+        const parser = new DOMParser();
+        const headerDOM = parser.parseFromString(htmlHeader, "text/html");
+        const newBubble = headerDOM.getElementById("cart-icon-bubble");
+        const currentBubble = document.getElementById("cart-icon-bubble");
+        if (newBubble && currentBubble) {
+          currentBubble.innerHTML = newBubble.innerHTML;
+        }
+      }
+
+      // Update and Show Notification Popup (This part remains the same)
       let notificationWrapper = document.getElementById(
         "gs-cart-notification-wrapper",
       );
@@ -74,24 +57,23 @@ class GsProductForm extends HTMLElement {
       const popup = document.getElementById("gs-cart-notification");
 
       if (popup) {
-        void popup.offsetWidth;
-        popup.classList.add("gs-active");
+        // Use requestAnimationFrame to ensure the transition happens
+        requestAnimationFrame(() => {
+          popup.classList.add("gs-active");
+        });
+
         const closeBtn = popup.querySelector(".gs-cart-notification__close");
         if (closeBtn) {
-          closeBtn.addEventListener("click", () =>
-            popup.classList.remove("gs-active"),
+          closeBtn.addEventListener(
+            "click",
+            () => popup.classList.remove("gs-active"),
+            { once: true },
           );
         }
         setTimeout(() => {
           if (popup.classList.contains("gs-active"))
             popup.classList.remove("gs-active");
         }, 5000);
-      }
-
-      if (window.publish && window.PUB_SUB_EVENTS) {
-        window.publish(window.PUB_SUB_EVENTS.cartUpdate, {
-          source: "product-form",
-        });
       }
     };
 
@@ -101,11 +83,11 @@ class GsProductForm extends HTMLElement {
       body: formData,
       headers: { "X-Requested-With": "XMLHttpRequest" },
     })
-      .then(async (response) => {
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text);
-        }
+      .then((response) => {
+        if (!response.ok)
+          return response.text().then((text) => {
+            throw new Error(text);
+          });
         return response.json();
       })
       .then((parsedState) => {
@@ -113,18 +95,22 @@ class GsProductForm extends HTMLElement {
       })
       .catch((e) => {
         console.warn(
-          "[TGS] ATC with properties failed. Retrying without personalization properties...",
+          "[GS] ATC failed. Retrying without personalization properties...",
           e.message,
         );
 
-        // FALLBACK: Strip out the personalization properties and try adding the normal item
+        // FALLBACK LOGIC
         const cleanFormData = new FormData(this.form);
         for (let key of Array.from(cleanFormData.keys())) {
           if (key.startsWith("properties[")) {
             cleanFormData.delete(key);
           }
         }
-        cleanFormData.append("sections", "cart-notification-product");
+        // [MODIFIED] Also ask for the header in the fallback request
+        cleanFormData.append(
+          "sections",
+          "cart-notification-product,section-header",
+        );
         cleanFormData.append("sections_url", window.location.pathname);
 
         return fetch(window.Shopify.routes.root + "cart/add.js", {
@@ -132,8 +118,11 @@ class GsProductForm extends HTMLElement {
           body: cleanFormData,
           headers: { "X-Requested-With": "XMLHttpRequest" },
         })
-          .then(async (res) => {
-            if (!res.ok) throw new Error(await res.text());
+          .then((res) => {
+            if (!res.ok)
+              return res.text().then((text) => {
+                throw new Error(text);
+              });
             return res.json();
           })
           .then((parsedState) => handleSuccessUI(parsedState))
