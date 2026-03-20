@@ -19,11 +19,21 @@
       "default": 120
     },
     {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_menu",
+      "label": "Auto-build menu",
+      "default": true,
+      "info": "Automatically shows all collections with products, plus essential pages. When disabled, uses the custom menu below."
+    },
+    {
       "type": "link_list",
       "id": "drawer_menu",
-      "label": "Mobile Drawer Menu",
-      "default": "main-menu",
-      "info": "Select the menu to display in the sidebar."
+      "label": "Custom Menu (used when Auto-build is OFF)",
+      "default": "main-menu"
     }
   ],
   "presets": [
@@ -43,10 +53,7 @@
     <!-- Left: Hamburger & Logo -->
     <div class="gs-header__left">
       <button class="gs-header__menu-btn js-drawer-open" aria-label="Open Menu">
-        <i
-          class="fa-solid fa-bars"
-          style="font-size: 24px;"
-        ></i>
+        <i class="fa-solid fa-bars" style="font-size: 24px;"></i>
       </button>
 
       <a href="{{ routes.root_url }}" class="gs-header__logo">
@@ -70,7 +77,6 @@
         </span>
       </button>
 
-      <!-- Desktop nav sits here, hidden on mobile via CSS -->
       <nav class="gs-header__desktop-nav" aria-label="Main navigation">
         {%- for link in linklists[section.settings.drawer_menu].links -%}
           <div class="gs-desktop-nav__item{% if link.links != blank %} has-dropdown{% endif %}">
@@ -86,14 +92,11 @@
         {%- endfor -%}
       </nav>
     </div>
-    <!-- Desktop Nav (hidden on mobile) -->
 
-    <!-- Center: Custom Search Snippet -->
     <div class="gs-header__center">
       {% render 'gs-header-search' %}
     </div>
 
-    <!-- Right: Icons -->
     <div class="gs-header__right">
       <a href="/pages/wishlist" class="gs-icon-link gs-icon-wishlist" aria-label="Wishlist">
         <i class="fa-regular fa-heart" style="font-size: 24px;"></i>
@@ -102,9 +105,9 @@
 
       <a href="{{ routes.cart_url }}" class="gs-icon-link gs-icon-cart" aria-label="Cart">
         <i class="fa-solid fa-cart-shopping" style="font-size: 24px;"></i>
-        {%- if cart.item_count > 0 -%}
-          <span class="gs-cart-count">{{ cart.item_count }}</span>
-        {%- endif -%}
+        <div id="cart-icon-bubble">
+          {% render 'cart-icon-bubble' %}
+        </div>
       </a>
 
       <a
@@ -118,9 +121,11 @@
   </div>
 </header>
 
-<!-- Sidebar Menu Drawer -->
+<!-- Overlay -->
 <div class="gs-menu-overlay js-drawer-overlay"></div>
-<nav class="gs-menu-drawer js-menu-drawer">
+
+<!-- Mega Drawer -->
+<div class="gs-menu-drawer js-menu-drawer" aria-hidden="true">
   <div class="gs-drawer__header">
     <span class="gs-drawer__title">Menu</span>
     <button class="gs-drawer__close js-drawer-close" aria-label="Close Menu">
@@ -128,121 +133,110 @@
     </button>
   </div>
 
-  <div class="gs-drawer__body">
-    {%- if section.settings.drawer_menu.links == blank -%}
-      <div class="gs-drawer__empty">Please select a menu in the header settings.</div>
-    {%- else -%}
-      <ul class="gs-drawer__nav-list">
-        {%- for link in section.settings.drawer_menu.links -%}
+  <div class="gs-drawer__layout">
+    <!-- Left panel: top collections + category list -->
+    <div class="gs-drawer__panel-left">
+      {%- if section.settings.auto_menu -%}
+        <p class="gs-drawer__shop-by-label">Shop By:</p>
+
+        <!-- Auto-built collection groups -->
+        <ul class="gs-drawer__nav-list">
+          {%- for collection in collections -%}
+            {%- if collection.products_count > 0 -%}
+              <li class="gs-drawer__nav-item js-mega-item" data-collection-handle="{{ collection.handle }}">
+                <div class="gs-drawer__link-row">
+                  <a href="{{ collection.url }}" class="gs-drawer__link">{{ collection.title }}</a>
+                  <button class="gs-drawer__toggle-btn js-mega-toggle" aria-label="Open {{ collection.title }}">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+
+          <!-- Essential pages -->
+          <li class="gs-drawer__nav-item gs-drawer__nav-divider">
+            <span class="gs-drawer__section-label">Pages</span>
+          </li>
           <li class="gs-drawer__nav-item">
             <div class="gs-drawer__link-row">
-              <a href="{{ link.url }}" class="gs-drawer__link">{{ link.title }}</a>
-              {%- if link.links != blank -%}
-                <button class="gs-drawer__toggle-btn js-toggle-submenu" aria-label="Toggle submenu">
-                  <i class="fa-solid fa-chevron-down" style="font-size: 24px;"></i>
-                </button>
-              {%- endif -%}
+              <a href="/pages/about-us" class="gs-drawer__link">About Us</a>
             </div>
-
-            {%- if link.links != blank -%}
-              <ul class="gs-drawer__sub-list">
-                {%- for childlink in link.links -%}
-                  <li class="gs-drawer__sub-item">
-                    <div class="gs-drawer__link-row">
-                      <a href="{{ childlink.url }}" class="gs-drawer__sub-link">{{ childlink.title }}</a>
-                      {%- if childlink.links != blank -%}
-                        <button class="gs-drawer__toggle-btn js-toggle-submenu" aria-label="Toggle sub-submenu">
-                          <i class="fa-solid fa-chevron-down" style="font-size: 24px;"></i>
-                        </button>
-                      {%- endif -%}
-                    </div>
-
-                    {%- if childlink.links != blank -%}
-                      <ul class="gs-drawer__sub-list">
-                        {%- for grandchildlink in childlink.links -%}
-                          <li class="gs-drawer__sub-item">
-                            <a href="{{ grandchildlink.url }}" class="gs-drawer__sub-link gs-drawer__sub-link--nested">
-                              {{- grandchildlink.title -}}
-                            </a>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
-                    {%- endif -%}
-                  </li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
           </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  </div>
-</nav>
+          <li class="gs-drawer__nav-item">
+            <div class="gs-drawer__link-row">
+              <a href="/pages/contact" class="gs-drawer__link">Contact</a>
+            </div>
+          </li>
+          <li class="gs-drawer__nav-item">
+            <div class="gs-drawer__link-row">
+              <a href="/pages/corporate-gifting" class="gs-drawer__link">Corporate Gifting</a>
+            </div>
+          </li>
+        </ul>
 
-<!-- Location Modal -->
-<div class="gs-location-overlay js-location-overlay" aria-hidden="true"></div>
-<div class="gs-location-modal js-location-modal" role="dialog" aria-modal="true" aria-label="Set delivery location">
-  <button class="gs-location-modal__close js-location-close" aria-label="Close">
-    <!-- Replaced FA with a clean SVG 'X' -->
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#000000"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-  </button>
-
-  <div class="gs-location-modal__icon">
-    <!-- Replace this src with the actual URL of your map illustration -->
-    <img
-      src="https://cdn1.igp.com/igp/assets/svg-icons/map_icon-5.svg"
-      alt="Location Map"
-      class="gs-location-modal__image"
-    >
-  </div>
-
-  <h2 class="gs-location-modal__title">Where to deliver?</h2>
-  <p class="gs-location-modal__subtitle">Enter location for personalized delivery choices</p>
-
-  <div class="gs-location-modal__input-row">
-    <div class="gs-location-modal__country">
-      <div class="gs-location-modal__country-info">
-        <span>🇮🇳</span>
-        <span>India</span>
-      </div>
-      <!-- Added Dropdown Arrow -->
-      <svg
-        width="12"
-        height="12"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#000000"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
+      {%- else -%}
+        <!-- Custom menu fallback -->
+        <ul class="gs-drawer__nav-list">
+          {%- if section.settings.drawer_menu.links == blank -%}
+            <li class="gs-drawer__empty">Select a menu in header settings.</li>
+          {%- else -%}
+            {%- for link in section.settings.drawer_menu.links -%}
+              <li class="gs-drawer__nav-item{% if link.links != blank %} js-mega-item{% endif %}">
+                <div class="gs-drawer__link-row">
+                  <a href="{{ link.url }}" class="gs-drawer__link">{{ link.title }}</a>
+                  {%- if link.links != blank -%}
+                    <button class="gs-drawer__toggle-btn js-mega-toggle" aria-label="Open {{ link.title }}">
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
     </div>
 
-    <div class="gs-location-modal__divider"></div>
-
-    <input
-      type="tel"
-      class="gs-location-modal__pincode js-location-pincode"
-      placeholder="122011"
-      maxlength="6"
-      aria-label="Pincode"
-    >
+    <!-- Right panel: sub-items rendered here -->
+    <div class="gs-drawer__panel-right js-drawer-panel-right" aria-live="polite">
+      <div class="gs-drawer__panel-right-inner">
+        {%- if section.settings.auto_menu -%}
+          <!-- Sub-panels for each collection, hidden by default -->
+          {%- for collection in collections -%}
+            {%- if collection.products_count > 0 -%}
+              <div class="gs-drawer__sub-panel" data-panel="{{ collection.handle }}">
+                <ul class="gs-drawer__sub-panel-list">
+                  {%- for product in collection.products limit: 20 -%}
+                    <li>
+                      <a href="{{ product.url }}" class="gs-drawer__sub-panel-link">
+                        {{ product.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                  <li class="gs-drawer__sub-panel-viewall">
+                    <a href="{{ collection.url }}">View all in {{ collection.title }} →</a>
+                  </li>
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for link in section.settings.drawer_menu.links -%}
+            {%- if link.links != blank -%}
+              <div class="gs-drawer__sub-panel" data-panel="{{ link.handle }}">
+                <ul class="gs-drawer__sub-panel-list">
+                  {%- for childlink in link.links -%}
+                    <li>
+                      <a href="{{ childlink.url }}" class="gs-drawer__sub-panel-link">{{ childlink.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
   </div>
-  <p class="gs-location-modal__error js-location-error" hidden>Please enter a valid 6-digit pincode.</p>
-
-  <button class="gs-location-modal__apply js-location-apply">APPLY</button>
 </div>

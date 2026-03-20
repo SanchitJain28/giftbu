@@ -1,23 +1,22 @@
 /* ============================================================================
-   HEADER BASE (Strict White Background, No Borders on Icons)
+   HEADER BASE
    ============================================================================ */
 .section-header-wrapper {
-   position: sticky;
-   top: 0;
-   z-index: 900;
-   background-color: #fff;
-   border-bottom: 1px solid #ececec;
-   /* box-shadow: 0 4px 12px var(--color-shadow); */
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background-color: #fff;
+  border-bottom: 1px solid #ececec;
 }
 
 .gs-header__container {
-      display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 18px;
-    max-width: 1600px;
-    margin: 0 auto;
-    gap: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 24px;
 }
 
 .gs-header__left {
@@ -26,7 +25,6 @@
   gap: 20px;
   flex-shrink: 0;
 }
-
 
 .gs-header__logo-text {
   font-family: "Cormorant Garamond", serif;
@@ -42,8 +40,22 @@
   max-width: 100%;
 }
 
+/* Hamburger — always visible */
+.gs-header__menu-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 8px 8px 0;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 /* ============================================================================
-   CENTER: CUSTOM SEARCH BAR
+   CENTER: SEARCH
    ============================================================================ */
 .gs-header__center {
   flex-grow: 1;
@@ -51,6 +63,7 @@
 }
 
 .gs-search-form {
+  position: relative;
   width: 100%;
 }
 
@@ -69,7 +82,6 @@
   border-color: var(--color-accent-gold);
 }
 
-/* STRICT RESET FOR BROWSERS TO FIX THE WEIRD DOUBLE INPUT BOX */
 .gs-search-input {
   flex-grow: 1;
   height: 100%;
@@ -77,7 +89,7 @@
   background: transparent !important;
   padding: 0 16px 0 24px !important;
   font-family: "Jost", sans-serif;
-font-size: 1.575rem;
+  font-size: 1.575rem;
   color: var(--color-text-primary);
   outline: none !important;
   box-shadow: none !important;
@@ -87,7 +99,6 @@ font-size: 1.575rem;
   margin: 0;
 }
 
-/* HIDE SAFARI/CHROME DEFAULT SEARCH CROSS 'X' */
 .gs-search-input::-webkit-search-decoration,
 .gs-search-input::-webkit-search-cancel-button,
 .gs-search-input::-webkit-search-results-button,
@@ -123,14 +134,6 @@ font-size: 1.575rem;
   flex-shrink: 0;
 }
 
-/* Hide hamburger on desktop */
-@media screen and (min-width: 990px) {
-  .gs-header__menu-btn {
-    display: none;
-  }
-}
-
-/* Larger icons */
 .gs-icon-link {
   position: relative;
   color: var(--color-text-primary);
@@ -144,17 +147,6 @@ font-size: 1.575rem;
   border: none;
 }
 
-.gs-header__menu-btn {
-  background: transparent;
-  border: none;
-  padding: 8px 8px 8px 0;
-  font-size: 1.5rem;
-  color: var(--color-text-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .gs-cart-count {
   position: absolute;
   top: -8px;
@@ -175,51 +167,136 @@ font-size: 1.575rem;
 }
 
 /* ============================================================================
-   SIDEBAR DRAWER MENU
+   DESKTOP NAV (hidden on mobile)
+   ============================================================================ */
+.gs-header__desktop-nav {
+  display: none;
+}
+
+@media screen and (min-width: 990px) {
+  .gs-header__desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .gs-header__center {
+    max-width: 480px;
+  }
+}
+
+.gs-desktop-nav__item {
+  position: relative;
+}
+
+.gs-desktop-nav__link {
+  display: block;
+  padding: 8px 14px;
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.gs-desktop-nav__link:hover {
+  color: var(--color-accent-gold);
+  background: var(--color-bg-secondary);
+}
+
+.gs-desktop-nav__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 200px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px var(--color-shadow);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 100;
+}
+
+.gs-desktop-nav__item.has-dropdown:hover .gs-desktop-nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.gs-desktop-nav__dropdown-link {
+  display: block;
+  padding: 10px 20px;
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.gs-desktop-nav__dropdown-link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+}
+
+/* ============================================================================
+   OVERLAY
    ============================================================================ */
 .gs-menu-overlay {
   position: fixed;
-  top: 0; 
-  left: 0; 
-  width: 100vw; 
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
   background: rgba(26, 18, 9, 0.6);
-  opacity: 0; 
+  opacity: 0;
   visibility: hidden;
   z-index: 9998;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .gs-menu-overlay.is-active {
-  opacity: 1; 
+  opacity: 1;
   visibility: visible;
 }
 
+/* ============================================================================
+   MEGA DRAWER — two-panel layout
+   ============================================================================ */
 .gs-menu-drawer {
   position: fixed;
-  top: 0; 
-  left: -100%;
-  width: 350px; 
-  max-width: 85vw;
+  top: 0;
+  left: 0;
+  width: 680px;       /* two panels side by side */
+  max-width: 95vw;
   height: 100vh;
   background-color: #ffffff;
   z-index: 9999;
-  display: flex; 
+  display: flex;
   flex-direction: column;
+  transform: translateX(-100%);
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 4px 0 16px rgba(0,0,0,0.1);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
 }
 
 .gs-menu-drawer.is-active {
-  transform: translateX(100%);
+  transform: translateX(0);
 }
 
 .gs-drawer__header {
-  padding: 24px;
+  padding: 20px 24px;
   border-bottom: 1px solid var(--color-border);
-  display: flex; 
-  justify-content: space-between; 
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .gs-drawer__title {
@@ -230,31 +307,127 @@ font-size: 1.575rem;
 }
 
 .gs-drawer__close {
-  background: none; 
-  border: none; 
+  background: none;
+  border: none;
   font-size: 1.5rem;
-  color: var(--color-text-primary); 
+  color: var(--color-text-primary);
   cursor: pointer;
   padding: 4px;
 }
 
-.gs-drawer__body {
-  flex-grow: 1;
+/* Two-panel layout */
+.gs-drawer__layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left panel: ~280px, scrollable */
+.gs-drawer__panel-left {
+  width: 280px;
+  min-width: 280px;
+  border-right: 1px solid var(--color-border);
   overflow-y: auto;
   padding: 0;
 }
 
-/* Nav Lists */
-.gs-drawer__nav-list,
-.gs-drawer__sub-list {
+/* Right panel: fills remaining space */
+.gs-drawer__panel-right {
+  flex: 1;
+  overflow-y: auto;
+  background: #fafafa;
+}
+
+.gs-drawer__panel-right-inner {
+  padding: 16px 0;
+}
+
+/* Top Collections box */
+.gs-drawer__top-collections {
+  margin: 16px 16px 0;
+  background: #f5f8ff;
+  border: 1px solid #e5eaf8;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.gs-drawer__top-collections-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.gs-drawer__top-collections-title {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.gs-drawer__top-collections-icon {
+  font-size: 1.25rem;
+}
+
+.gs-drawer__top-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gs-drawer__top-list a {
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.gs-drawer__top-list a:hover {
+  color: var(--color-accent-rose);
+}
+
+/* "Shop By:" label */
+.gs-drawer__shop-by-label {
+  font-family: "Jost", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 16px 24px 8px;
+  margin: 0;
+}
+
+/* Nav list */
+.gs-drawer__nav-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.gs-drawer__nav-item,
-.gs-drawer__sub-item {
+.gs-drawer__nav-item {
   border-bottom: 1px solid var(--color-bg-secondary);
+}
+
+.gs-drawer__nav-divider {
+  border-top: 2px solid var(--color-border);
+  border-bottom: none;
+  margin-top: 8px;
+}
+
+.gs-drawer__section-label {
+  display: block;
+  padding: 12px 24px 4px;
+  font-family: "Jost", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
 }
 
 .gs-drawer__link-row {
@@ -263,73 +436,150 @@ font-size: 1.575rem;
   align-items: center;
 }
 
-.gs-drawer__link,
-.gs-drawer__sub-link {
+.gs-drawer__link {
   flex-grow: 1;
-  padding: 16px 24px;
+  padding: 13px 24px;
   font-family: "Jost", sans-serif;
-  font-size: 1rem;
+  font-size: 1.3375rem;
   font-weight: 500;
   color: var(--color-text-primary);
   text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.gs-drawer__sub-link {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  padding-left: 32px; /* Indent sublinks */
-}
-
-.gs-drawer__sub-link--nested {
-  padding-left: 48px; /* Indent grand-child links */
-  font-size: 0.875rem;
-}
-
-/* Accordion Toggle logic via CSS */
-.gs-drawer__sub-list {
-  display: none; /* Hidden by default */
-  background-color: var(--color-surface);
-}
-
-/* When the parent <li> has the .is-expanded class, show the sub-list */
-.is-expanded > .gs-drawer__sub-list {
+  transition: color 0.2s;
   display: block;
 }
 
 .gs-drawer__toggle-btn {
   background: transparent;
   border: none;
-  padding: 16px 24px;
-  font-size: 0.875rem;
+  padding: 13px 20px;
+  font-size: 0.75rem;
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
 }
 
-/* Rotate arrow when open */
-.is-expanded > .gs-drawer__link-row > .gs-drawer__toggle-btn {
-  transform: rotate(180deg);
-  color: var(--color-accent-gold);
+/* Active state: highlight left item + chevron */
+.gs-drawer__nav-item.is-active > .gs-drawer__link-row > .gs-drawer__link {
+  color: var(--color-accent-rose, #de3151);
+  font-weight: 600;
+}
+
+.gs-drawer__nav-item.is-active > .gs-drawer__link-row > .gs-drawer__toggle-btn {
+  color: var(--color-accent-rose, #de3151);
+}
+
+/* Red left border on active item */
+.gs-drawer__nav-item.is-active {
+  border-left: 3px solid var(--color-accent-rose, #de3151);
 }
 
 /* ============================================================================
-   RESPONSIVE DESIGN (MOBILE FIXES)
+   RIGHT PANEL — sub-panel items
+   ============================================================================ */
+.gs-drawer__sub-panel {
+  display: none;
+  padding: 8px 0;
+}
+
+.gs-drawer__sub-panel.is-active {
+  display: block;
+}
+
+.gs-drawer__sub-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gs-drawer__sub-panel-list li {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.gs-drawer__sub-panel-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 24px;
+  font-family: "Jost", sans-serif;
+  font-size: 1.3375rem;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.gs-drawer__sub-panel-link::after {
+  content: "›";
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+}
+
+.gs-drawer__sub-panel-link:hover {
+  background: #f5f5f5;
+  color: var(--color-accent-rose, #de3151);
+}
+
+.gs-drawer__sub-panel-viewall {
+  border-bottom: none !important;
+}
+
+.gs-drawer__sub-panel-viewall a {
+  display: block;
+  padding: 14px 24px;
+  font-family: "Jost", sans-serif;
+  font-size: 1.475rem;
+  font-weight: 600;
+  color: var(--color-accent-rose, #de3151);
+  text-decoration: none;
+}
+
+.gs-drawer__empty {
+  padding: 24px;
+  font-family: "Jost", sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================================
+   MOBILE: stack panels vertically, full-width drawer
+   ============================================================================ */
+@media screen and (max-width: 680px) {
+  .gs-menu-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .gs-drawer__layout {
+    flex-direction: column;
+  }
+
+  .gs-drawer__panel-left {
+    width: 100%;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    /* Limit height so right panel is visible when active */
+    max-height: 50vh;
+  }
+
+  .gs-drawer__panel-right {
+    flex: 1;
+    background: #fff;
+  }
+}
+
+/* ============================================================================
+   HEADER RESPONSIVE
    ============================================================================ */
 @media screen and (max-width: 989px) {
-     .gs-header__container {
+  .gs-header__container {
     flex-wrap: wrap;
     padding: 12px 16px;
     gap: 12px;
   }
 
-  /* Force search to full width on row 2 for very small screens if necessary */
-  .gs-header__center {
-    order: 3;
-    width: 100%;
-    max-width: 100%;
-  }
- .gs-header__left  { order: 1; flex: 1; }
+  .gs-header__left  { order: 1; flex: 1; }
   .gs-header__right { order: 2; }
   .gs-header__center {
     order: 3;
@@ -341,11 +591,6 @@ font-size: 1.575rem;
 /* ============================================================================
    PREDICTIVE SEARCH DROPDOWN
    ============================================================================ */
-.gs-search-form {
-  position: relative;
-  width: 100%;
-}
-
 .gs-predictive-results {
   position: absolute;
   top: calc(100% + 4px);
@@ -396,26 +641,22 @@ font-size: 1.575rem;
   margin: 0;
 }
 
-/* Collections List */
-.gs-predictive__collection-list li {
-  margin-bottom: 4px;
-}
-.gs-predictive__collection-list li:last-child {
-  margin-bottom: 0;
-}
+.gs-predictive__collection-list li { margin-bottom: 4px; }
+.gs-predictive__collection-list li:last-child { margin-bottom: 0; }
+
 .gs-predictive__collection-list a {
   font-family: "Jost", sans-serif;
-      font-size: 1.375rem;
+  font-size: 1.375rem;
   font-weight: 600;
   color: var(--color-text-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
+
 .gs-predictive__collection-list a:hover {
   color: var(--color-accent-rose);
 }
 
-/* Products List */
 .gs-predictive__product-item {
   display: flex;
   align-items: center;
@@ -424,9 +665,8 @@ font-size: 1.575rem;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
-.gs-predictive__product-item:hover {
-  opacity: 0.7;
-}
+
+.gs-predictive__product-item:hover { opacity: 0.7; }
 
 .gs-predictive__product-img {
   width: 50px;
@@ -466,15 +706,8 @@ font-size: 1.575rem;
   color: var(--color-text-secondary);
 }
 
-.fa-regular .fa-heart {
-    font-weight: 400;
-    font-size: 24px;
-}
-
 /* Loading skeleton */
-.gs-predictive__loading {
-  padding: 16px 24px;
-}
+.gs-predictive__loading { padding: 16px 24px; }
 
 .gs-predictive__skeleton {
   display: flex;
@@ -490,278 +723,30 @@ font-size: 1.575rem;
   animation: gs-shimmer 1.2s infinite;
 }
 
-.gs-skeleton-item:nth-child(2) {
-  width: 80%;
-}
-
-.gs-skeleton-item:nth-child(3) {
-  width: 60%;
-}
+.gs-skeleton-item:nth-child(2) { width: 80%; }
+.gs-skeleton-item:nth-child(3) { width: 60%; }
 
 @keyframes gs-shimmer {
-  0% { background-position: 200% 0; }
+  0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Desktop nav — hidden on mobile */
-.gs-header__desktop-nav {
-  display: none;
-}
-
-@media screen and (min-width: 990px) {
-  .gs-header__desktop-nav {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-  }
-
-  /* Shrink center search slightly to fit nav */
-  .gs-header__center {
-    max-width: 480px;
-  }
-}
-
-.gs-desktop-nav__item {
-  position: relative;
-}
-
-.gs-desktop-nav__link {
-  display: block;
-  padding: 8px 14px;
-  font-family: "Jost", sans-serif;
-  font-size: 1.4 rem;
-  font-weight: 500;
-  color: var(--color-text-primary);
-  text-decoration: none;
-  white-space: nowrap;
-  border-radius: 6px;
-  transition: color 0.2s, background 0.2s;
-}
-
-.gs-desktop-nav__link:hover {
-  color: var(--color-accent-gold);
-  background: var(--color-bg-secondary);
-}
-
-/* Dropdown */
-.gs-desktop-nav__dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 200px;
-  background: #ffffff;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px var(--color-shadow);
-  padding: 8px 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-8px);
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
-  z-index: 100;
-}
-
-.gs-desktop-nav__item.has-dropdown:hover .gs-desktop-nav__dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.gs-desktop-nav__dropdown-link {
-  display: block;
-  padding: 10px 20px;
-  font-family: "Jost", sans-serif;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: color 0.2s, background 0.2s;
-}
-
-.gs-desktop-nav__dropdown-link:hover {
-  color: var(--color-text-primary);
-  background: var(--color-bg-primary);
-}
 
 /* ============================================================================
-   LOCATION MODAL (Updated to match Image 2)
-   ============================================================================ */
-.gs-location-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5); /* Standard dark overlay */
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-}
-
-.gs-location-overlay.is-active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.gs-location-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -48%);
-  background: #ffffff;
-  border-radius: 12px; /* Slightly sharper corners matching image */
-  padding: 40px 32px 32px;
-  width: 90%;
-  max-width: 460px;
-  z-index: 10000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Clean sans-serif */
-}
-
-.gs-location-modal.is-active {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, -50%);
-}
-
-.gs-location-modal__close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s;
-}
-
-.gs-location-modal__close:hover {
-  opacity: 0.7;
-}
-
-.gs-location-modal__icon {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-/* New class for the custom illustration */
-.gs-location-modal__image {
-  width: 140px; /* Adjust based on your actual image proportions */
-  height: auto;
-  display: block;
-}
-
-.gs-location-modal__title {
-  font-size: 1.5rem;
-  font-weight: 700; /* Bold */
-  color: #000000;
-  margin-bottom: 8px;
-  margin-top: 0;
-}
-
-.gs-location-modal__subtitle {
-  font-size: 1.25rem;
-  color: #666666; /* Grey text */
-  margin-bottom: 24px;
-  margin-top: 0;
-}
-
-.gs-location-modal__input-row {
-  display: flex;
-  align-items: center;
-  border: 1px solid #dcdcdc; /* Light grey border */
-  border-radius: 8px;
-  background: #ffffff;
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.gs-location-modal__country {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 130px; /* Fixed width to match image spacing */
-  padding: 14px 16px;
-  font-size: 1.4rem;
-  color: #000000;
-  background: #ffffff;
-  cursor: pointer;
-}
-
-.gs-location-modal__country-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.gs-location-modal__divider {
-  width: 1px;
-  height: 24px;
-  background: #e0e0e0;
-  flex-shrink: 0;
-}
-
-.gs-location-modal__pincode {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 14px 16px;
-  font-size: 1.4rem;
-  color: #000000;
-  background: transparent;
-  width: 100%;
-}
-
-.gs-location-modal__pincode::placeholder {
-  color: #000000; /* Darker placeholder to match image */
-}
-
-.gs-location-modal__error {
-  font-size: 0.85rem;
-  color: #de3151;
-  margin-bottom: 12px;
-  text-align: left;
-}
-
-.gs-location-modal__apply {
-  width: 100%;
-  padding: 16px;
-  background: #de3151; /* Vibrant red matching the image */
-  color: #ffffff;
-  font-size: 1.55rem;
-  font-weight: 700;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.gs-location-modal__apply:hover {
-  background: #c92a48; /* Slightly darker on hover */
-}
-
-/* ============================================================================
-   LOCATION BADGE (Matching the Light Purple Design)
+   LOCATION BADGE
    ============================================================================ */
 .gs-location-badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px; /* Space between flag and text */
-  background-color: #f8f4fe; /* Light purple background */
-  border: 1.5px solid #e5dbf5; /* Light purple border */
+  gap: 10px;
+  background-color: #f8f4fe;
+  border: 1.5px solid #e5dbf5;
   border-radius: 12px;
   padding: 6px 16px 6px 10px;
   cursor: pointer;
   text-align: left;
-  font-family: inherit; /* Inherits your site's font */
+  font-family: inherit;
   transition: background-color 0.2s ease, border-color 0.2s ease;
-  box-shadow: none;
   outline: none;
 }
 
@@ -771,7 +756,7 @@ font-size: 1.575rem;
 }
 
 .gs-location-badge__flag {
-  font-size: 18px; /* Scales the emoji to match the image */
+  font-size: 18px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -784,11 +769,10 @@ font-size: 1.575rem;
   justify-content: center;
 }
 
-/* Base styles for the dynamic text container */
 .gs-location-badge__label {
   display: block;
   font-size: 12px;
   font-weight: 500;
-  color: #111111; /* Dark text for the location part */
+  color: #111111;
   line-height: 1.2;
 }

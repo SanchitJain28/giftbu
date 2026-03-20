@@ -1,0 +1,10 @@
+{% comment %}
+  snippets/cart-icon-bubble.liquid
+  Renders the cart icon bubble with the current item count.
+{% endcomment %}
+
+{%- if cart.item_count > 0 -%}
+  <span class="gs-cart-count">{{ cart.item_count }}</span>
+{%- else -%}
+  <span class="gs-cart-count" hidden>0</span>
+{%- endif -%}

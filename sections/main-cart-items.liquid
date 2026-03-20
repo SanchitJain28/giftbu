@@ -1,24 +1,22 @@
 {{ 'section-cart.css' | asset_url | stylesheet_tag }}
-{%- unless settings.cart_type == 'drawer' -%}
-  <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
-{%- endunless -%}
+<script src="{{ 'section-cart.js' | asset_url }}" defer="defer"></script>
 
 <div class="gs-cart-page">
-  <cart-items class="gs-cart-container {% if cart == empty %} is-empty{% endif %}">
+  <div class="gs-cart-container {% if cart == empty %} is-empty{% endif %}">
     <div class="gs-cart-header">
       <h1 class="gs-cart-title">Shopping Cart</h1>
-      <div class="gs-cart-location">
-        <svg viewBox="0 0 24 24">
+      <button type="button" class="gs-cart-location js-location-open">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
-        Delivery to: <span class="gs-location-badge">Gurgaon - 122011</span>
-      </div>
+        Delivery to: <span class="gs-location-badge js-location-label">Choose location</span>
+      </button>
     </div>
 
     <!-- Empty State -->
-    <div class="gs-cart-empty cart__warnings">
+    <div class="gs-cart-empty">
       <div class="gs-cart-empty__icon">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="8" width="18" height="12" rx="2" ry="2"></rect>
           <path d="M12 8v12"></path>
           <path d="M11.5 8c0-2.5-2.5-4-5-4s-3.5 1.5-3.5 4v1h8.5V8z"></path>
@@ -27,15 +25,16 @@
       </div>
       <h2>Your cart is currently empty</h2>
       <p>Looks like you haven't made your choice yet. Let's find the perfect gift.</p>
-      <a href="{{ routes.all_products_collection_url }}" class="gs-cart-empty-btn">CONTINUE SHOPPING</a>
+      <a href="{{ routes.all_products_collection_url }}" class="btn-primary">CONTINUE SHOPPING</a>
     </div>
 
+    <!-- Filled State -->
     <form action="{{ routes.cart_url }}" class="gs-cart-contents" method="post" id="cart">
       <div class="gs-cart-items-wrapper" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
             {%- for item in cart.items -%}
-              <!-- Extract the hidden Preview Image if it exists -->
+              <!-- Find the preview image URL first for later use -->
               {%- assign preview_img_url = blank -%}
               {%- for property in item.properties -%}
                 {%- if property.first == '_Preview_Image' -%}
@@ -43,50 +42,49 @@
                 {%- endif -%}
               {%- endfor -%}
 
-              <div class="gs-cart-item-row cart-item" id="CartItem-{{ item.index | plus: 1 }}">
+              <div class="gs-cart-item-row" id="CartItem-{{ item.index | plus: 1 }}">
                 <div class="gs-cart-item-card">
                   <!-- Custom Loading Overlay -->
                   <div class="loading__spinner hidden">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-gold)" stroke-width="2">
                       <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
                       <path d="M12 2a10 10 0 0 1 10 10"></path>
                     </svg>
                   </div>
 
-                  <!-- 1. Image (Checks Theme Setting to swap image) -->
+                  <!-- 1. Media -->
                   <div class="gs-cart-item__media">
                     {% if section.settings.replace_cart_image and preview_img_url != blank %}
                       <img
                         src="{{ preview_img_url }}"
-                        alt="Your Personalized Preview"
+                        alt="Personalized Preview"
                         loading="lazy"
-                        width="150"
-                        height="150"
+                        width="120"
+                        height="120"
                       >
                     {% elsif item.image %}
                       <img
-                        src="{{ item.image | image_url: width: 300 }}"
+                        src="{{ item.image | image_url: width: 240 }}"
                         alt="{{ item.image.alt | escape }}"
                         loading="lazy"
-                        width="150"
-                        height="150"
+                        width="120"
+                        height="120"
                       >
                     {% endif %}
                   </div>
 
-                  <!-- 2. Product Title & Props -->
+                  <!-- 2. Details -->
                   <div class="gs-cart-item__details">
-                    <a href="{{ item.url }}" class="gs-cart-item__name cart-item__name">
-                      {{- item.product.title | escape -}}
-                    </a>
+                    <a href="{{ item.url }}" class="gs-cart-item__name">{{- item.product.title | escape -}}</a>
 
-                    <!-- Personalization Properties -->
+                    <!-- [RESTORED] Personalization Properties -->
                     {%- if item.properties.size != 0 -%}
                       {%- assign has_valid_properties = false -%}
                       {%- for property in item.properties -%}
                         {%- assign property_first_char = property.first | slice: 0 -%}
                         {%- if property.last != blank and property_first_char != '_' -%}
                           {%- assign has_valid_properties = true -%}
+                          {%- break -%}
                         {%- endif -%}
                       {%- endfor -%}
 
@@ -138,7 +136,6 @@
                             {%- endfor -%}
                           </dl>
 
-                          <!-- Quick Link to View Full Preview -->
                           {% if preview_img_url != blank %}
                             <a href="{{ preview_img_url }}" target="_blank" class="gs-cart-preview-link">
                               <svg
@@ -164,76 +161,79 @@
 
                   <!-- 3. Price & Qty -->
                   <div class="gs-cart-item__price-qty">
-                    <div class="gs-cart-item__price">
-                      <span class="money">{{ item.final_line_price | money }}</span>
-                    </div>
+                    <div class="gs-cart-item__price">{{ item.final_line_price | money }}</div>
 
-                    <quantity-input class="gs-cart-qty">
-                      <button class="gs-cart-qty__btn quantity__button" name="minus" type="button">
-                        <svg width="12" height="2" viewBox="0 0 12 2" fill="currentColor">
+                    <div class="gs-cart-qty">
+                      <button
+                        type="button"
+                        class="gs-cart-qty__btn"
+                        data-action="minus"
+                        data-line="{{ item.index | plus: 1 }}"
+                      >
+                        <svg width="10" height="2" viewBox="0 0 12 2" fill="currentColor">
                           <path d="M0 0h12v2H0z"/>
                         </svg>
                       </button>
 
                       <input
-                        class="gs-cart-qty__input quantity__input"
+                        class="gs-cart-qty__input"
                         type="number"
                         name="updates[]"
                         value="{{ item.quantity }}"
-                        data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
                         min="0"
-                        data-min="{{ item.variant.quantity_rule.min }}"
+                        data-line="{{ item.index | plus: 1 }}"
                         id="Quantity-{{ item.index | plus: 1 }}"
-                        data-index="{{ item.index | plus: 1 }}"
                       >
 
-                      <button class="gs-cart-qty__btn quantity__button" name="plus" type="button">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                      <button
+                        type="button"
+                        class="gs-cart-qty__btn"
+                        data-action="plus"
+                        data-line="{{ item.index | plus: 1 }}"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
                           <path d="M5 0h2v12H5z"/><path d="M0 5h12v2H0z"/>
                         </svg>
                       </button>
-                    </quantity-input>
-
-                    <div class="cart-item__error hidden" id="Line-item-error-{{ item.index | plus: 1 }}" role="alert">
-                      <small class="cart-item__error-text"></small>
                     </div>
                   </div>
                 </div>
 
-                <!-- 4. Side Actions (Wishlist + Trash) -->
+                <!-- 4. Actions -->
                 <div class="gs-cart-item__actions">
-                  <button type="button" class="gs-action-btn" aria-label="Add to wishlist">
-                    <svg viewBox="0 0 24 24">
+                  <button
+                    type="button"
+                    class="gs-action-btn gs-wishlist-btn"
+                    aria-label="Add to wishlist"
+                    data-product-id="{{ item.product.id }}"
+                    data-product-title="{{ item.product.title | escape }}"
+                    data-product-image="{{ item.image | image_url: width: 300 }}"
+                    data-product-url="{{ item.product.url }}"
+                    data-product-price="{{ item.final_price | money }}"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                     </svg>
                   </button>
 
-                  <cart-remove-button id="Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
-                    <a href="{{ item.url_to_remove }}" class="gs-action-btn" aria-label="Remove">
-                      <svg viewBox="0 0 24 24">
-                        <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line>
-                      </svg>
-                    </a>
-                  </cart-remove-button>
+                  <button
+                    type="button"
+                    class="gs-action-btn gs-action-remove"
+                    data-line="{{ item.index | plus: 1 }}"
+                    aria-label="Remove"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                  </button>
                 </div>
               </div>
             {%- endfor -%}
           {%- endif -%}
         </div>
       </div>
-
-      <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
-      <p
-        class="visually-hidden"
-        id="shopping-cart-line-item-status"
-        aria-live="polite"
-        aria-hidden="true"
-        role="status"
-      >
-        Loading...
-      </p>
     </form>
-  </cart-items>
+  </div>
 </div>
 
 {% schema %}
@@ -244,8 +244,7 @@
       "type": "checkbox",
       "id": "replace_cart_image",
       "label": "Replace product image with personalized preview",
-      "default": true,
-      "info": "If checked, the main product image in the cart will be swapped with the customer's custom preview image."
+      "default": true
     }
   ]
 }

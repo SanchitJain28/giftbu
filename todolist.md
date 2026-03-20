@@ -7,7 +7,6 @@
 # 19th March 
 2. remove any glictes from the cart page
 3. enchance the collection page
-5. remove header glitches
 
 # 20th March
 1. Change the UI of the persolization modal
