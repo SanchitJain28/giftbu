@@ -11,70 +11,115 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "section_footer_jba7Qy": {
-      "type": "section-footer",
+    "footer_nE6bxk": {
+      "type": "footer",
       "blocks": {
-        "link_group_FNPLh9": {
-          "type": "link_group",
+        "payment_icon_CyNrTK": {
+          "type": "payment_icon",
           "settings": {
-            "title": "Know About Us:",
-            "menu": ""
+            "image": "shopify://shop_images/payment.png",
+            "width": 76,
+            "height": 50
           }
         },
-        "link_group_qTQian": {
-          "type": "link_group",
+        "payment_icon_XjHHRU": {
+          "type": "payment_icon",
           "settings": {
-            "title": "Know About Us:",
-            "menu": ""
+            "image": "shopify://shop_images/card.png",
+            "width": 76,
+            "height": 50
           }
         },
-        "link_group_PYzfGU": {
-          "type": "link_group",
+        "payment_icon_bc3c7H": {
+          "type": "payment_icon",
           "settings": {
-            "title": "Know About Us:",
-            "menu": ""
+            "image": "shopify://shop_images/visa.png",
+            "width": 76,
+            "height": 50
+          }
+        },
+        "social_icon_wdgWtW": {
+          "type": "social_icon",
+          "settings": {
+            "image": "shopify://shop_images/youtube.png",
+            "link": "",
+            "width": 40,
+            "height": 40
+          }
+        },
+        "social_icon_e7L8wq": {
+          "type": "social_icon",
+          "settings": {
+            "image": "shopify://shop_images/linkedin.png",
+            "link": "",
+            "width": 40,
+            "height": 40
+          }
+        },
+        "social_icon_6K6LVd": {
+          "type": "social_icon",
+          "settings": {
+            "image": "shopify://shop_images/instagram.png",
+            "link": "",
+            "width": 40,
+            "height": 40
+          }
+        },
+        "social_icon_aeHyHh": {
+          "type": "social_icon",
+          "settings": {
+            "image": "shopify://shop_images/twitter.png",
+            "link": "",
+            "width": 40,
+            "height": 40
+          }
+        },
+        "social_icon_zrbeWj": {
+          "type": "social_icon",
+          "settings": {
+            "image": "shopify://shop_images/facebook.png",
+            "link": "",
+            "width": 40,
+            "height": 40
           }
         }
       },
       "block_order": [
-        "link_group_FNPLh9",
-        "link_group_qTQian",
-        "link_group_PYzfGU"
+        "payment_icon_CyNrTK",
+        "payment_icon_XjHHRU",
+        "payment_icon_bc3c7H",
+        "social_icon_wdgWtW",
+        "social_icon_e7L8wq",
+        "social_icon_6K6LVd",
+        "social_icon_aeHyHh",
+        "social_icon_zrbeWj"
       ],
-      "name": "Global Footer",
+      "name": "Custom Footer",
       "settings": {
-        "show_newsletter": true,
-        "newsletter_heading": "Subscribe to our Newsletter",
+        "excluded_collections": [
+          "frontpage"
+        ],
+        "show_link_groups": true,
+        "auto_fetch_collections": true,
+        "auto_fetch_limit": 4,
+        "show_stats": true,
         "stat_1_num": "400+",
         "stat_1_text": "Cities having same day delivery",
         "stat_2_num": "100+",
         "stat_2_text": "Countries being served with happiness",
         "stat_3_num": "5 Million+",
         "stat_3_text": "Gift boxes delivered across the globe",
-        "play_store_link": "",
+        "apps_title": "Download our app for a better experience !!",
         "app_store_link": "",
-        "show_social": true,
-        "show_payment": true
-      }
-    },
-    "footer": {
-      "type": "footer",
-      "disabled": true,
-      "settings": {
-        "phone": "+91-89764-49556",
-        "email": "contact@thegiftstudio.com",
-        "menu_1": "",
-        "menu_2": "",
-        "menu_3": "",
-        "social_title": "Follow us on",
-        "social_fb": "",
-        "social_ig": "",
-        "social_yt": ""
+        "play_store_link": "",
+        "social_title": "Follow us on:",
+        "copyright_text": "Copyright © 2000-2024. All rights reserved.",
+        "show_payments": true,
+        "payment_title": "Payment Methods:"
       }
     }
   },
   "order": [
-    "section_footer_jba7Qy",
-    "footer"
+    "footer_nE6bxk"
   ]
 }

@@ -1,0 +1,108 @@
+{{ 'section-marquee.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-marquee.js' | asset_url }}" defer="defer"></script>
+
+<!-- CSS Variables are passed directly into the inline style to avoid style blocks -->
+<section
+  class="gs-marquee-section"
+  style="--marquee-bg: {{ section.settings.bg_color }}; --marquee-text: {{ section.settings.text_color }}; --marquee-border: {{ section.settings.border_color }}; --marquee-accent: {{ section.settings.accent_color }};"
+  data-speed="{{ section.settings.speed }}"
+  data-direction="{{ section.settings.direction }}"
+>
+  <div class="gs-marquee">
+    <div class="gs-marquee__track">
+      <!-- We loop the content 4 times in liquid to guarantee it fills wide screens for a seamless GSAP loop -->
+      {%- for i in (1..4) -%}
+        <div
+          class="gs-marquee__content"
+          {% if i > 1 %}
+            aria-hidden="true"
+          {% endif %}
+        >
+          {%- for block in section.blocks -%}
+            <span class="gs-marquee__item" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </span>
+            <span class="gs-marquee__separator">✦</span>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Moving Marquee",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F5EFE6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1209"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#D9CABB"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Star)",
+      "default": "#C49A3C"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "sec",
+      "label": "Animation Speed",
+      "info": "Lower is faster.",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Marquee Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Premium Corporate Gifting"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moving Marquee",
+      "blocks": [
+        { "type": "text", "settings": { "text": "Curated With Love" } },
+        { "type": "text", "settings": { "text": "Premium Corporate Gifting" } },
+        { "type": "text", "settings": { "text": "Worldwide Shipping" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,15 +1,3 @@
-{% comment %}
-  Renders product buy-buttons.
-  Accepts:
-  - product: {Object} product object.
-  - block: {Object} passing the block information.
-  - product_form_id: {String} product form id.
-  - section_id: {String} id of section to which this snippet belongs.
-  - show_pickup_availability: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
-
-  Usage:
-  {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
-{% endcomment %}
 <div {{ block.shopify_attributes }}>
   {%- if product != blank -%}
     {%- liquid
@@ -24,7 +12,8 @@
       endif
     -%}
 
-    <product-form
+    <!-- CHANGED: Replaced product-form with gs-product-form -->
+    <gs-product-form
       class="product-form"
       data-hide-errors="{{ gift_card_recipient_feature_active }}"
       data-section-id="{{ section.id }}"
@@ -120,7 +109,7 @@
           {%- endif -%}
         </div>
       {%- endform -%}
-    </product-form>
+    </gs-product-form>
   {%- else -%}
     <div class="product-form">
       <div class="product-form__buttons form">
@@ -171,3 +160,6 @@
     <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 </div>
+
+<!-- ADDED: Script import for our custom AJAX handling -->
+<script src="{{ 'gs-product-form.js' | asset_url }}" defer="defer"></script>

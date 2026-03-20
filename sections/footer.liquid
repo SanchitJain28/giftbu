@@ -1,175 +1,488 @@
-{{ 'section-custom-footer.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'section-custom-footer.js' | asset_url }}" defer="defer"></script>
-
-<footer class="gs-footer">
-  <div class="page-width gs-footer__wrapper reveal-up">
-    
-    <!-- Top Row: Logo -->
-    <div class="gs-footer__top">
-      {%- if section.settings.logo != blank -%}
-        <img src="{{ section.settings.logo | image_url: width: 400 }}" 
-             alt="{{ shop.name }}" 
-             class="gs-footer__logo" 
-             loading="lazy" 
-             width="{{ section.settings.logo.width }}" 
-             height="{{ section.settings.logo.height }}">
-      {%- else -%}
-        <h2 class="gs-footer__logo-text">{{ shop.name }}</h2>
-      {%- endif -%}
-    </div>
-
-    <!-- Main Grid -->
-    <div class="gs-footer__grid">
-      
-      <!-- Column 1: Contact Info -->
-      <div class="gs-footer__col gs-footer__col--contact">
-        {%- if section.settings.phone != blank -%}
-          <div class="gs-contact-item">
-            <div class="gs-contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-            </div>
-            <a href="tel:{{ section.settings.phone | remove: ' ' | remove: '-' }}">{{ section.settings.phone }}</a>
-          </div>
-        {%- endif -%}
-
-        {%- if section.settings.email != blank -%}
-          <div class="gs-contact-item">
-            <div class="gs-contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            </div>
-            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
-          </div>
-        {%- endif -%}
-      </div>
-
-      <!-- Column 2: Menu 1 -->
-      <div class="gs-footer__col gs-footer__col--menu">
-        {%- if section.settings.menu_1 != blank -%}
-          <ul class="gs-footer-menu list-unstyled">
-            {%- for link in section.settings.menu_1.links -%}
-              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-      </div>
-
-      <!-- Column 3: Menu 2 -->
-      <div class="gs-footer__col gs-footer__col--menu">
-        {%- if section.settings.menu_2 != blank -%}
-          <ul class="gs-footer-menu list-unstyled">
-            {%- for link in section.settings.menu_2.links -%}
-              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-      </div>
-
-      <!-- Column 4: Menu 3 -->
-      <div class="gs-footer__col gs-footer__col--menu">
-        {%- if section.settings.menu_3 != blank -%}
-          <ul class="gs-footer-menu list-unstyled">
-            {%- for link in section.settings.menu_3.links -%}
-              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-      </div>
-
-      <!-- Column 5: Social -->
-      <div class="gs-footer__col gs-footer__col--social">
-        <p class="gs-social-title">{{ section.settings.social_title }}</p>
-        <div class="gs-social-icons">
-          {%- if section.settings.social_fb != blank -%}
-            <a href="{{ section.settings.social_fb }}" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.social_ig != blank -%}
-            <a href="{{ section.settings.social_ig }}" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            </a>
-          {%- endif -%}
-          {%- if section.settings.social_yt != blank -%}
-            <a href="{{ section.settings.social_yt }}" target="_blank" rel="noopener" aria-label="YouTube">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-            </a>
-          {%- endif -%}
-        </div>
-      </div>
-
-    </div>
-  </div>
-</footer>
-
 {% schema %}
 {
   "name": "Custom Footer",
-  "settings":[
+  "class": "section-custom-footer",
+  "max_blocks": 30,
+  "settings": [
+    {
+      "type": "header",
+      "content": "1. Top Link Groups (Categories/Pages)"
+    },
+    {
+      "type": "collection_list",
+      "id": "excluded_collections",
+      "label": "Collections to Exclude",
+      "info": "Select any collections you want to hide from the auto-fetched list."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link_groups",
+      "label": "Show Link Groups Section",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Auto-Fetch Collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_fetch_collections",
+      "label": "Auto-fetch collections and products",
+      "info": "If enabled, this overrides the manual blocks below and automatically displays all store collections and their products.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "auto_fetch_limit",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "label": "Max products to show per collection",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "2. Stats Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Stats Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_num",
+      "label": "Stat 1 Number",
+      "default": "400+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_text",
+      "label": "Stat 1 Text",
+      "default": "Cities having same day delivery"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_num",
+      "label": "Stat 2 Number",
+      "default": "100+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_text",
+      "label": "Stat 2 Text",
+      "default": "Countries being served with happiness"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_num",
+      "label": "Stat 3 Number",
+      "default": "5 Million+"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_text",
+      "label": "Stat 3 Text",
+      "default": "Gift boxes delivered across the globe"
+    },
+    {
+      "type": "header",
+      "content": "3. Apps & Main Logo"
+    },
     {
       "type": "image_picker",
-      "id": "logo",
-      "label": "Footer Logo"
-    },
-    {
-      "type": "header",
-      "content": "Contact Info"
+      "id": "main_logo",
+      "label": "Center Logo"
     },
     {
       "type": "text",
-      "id": "phone",
-      "label": "Phone Number",
-      "default": "+91-89764-49556"
+      "id": "apps_title",
+      "label": "Apps Title",
+      "default": "Download our app for a better experience !!"
     },
     {
-      "type": "text",
-      "id": "email",
-      "label": "Email Address",
-      "default": "contact@thegiftstudio.com"
+      "type": "image_picker",
+      "id": "app_store_img",
+      "label": "App Store Image"
     },
     {
-      "type": "header",
-      "content": "Menus"
+      "type": "url",
+      "id": "app_store_link",
+      "label": "App Store Link"
     },
     {
-      "type": "link_list",
-      "id": "menu_1",
-      "label": "Menu Column 1"
+      "type": "image_picker",
+      "id": "play_store_img",
+      "label": "Play Store Image"
     },
     {
-      "type": "link_list",
-      "id": "menu_2",
-      "label": "Menu Column 2"
-    },
-    {
-      "type": "link_list",
-      "id": "menu_3",
-      "label": "Menu Column 3"
-    },
-    {
-      "type": "header",
-      "content": "Social Media"
+      "type": "url",
+      "id": "play_store_link",
+      "label": "Play Store Link"
     },
     {
       "type": "text",
       "id": "social_title",
-      "label": "Social Title",
-      "default": "Follow us on"
+      "label": "Social Media Title",
+      "default": "Follow us on:"
     },
     {
-      "type": "url",
-      "id": "social_fb",
-      "label": "Facebook Link"
+      "type": "header",
+      "content": "4. Copyright & Payments"
     },
     {
-      "type": "url",
-      "id": "social_ig",
-      "label": "Instagram Link"
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "Copyright © 2000-2024. All rights reserved."
     },
     {
-      "type": "url",
-      "id": "social_yt",
-      "label": "YouTube Link"
+      "type": "checkbox",
+      "id": "show_payments",
+      "label": "Show Payment Methods",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_title",
+      "label": "Payment Title",
+      "default": "Payment Methods:"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_group",
+      "name": "Link Group",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Group Title (e.g. Know About Us:)",
+          "default": "Collection Name:"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Choose Menu (Overrides manual links below)"
+        },
+        {
+          "type": "header",
+          "content": "Or Add Manual Links"
+        },
+        { "type": "text", "id": "link_1_text", "label": "Link 1 Text" },
+        { "type": "url", "id": "link_1_url", "label": "Link 1 URL" },
+        { "type": "text", "id": "link_2_text", "label": "Link 2 Text" },
+        { "type": "url", "id": "link_2_url", "label": "Link 2 URL" },
+        { "type": "text", "id": "link_3_text", "label": "Link 3 Text" },
+        { "type": "url", "id": "link_3_url", "label": "Link 3 URL" },
+        { "type": "text", "id": "link_4_text", "label": "Link 4 Text" },
+        { "type": "url", "id": "link_4_url", "label": "Link 4 URL" },
+        { "type": "text", "id": "link_5_text", "label": "Link 5 Text" },
+        { "type": "url", "id": "link_5_url", "label": "Link 5 URL" },
+        { "type": "text", "id": "link_6_text", "label": "Link 6 Text" },
+        { "type": "url", "id": "link_6_url", "label": "Link 6 URL" },
+        { "type": "text", "id": "link_7_text", "label": "Link 7 Text" },
+        { "type": "url", "id": "link_7_url", "label": "Link 7 URL" },
+        { "type": "text", "id": "link_8_text", "label": "Link 8 Text" },
+        { "type": "url", "id": "link_8_url", "label": "Link 8 URL" },
+        { "type": "text", "id": "link_9_text", "label": "Link 9 Text" },
+        { "type": "url", "id": "link_9_url", "label": "Link 9 URL" },
+        { "type": "text", "id": "link_10_text", "label": "Link 10 Text" },
+        { "type": "url", "id": "link_10_url", "label": "Link 10 URL" }
+      ]
+    },
+    {
+      "type": "social_icon",
+      "name": "Social Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Social Icon Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Social Link"
+        },
+        {
+          "type": "range",
+          "id": "width",
+          "min": 10,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon Width",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "height",
+          "min": 10,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon Height",
+          "default": 40
+        }
+      ]
+    },
+    {
+      "type": "payment_icon",
+      "name": "Payment Icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Payment Method Image"
+        },
+        {
+          "type": "range",
+          "id": "width",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Image Width",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "height",
+          "min": 10,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Image Height",
+          "default": 30
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Footer"
     }
   ]
 }
 {% endschema %}
+
+{{ 'section-custom-footer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'section-custom-footer.js' | asset_url }}" defer="defer"></script>
+
+<footer class="gs-custom-footer reveal-up">
+  <!-- 1. Inline Link Groups Section -->
+  {%- if section.settings.show_link_groups -%}
+    <div class="gs-footer-links-area">
+      <div class="gs-footer-container">
+        {%- if section.settings.auto_fetch_collections -%}
+          <!-- AUTO-FETCH: Loops through all collections and their products -->
+          {%- assign excluded_handles = section.settings.excluded_collections | map: 'handle' -%}
+
+          {%- for collection in collections -%}
+            <!-- Skip this iteration if the collection is in the excluded list -->
+            {%- if excluded_handles contains collection.handle -%}
+              {%- continue -%}
+            {%- endif -%}
+
+            {%- if collection.products.size > 0 -%}
+              <div class="gs-link-group">
+                <h4 class="gs-link-group__title">{{ collection.title }}:</h4>
+                <ul class="gs-link-group__list">
+                  {%- for product in collection.products limit: section.settings.auto_fetch_limit -%}
+                    <li>
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </li>
+                  {%- endfor -%}
+
+                  <!-- Fallback 'View All' link if products exceed the limit -->
+                  {%- if collection.products.size > section.settings.auto_fetch_limit -%}
+                    <li>
+                      <a href="{{ collection.url }}">View All {{ collection.title }}...</a>
+                    </li>
+                  {%- endif -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+        {%- else -%}
+          <!-- MANUAL MODE: Uses the blocks configured in the theme editor -->
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link_group' -%}
+              <div class="gs-link-group" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <h4 class="gs-link-group__title">{{ block.settings.title }}</h4>
+                {%- endif -%}
+
+                <ul class="gs-link-group__list">
+                  {%- if block.settings.menu != blank -%}
+                    <!-- Render from Shopify Menu -->
+                    {%- for link in block.settings.menu.links -%}
+                      <li>
+                        <a href="{{ link.url }}">{{ link.title }}</a>
+                      </li>
+                    {%- endfor -%}
+                  {%- else -%}
+                    <!-- Render Manual Links -->
+                    {%- if block.settings.link_1_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_1_url }}">{{ block.settings.link_1_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_2_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_2_url }}">{{ block.settings.link_2_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_3_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_3_url }}">{{ block.settings.link_3_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_4_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_4_url }}">{{ block.settings.link_4_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_5_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_5_url }}">{{ block.settings.link_5_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_6_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_6_url }}">{{ block.settings.link_6_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_7_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_7_url }}">{{ block.settings.link_7_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_8_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_8_url }}">{{ block.settings.link_8_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_9_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_9_url }}">{{ block.settings.link_9_text }}</a>
+                      </li>
+                    {%- endif -%}
+                    {%- if block.settings.link_10_text != blank -%}
+                      <li>
+                        <a href="{{ block.settings.link_10_url }}">{{ block.settings.link_10_text }}</a>
+                      </li>
+                    {%- endif -%}
+                  {%- endif -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- 2. Stats Section -->
+  {%- if section.settings.show_stats -%}
+    <div class="gs-footer-stats-area">
+      <div class="gs-footer-container">
+        <div class="gs-stats-flex">
+          <!-- Stat Banner / Title -->
+          <div class="gs-stats-banner">
+            <h3 class="gs-stats-banner__title">Stats</h3>
+            <div class="gs-stats-banner__line"></div>
+          </div>
+
+          <!-- The 3 Stats -->
+          <div class="gs-stats-grid">
+            <div class="gs-stat-block">
+              <span class="gs-stat-block__number">{{ section.settings.stat_1_num }}</span>
+              <span class="gs-stat-block__text">{{ section.settings.stat_1_text }}</span>
+            </div>
+            <div class="gs-stat-block">
+              <span class="gs-stat-block__number">{{ section.settings.stat_2_num }}</span>
+              <span class="gs-stat-block__text">{{ section.settings.stat_2_text }}</span>
+            </div>
+            <div class="gs-stat-block">
+              <span class="gs-stat-block__number">
+                {{- section.settings.stat_3_num | replace: 'Million', '<span class="gs-stat-small">Million</span>' -}}
+              </span>
+              <span class="gs-stat-block__text">{{ section.settings.stat_3_text }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- 3. Bottom Area (Apps, Logo, Socials) -->
+  <div class="gs-footer-bottom-area">
+    <div class="gs-footer-container">
+      <div class="gs-bottom-main-row">
+        <!-- Center: Logo -->
+        <div class="gs-bottom-logo">
+          <a href="{{ routes.root_url }}">
+            {%- if section.settings.main_logo != blank -%}
+              <img src="{{ section.settings.main_logo | image_url: width: 400 }}" alt="{{ shop.name }}" loading="lazy">
+            {%- else -%}
+              <h2 class="gs-bottom-logo-text">{{ shop.name }}</h2>
+            {%- endif -%}
+          </a>
+        </div>
+
+        <!-- Right: Social Blocks -->
+        <div class="gs-bottom-socials">
+          <p class="gs-bottom-heading">{{ section.settings.social_title }}</p>
+          <div class="gs-social-badges">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'social_icon' and block.settings.image != blank -%}
+                <a href="{{ block.settings.link }}" target="_blank" {{ block.shopify_attributes }}>
+                  <!-- Native HTML Width/Height attributes strictly used to avoid inline CSS -->
+                  <img
+                    src="{{ block.settings.image | image_url: width: 200 }}"
+                    alt="Social Icon"
+                    width="{{ block.settings.width }}"
+                    height="{{ block.settings.height }}"
+                    loading="lazy"
+                    class="gs-custom-icon"
+                  >
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Copyright & Payment Blocks -->
+      <div class="gs-bottom-copyright-row">
+        <p class="gs-copyright">{{ section.settings.copyright_text }}</p>
+
+        {%- if section.settings.show_payments -%}
+          <div class="gs-payments-wrapper">
+            <span class="gs-payments-title">{{ section.settings.payment_title }}</span>
+            <div class="gs-payment-badges">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'payment_icon' and block.settings.image != blank -%}
+                  <!-- Native HTML Width/Height attributes strictly used to avoid inline CSS -->
+                  <img
+                    src="{{ block.settings.image | image_url: width: 300 }}"
+                    alt="Payment Icon"
+                    width="{{ block.settings.width }}"
+                    height="{{ block.settings.height }}"
+                    loading="lazy"
+                    class="gs-custom-icon"
+                    {{ block.shopify_attributes }}
+                  >
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>

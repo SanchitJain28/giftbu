@@ -1,5 +1,4 @@
 /* global TGSPersonalization */
-
 (function () {
   "use strict";
 
@@ -22,6 +21,7 @@
   const saveTxt = document.getElementById("gs-pers-save-text");
   const previewWrap = document.querySelector(".gs-pers-modal__preview");
   const canvas = document.getElementById("gs-pers-canvas");
+  const resetBtn = document.querySelector(".gs-pers-modal__reset-btn");
 
   if (!modal) {
     console.error(
@@ -82,19 +82,17 @@
   }
 
   function showLoader() {
-    loader.hidden = false;
-    const img = getPreviewImg();
-    if (img) img.style.opacity = "0.3";
+    // console.log("[TGS DEBUG] showLoader() called");
+    if (loader) loader.hidden = false;
   }
 
   function hideLoader() {
-    loader.hidden = true;
-    const img = getPreviewImg();
-    if (img) img.style.opacity = "1";
+    // console.log("[TGS DEBUG] hideLoader() called");
+    if (loader) loader.hidden = true;
   }
 
   /* ── Build Cloudinary fetch URL ───────────────────── */
-  function buildCloudinaryUrl(textValues) {
+  function buildCloudinaryUrl() {
     if (!cfg.cloudName || !cfg.previewImageUrl) {
       console.warn("[TGS] Missing cloudName or previewImageUrl");
       return cfg.previewImageUrl;
@@ -105,56 +103,78 @@
       : cfg.previewImageUrl;
 
     const baseUrl = `https://res.cloudinary.com/${cfg.cloudName}/image/fetch`;
-    const config = cfg.personalizationConfig || {};
+    const configFields = cfg.personalizationConfig?.fields || [];
 
-    const color = config.textColor || "C49A3C";
-    const fontSize = config.fontSize || 60;
-    const fontFamily = (config.fontFamily || "Arial").replace(/ /g, "%20");
-    const xPercent = config.xPercent ?? 50;
-    const yPercent = config.yPercent ?? 80;
+    const layers = configFields
+      .map((field, idx) => {
+        const domField = fields[idx];
+        if (!domField) return null;
 
-    const weight =
-      config.fontWeight && config.fontWeight !== "normal"
-        ? `_${config.fontWeight}`
-        : "";
-    const italic = config.fontStyle === "italic" ? "_italic" : "";
-    const decoration =
-      config.textDecoration && config.textDecoration !== "none"
-        ? `_${config.textDecoration}`
-        : "";
-    const align =
-      config.textAlign && config.textAlign !== "left"
-        ? `_text_align_${config.textAlign}`
-        : "";
-    const lspacing = config.letterSpacing
-      ? `_letter_spacing_${config.letterSpacing}`
-      : "";
-    const linespacing = config.lineSpacing
-      ? `_line_spacing_${config.lineSpacing}`
-      : "";
+        if (field.type === "text") {
+          const val = domField.value.trim();
+          if (!val) return null;
 
-    const layers = textValues
-      .filter((t) => t.trim().length > 0)
-      .map((text, i) => {
-        const encoded = encodeURIComponent(
-          text.toUpperCase().replace(/,/g, "%2C"),
-        );
-        const size = Math.max(20, fontSize - i * 8);
-        const textStyle = `${fontFamily}_${size}${weight}${italic}${decoration}${align}${lspacing}${linespacing}`;
+          const font = (field.fontFamily || "Arial").replace(/ /g, "%20");
+          const color = (field.textColor || "C49A3C").replace("#", "");
+          const weight =
+            field.fontWeight && field.fontWeight !== "normal"
+              ? `_${field.fontWeight}`
+              : "";
+          const italic = field.fontStyle === "italic" ? "_italic" : "";
+          const decoration =
+            field.textDecoration && field.textDecoration !== "none"
+              ? `_${field.textDecoration}`
+              : "";
+          const align =
+            field.textAlign && field.textAlign !== "left"
+              ? `_text_align_${field.textAlign}`
+              : "";
+          const lspacing = field.letterSpacing
+            ? `_letter_spacing_${field.letterSpacing}`
+            : "";
+          const linespace = field.lineSpacing
+            ? `_line_spacing_${field.lineSpacing}`
+            : "";
 
-        return [
-          `co_rgb:${color}`,
-          `l_text:${textStyle}:${encoded}`,
-          `fl_relative`,
-          `g_north_west`,
-          `x_${(xPercent / 100).toFixed(2)}`,
-          `y_${((yPercent + i * 8) / 100).toFixed(2)}`,
-        ].join(",");
+          const textStyle = `${font}_${field.fontSize || 60}${weight}${italic}${decoration}${align}${lspacing}${linespace}`;
+          const encoded = encodeURIComponent(
+            val.toUpperCase().replace(/,/g, "%2C"),
+          );
+
+          return [
+            `co_rgb:${color}`,
+            `l_text:${textStyle}:${encoded}`,
+            `fl_relative`,
+            `g_north_west`,
+            `x_${(field.xPercent / 100).toFixed(2)}`,
+            `y_${(field.yPercent / 100).toFixed(2)}`,
+          ].join(",");
+        }
+
+        if (field.type === "image") {
+          const uploadData = uploadedFileMap[domField.id];
+          if (!uploadData || !uploadData.public_id) return null;
+
+          const publicId = uploadData.public_id.replace(/\//g, ":");
+          const width = field.widthPercent || 30;
+
+          return [
+            `l_${publicId}`,
+            `c_scale`,
+            `w_${(width / 100).toFixed(2)}`,
+            `fl_relative`,
+            `g_north_west`,
+            `x_${(field.xPercent / 100).toFixed(2)}`,
+            `y_${(field.yPercent / 100).toFixed(2)}`,
+          ].join(",");
+        }
+
+        return null;
       })
+      .filter(Boolean)
       .join("/");
 
-    console.log("[TGS] Transformation layers:", layers);
-
+    // console.log("[TGS] Transformation layers:", layers);
     if (!layers) return absoluteUrl;
 
     const finalUrl = `${baseUrl}/${layers}/f_auto,q_auto/${encodeURIComponent(absoluteUrl)}`;
@@ -163,75 +183,110 @@
   }
 
   /* ── Update preview ───────────────────────────────── */
-  function updatePreview() {
-    const previewImg = getPreviewImg();
-    console.log("[TGS] updatePreview — previewImg found:", !!previewImg);
+   function updatePreview() {
+    //  console.log("[TGS DEBUG] --- updatePreview() Started ---");
+     const previewImg = getPreviewImg();
 
-    if (!previewImg) {
-      console.error("[TGS] #gs-pers-preview-img not in DOM");
-      return;
-    }
+     if (!previewImg) {
+       console.error("[TGS DEBUG] #gs-pers-preview-img not in DOM");
+       hideLoader();
+       return;
+     }
 
-    const textValues = fields
-      .filter((f) => f.dataset.fieldType === "text")
-      .map((f) => f.value.trim());
+     const anyFilled = fields.some((f) => {
+       if (f.dataset.fieldType === "text") return f.value.trim().length > 0;
+       if (f.dataset.fieldType === "image")
+         return uploadedFileMap[f.id] != null;
+       return false;
+     });
 
-    console.log("[TGS] Text values:", textValues);
+    //  console.log("[TGS DEBUG] Are any fields filled?", anyFilled);
 
-    const hasText = textValues.some((t) => t.length > 0);
+     if (!anyFilled) {
+      //  console.log("[TGS DEBUG] No inputs — resetting to base preview image");
+       previewImg.src = cfg.previewImageUrl || "";
 
-    if (!hasText) {
-      previewImg.src = cfg.previewImageUrl || "";
-      console.log("[TGS] No text — reset to base preview image");
+       hideLoader();
 
-      const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
-      if (thumbWrap) thumbWrap.setAttribute("hidden", "");
-      return;
-    }
+       const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
+       if (thumbWrap) thumbWrap.setAttribute("hidden", "");
+       return;
+     }
 
-    showLoader();
+    //  console.log(
+    //    "[TGS DEBUG] Inputs exist. Calling showLoader() and building URL...",
+    //  );
+     showLoader();
 
-    const url = buildCloudinaryUrl(textValues);
-    const tempImg = new Image();
+     let url;
+     try {
+       url = buildCloudinaryUrl();
+      //  console.log("[TGS DEBUG] URL built successfully:", url);
+     } catch (err) {
+       console.error("[TGS DEBUG] Error building Cloudinary URL:", err);
+       hideLoader();
+       return;
+     }
 
-    tempImg.onload = () => {
-      console.log("[TGS] Cloudinary image loaded successfully:", url);
-      const pi = getPreviewImg();
-      if (pi) pi.src = url;
-      hideLoader();
+     const tempImg = new Image();
 
-      // ✨ Feed the image into the product media gallery placeholders
-      const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
-      const thumbImg = document.getElementById("gs-pers-gallery-thumb-img");
-      const mainSlide = document.getElementById("GsSlide-pers-preview");
-      const mainImg = document.getElementById("gs-pers-gallery-main-img");
+     // Safety timeout just in case Cloudinary hangs
+     const loadTimeout = setTimeout(() => {
+       console.warn(
+         "[TGS DEBUG] Preview image load TIMED OUT after 10 seconds.",
+       );
+       hideLoader();
+     }, 10000);
 
-      if (thumbWrap && thumbImg && mainSlide && mainImg) {
-        thumbImg.src = url;
-        mainImg.src = url;
-        thumbWrap.removeAttribute("hidden");
-      }
-    };
+     tempImg.onload = () => {
+      //  console.log(
+      //    "[TGS DEBUG] tempImg.onload FIRED - image loaded from Cloudinary",
+      //  );
+       clearTimeout(loadTimeout);
+       const pi = getPreviewImg();
+       if (pi) pi.src = url;
+       hideLoader();
 
-    tempImg.onerror = () => {
-      console.error("[TGS] Cloudinary image failed to load:", url);
-      console.error(
-        "[TGS] Possible causes: fetch not enabled in Cloudinary, cdn.shopify.com not whitelisted, or invalid URL",
-      );
-      const pi = getPreviewImg();
-      if (pi) pi.src = cfg.previewImageUrl || "";
-      hideLoader();
-    };
+       // Feed the image into the product media gallery placeholders
+       const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
+       const thumbImg = document.getElementById("gs-pers-gallery-thumb-img");
+       const mainSlide = document.getElementById("GsSlide-pers-preview");
+       const mainImg = document.getElementById("gs-pers-gallery-main-img");
 
-    tempImg.src = url;
-  }
+       if (thumbWrap && thumbImg && mainSlide && mainImg) {
+         thumbImg.src = url;
+         mainImg.src = url;
+         thumbWrap.removeAttribute("hidden");
+       }
+     };
+
+     tempImg.onerror = () => {
+       console.error(
+         "[TGS DEBUG] tempImg.onerror FIRED - failed to load URL:",
+         url,
+       );
+       clearTimeout(loadTimeout);
+       const pi = getPreviewImg();
+       if (pi) pi.src = cfg.previewImageUrl || "";
+       hideLoader();
+     };
+
+    //  console.log(
+    //    "[TGS DEBUG] Setting tempImg.src to trigger browser network request...",
+    //  );
+     tempImg.src = url;
+   }
 
   /* ── Debounce ─────────────────────────────────────── */
-  let previewTimer = null;
-  function schedulePreview() {
-    clearTimeout(previewTimer);
-    previewTimer = setTimeout(updatePreview, 600);
-  }
+    let previewTimer = null;
+    function schedulePreview() {
+      // console.log("[TGS DEBUG] schedulePreview() triggered. Waiting 600ms...");
+      clearTimeout(previewTimer);
+      previewTimer = setTimeout(() => {
+        // console.log("[TGS DEBUG] Debounce finished, executing updatePreview()");
+        updatePreview();
+      }, 600);
+    }
 
   /* ── Progress ─────────────────────────────────────── */
   function updateProgress() {
@@ -250,18 +305,40 @@
   fields.forEach((field, idx) => {
     if (field.dataset.fieldType === "text") {
       const counter = document.getElementById("gs-counter-" + idx);
+      const updateBtn = field.parentElement.querySelector(
+        ".gs-pers-modal__update-btn",
+      );
+
+      // Trigger on typing (with debounce)
       field.addEventListener("input", () => {
         if (counter) counter.textContent = field.value.length;
         updateProgress();
         schedulePreview();
       });
+
+      // Trigger immediately on UPDATE button click
+      if (updateBtn) {
+        updateBtn.addEventListener("click", () => {
+          updateProgress();
+          clearTimeout(previewTimer); // cancel typing delay
+          updatePreview(); // update immediately
+        });
+      }
     }
 
     if (field.dataset.fieldType === "image") {
       const uploadText = document.getElementById("gs-upload-text-" + idx);
       field.addEventListener("change", async (e) => {
         const file = e.target.files[0];
-        if (!file) return;
+
+        // Handle case where user cancels the file picker dialog
+        if (!file) {
+          if (uploadText) uploadText.textContent = "No file chosen";
+          delete uploadedFileMap[field.id];
+          updateProgress();
+          schedulePreview();
+          return;
+        }
 
         if (file.size > 5 * 1024 * 1024) {
           alert("Image must be under 5MB.");
@@ -274,16 +351,19 @@
 
         try {
           console.log("[TGS] Uploading image to Cloudinary…");
-          const url = await uploadToCloudinary(file);
-          uploadedFileMap[field.id] = url;
-          console.log("[TGS] Image uploaded:", url);
+          const data = await uploadToCloudinary(file);
+          uploadedFileMap[field.id] = {
+            public_id: data.public_id,
+            secure_url: data.secure_url,
+          };
+          console.log("[TGS] Image uploaded:", data.secure_url);
           if (uploadText) uploadText.textContent = file.name;
           updateProgress();
+          schedulePreview(); // Triggers the preview, which manages hiding the loader
         } catch (err) {
           console.error("[TGS] Upload error:", err);
           if (uploadText) uploadText.textContent = "Upload failed — try again";
-        } finally {
-          hideLoader();
+          hideLoader(); // Only manually hide here if upload completely fails
         }
       });
     }
@@ -308,7 +388,7 @@
     );
     const data = await res.json();
     if (!res.ok) throw new Error(data.error?.message || "Upload failed");
-    return data.secure_url;
+    return data;
   }
 
   /* ── Save & Review ────────────────────────────────── */
@@ -316,7 +396,7 @@
     console.log("[TGS] Save clicked — isSaved:", isSaved);
 
     if (isSaved) {
-      applyToCart();
+      closeModal();
       return;
     }
 
@@ -336,13 +416,39 @@
 
     savedData = {};
     fields.forEach((f) => {
+      let rawLabel = f.dataset.fieldLabel ? f.dataset.fieldLabel.trim() : "";
+      let label =
+        rawLabel !== ""
+          ? rawLabel
+          : f.dataset.fieldType === "image"
+            ? "Uploaded Photo"
+            : "Custom Text";
+
       if (f.dataset.fieldType === "text" && f.value.trim()) {
-        savedData[f.dataset.fieldLabel] = f.value.trim();
+        savedData[label] = f.value.trim();
       }
       if (f.dataset.fieldType === "image" && uploadedFileMap[f.id]) {
-        savedData[f.dataset.fieldLabel] = uploadedFileMap[f.id];
+        savedData[label] = uploadedFileMap[f.id].secure_url;
       }
     });
+
+    // --- Save preview image safely ---
+    try {
+      const generatedPreviewUrl = buildCloudinaryUrl();
+      if (
+        generatedPreviewUrl &&
+        generatedPreviewUrl !== cfg.previewImageUrl &&
+        generatedPreviewUrl.length < 1000
+      ) {
+        savedData["_Preview_Image"] = generatedPreviewUrl;
+      } else if (generatedPreviewUrl && generatedPreviewUrl.length >= 1000) {
+        console.warn(
+          "[TGS] Preview URL too long for Shopify properties. Skipping _Preview_Image.",
+        );
+      }
+    } catch (e) {
+      console.error("[TGS] Could not save preview image to cart properties", e);
+    }
 
     console.log("[TGS] savedData:", savedData);
 
@@ -363,17 +469,56 @@
     });
 
     isSaved = true;
-    saveTxt.textContent = "Add to Cart →";
+
+    // Change button text in case they open the modal again
+    saveTxt.textContent = "Close & Review";
     saveBtn.classList.remove("is-loading");
+
+    // 1. Inject the hidden inputs into the main form
+    injectPropertiesToForm();
+
+    // 2. Show the success badge under the trigger button
     showSavedBadge();
 
-     const persThumbBtn = document.getElementById("gs-pers-gallery-thumb-btn");
-     if (persThumbBtn) persThumbBtn.click();
+    // 3. Switch the main product gallery to the personalized image
+    const persThumbBtn = document.getElementById("gs-pers-gallery-thumb-btn");
+    if (persThumbBtn) persThumbBtn.click();
+
+    // 4. Close the modal, letting the user click the main ATC button
+    closeModal();
   });
+
+  /* ── Inject line item properties into Main Form ───── */
+  function injectPropertiesToForm() {
+    const atcForm = document.querySelector('gs-product-form form') || document.querySelector('form[data-type="add-to-cart-form"]');
+    
+    console.log("[TGS] Injecting properties to form:", !!atcForm);
+
+    if (!atcForm) {
+      console.error("[TGS] ATC form not found. Cannot inject properties.");
+      return;
+    }
+
+    // First, clear out any old properties in case they edited their personalization
+    const oldInputs = atcForm.querySelectorAll('input[name^="properties["]');
+    oldInputs.forEach(input => input.remove());
+
+    // Now, inject the fresh properties
+    Object.entries(savedData).forEach(([label, value]) => {
+      let input = document.createElement("input");
+      input.type = "hidden";
+      input.name = `properties[${label}]`;
+      input.value = value;
+      atcForm.appendChild(input);
+      console.log("[TGS] Property injected —", label, ":", value);
+    });
+  }
 
   /* ── Apply line item properties ───────────────────── */
   function applyToCart() {
-    const atcForm = document.querySelector('form[action="/cart/add"]');
+    //? get our custom form or get the default form
+    const atcForm = document.querySelector('gs-product-form form') || document.querySelector('form[data-type="add-to-cart-form"]');
+    
     console.log(
       "[TGS] applyToCart — form found:",
       !!atcForm,
@@ -382,7 +527,7 @@
     );
 
     if (!atcForm) {
-      console.error("[TGS] ATC form not found");
+      console.error("[TGS] ATC form not found. Check if gs-product-form exists in the DOM.");
       return;
     }
 
@@ -399,8 +544,12 @@
     });
 
     closeModal();
-    const atcBtn = atcForm.querySelector('[name="add"]');
+    
+    // Target the actual submit button inside your form
+    const atcBtn = atcForm.querySelector('button[type="submit"][name="add"]');
     console.log("[TGS] ATC button found:", !!atcBtn);
+    
+    // Trigger the click, which your gs-product-form JS will intercept for the AJAX add!
     if (atcBtn) atcBtn.click();
   }
 
@@ -430,6 +579,51 @@
       </svg>
       Personalisation saved
     `;
+  }
+
+  /* ── Reset Everything ─────────────────────────────── */
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      // console.log("[TGS DEBUG] Reset All clicked!");
+      
+      // CRITICAL: Kill any pending delayed previews from rapid typing
+      clearTimeout(previewTimer);
+
+      // 1. Clear all fields
+      fields.forEach((f) => {
+        if (f.dataset.fieldType === "text") {
+          f.value = "";
+          const counter = document.getElementById(
+            "gs-counter-" + f.id.split("-").pop(),
+          );
+          if (counter) counter.textContent = "0";
+        }
+        if (f.dataset.fieldType === "image") {
+          f.value = "";
+          const uploadText = document.getElementById(
+            "gs-upload-text-" + f.id.split("-").pop(),
+          );
+          if (uploadText) uploadText.textContent = "No file chosen";
+        }
+      });
+
+      // 2. Clear stored data states
+      uploadedFileMap = {};
+      savedData = {};
+      isSaved = false;
+
+      // 3. Reset CTA Button
+      if (saveTxt) saveTxt.textContent = "SAVE & REVIEW";
+      if (saveBtn) saveBtn.classList.remove("is-loading");
+
+      // 4. Reset progress and preview back to default
+      updateProgress();
+      // console.log("[TGS DEBUG] Forcing updatePreview() after reset");
+      updatePreview();
+      
+      // console.log("[TGS DEBUG] Forcing hideLoader() after reset");
+      hideLoader(); 
+    });
   }
 
   /* ── Open / Close ─────────────────────────────────── */

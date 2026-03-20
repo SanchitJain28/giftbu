@@ -11,9 +11,10 @@
   <div class="gs-media-gallery__thumbnails">
     <ul class="gs-thumbnail-list" role="list">
       {%- for media in product.media -%}
-        <li class="gs-thumbnail-list__item" data-target="GsSlide-{{ section.id }}-{{ media.id }}">
+        <li class="gs-thumbnail-list__item">
           <button
             class="gs-thumbnail-btn {% if forloop.first %}is-active{% endif %}"
+            data-target="GsSlide-{{ section.id }}-{{ media.id }}"
             aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
           >
             {{ media.preview_image | image_url: width: 150 | image_tag: loading: 'lazy', class: 'gs-thumbnail-img' }}
@@ -22,7 +23,7 @@
       {%- endfor -%}
     </ul>
 
-    <!-- ✨ ADDED: Personalization Preview Thumbnail Placeholder -->
+    <!-- Personalization Preview Thumbnail Placeholder -->
     <div id="gs-pers-gallery-thumb-wrap" class="gs-pers-thumb-wrap" hidden>
       <hr class="gs-pers-separator">
       <button
@@ -64,7 +65,7 @@
         </li>
       {%- endfor -%}
 
-      <!-- ✨ ADDED: Personalization Preview Main Image Placeholder -->
+      <!-- Personalization Preview Main Image Placeholder -->
       <li id="GsSlide-pers-preview" class="gs-main-list__item" data-media-id="pers-preview" hidden>
         <img id="gs-pers-gallery-main-img" class="gs-main-img" src="" alt="Personalized preview main" loading="lazy">
       </li>
@@ -72,12 +73,12 @@
   </div>
 </div>
 
-<!-- Helper script to handle the dynamic gallery click for the newly generated thumbnail -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.getElementById('GsMediaGallery-{{ section.id }}');
     if (!gallery) return;
 
+    // 1. Handle Thumbnail Clicks
     gallery.addEventListener('click', (e) => {
       const btn = e.target.closest('.gs-thumbnail-btn');
       if (!btn) return;
@@ -85,7 +86,6 @@
       const targetId = btn.getAttribute('data-target');
       if (!targetId) return;
 
-      // Swap active states
       gallery.querySelectorAll('.gs-thumbnail-btn').forEach((b) => b.classList.remove('is-active'));
       gallery.querySelectorAll('.gs-main-list__item').forEach((slide) => {
         slide.classList.remove('is-active');
@@ -98,6 +98,30 @@
       if (targetSlide) {
         targetSlide.classList.add('is-active');
         targetSlide.removeAttribute('hidden');
+      }
+    });
+
+    // 2. Sync Gallery with Variant Selection Change
+    document.addEventListener('change', (e) => {
+      if (e.target.matches('.gs-variant-radio')) {
+        // Wait briefly for Dawn's variant-select JS to update the JSON script block
+        setTimeout(() => {
+          const variantDataTag = document.querySelector('variant-selects [data-selected-variant]');
+          if (!variantDataTag) return;
+
+          try {
+            const variant = JSON.parse(variantDataTag.textContent);
+            if (variant && variant.featured_media) {
+              const mediaId = variant.featured_media.id;
+              const targetBtn = gallery.querySelector(`[data-target="GsSlide-{{ section.id }}-${mediaId}"]`);
+              if (targetBtn) {
+                targetBtn.click(); // Trigger the exact same logic as a manual thumbnail click
+              }
+            }
+          } catch (err) {
+            console.error('Error parsing variant JSON', err);
+          }
+        }, 50);
       }
     });
   });

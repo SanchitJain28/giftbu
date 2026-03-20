@@ -1,23 +1,53 @@
-/* Card Container */
+/* ============================================================
+   SETTINGS TOKENS — driven by Shopify section settings
+   Update these CSS variables from your Liquid render block.
+   e.g. --card-radius: {{ section.settings.card_border_radius }}px;
+   ============================================================ */
+:root {
+  --custom-product-card-radius: 16px;
+  --custom-product-card-content-padding: 12px;
+}
+
+/* ============================================================
+   CARD CONTAINER
+   ============================================================ */
 .custom-card-wrapper {
   margin-bottom: 20px;
   position: relative;
   width: 100%;
+  /* Prevents any child overflow bleed on iOS Safari */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .custom-product-card {
   display: flex;
   flex-direction: column;
   background: #FFFFFF;
-  border: 1px solid #E2E8F0; /* Soft gray border exactly like image */
-  border-radius: 16px; /* High border radius */
-  overflow: hidden; /* Clips the image cleanly to the radius */
+  border: 1px solid #E2E8F0;
+  border-radius: var(--custom-product-card-radius);
+  overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  /* Full width, no fixed sizing — grid/flexbox parent controls columns */
+  width: 100%;
 }
 
+/* Hover — lift variant (default) */
 .custom-product-card:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   transform: translateY(-4px);
+}
+
+/* Hover — shadow-only variant */
+.custom-product-card.hover-shadow:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: none;
+}
+
+/* Hover — none variant */
+.custom-product-card.hover-none:hover {
+  box-shadow: none;
+  transform: none;
 }
 
 .custom-card-link {
@@ -26,150 +56,291 @@
   height: 100%;
 }
 
-/* Image Area */
+/* ============================================================
+   IMAGE AREA
+   ============================================================ */
 .custom-card-image-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5; /* Matches the slightly taller-than-square aspect ratio */
-  background: #F4F4F4; 
+  /* Default: portrait 4/5 */
+  aspect-ratio: 4 / 5;
+  background: #F4F4F4;
   overflow: hidden;
 }
+
+/* Ratio variants — set via Liquid on the element */
+.custom-card-image-container.ratio-square  { aspect-ratio: 1 / 1; }
+.custom-card-image-container.ratio-portrait { aspect-ratio: 4 / 5; }
+.custom-card-image-container.ratio-tall    { aspect-ratio: 2 / 3; }
 
 .custom-card-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+  display: block; /* removes inline gap */
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.4s ease;
 }
 
 .custom-product-card:hover .custom-card-image {
-  transform: scale(1.05); /* Gentle zoom effect */
+  transform: scale(1.05);
 }
 
 .custom-card-image-secondary {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0;
   z-index: 1;
+  transition: opacity 0.4s ease;
 }
 
 .custom-product-card:hover .custom-card-image-secondary {
   opacity: 1;
 }
 
-/* Wishlist Button (Top Right rounded cutout look) */
+/* ============================================================
+   WISHLIST BUTTON
+   ============================================================ */
 .custom-wishlist-btn {
   position: absolute;
   top: 0;
   right: 0;
   z-index: 3;
-  width: 44px;
-  height: 44px;
-  background: #F8F9FA; /* Matches the slight off-white color from the image */
+  /* Fluid size: clamp between 36px (small mobile) and 48px (desktop) */
+  width: clamp(36px, 8vw, 48px);
+  height: clamp(36px, 8vw, 48px);
+  background: #F8F9FA;
   border: none;
-  border-bottom-left-radius: 16px; /* Creates the strict cutout shape */
+  border-bottom-left-radius: var(--custom-product-card-radius);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s ease, background 0.2s ease;
+  /* Prevent accidental text selection tap on mobile */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .custom-wishlist-btn:hover {
   background: #FFFFFF;
 }
 
-.custom-wishlist-btn:hover svg {
-  stroke: #FF4466; /* Changes to brand pink on hover */
+.custom-wishlist-btn:hover svg,
+.custom-wishlist-btn.is-wishlisted svg {
+  stroke: #FF4466;
   fill: #FF4466;
 }
 
 .custom-wishlist-btn svg {
   transition: all 0.2s ease;
+  /* Scale icon with button */
+  width: clamp(16px, 4vw, 20px);
+  height: clamp(16px, 4vw, 20px);
 }
 
-/* Content Area */
+/* ============================================================
+   CARD CONTENT
+   ============================================================ */
 .custom-card-content {
-  padding: 0px 12px 12px 12px;  
+  padding: 8px var(--custom-product-card-content-padding) var(--custom-product-card-content-padding);
   text-align: left;
   background-color: #FFFFFF;
+  /* Prevents content overflow on very narrow cards */
+  min-width: 0;
 }
 
 .custom-card-title {
   font-family: "Jost", sans-serif;
-  font-size: 1.625rem; /* Strict hardcoded REM (~18px) */
+  /* Fluid: scales between 14px (small) and 26px (large) */
+  font-size: clamp(0.875rem, 2.5vw, 1.625rem);
   font-weight: 600;
-  color: #8B9EB2; /* Slate gray exactly matching the reference */
+  color: #8B9EB2;
   line-height: 1.3;
   letter-spacing: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0 0 4px 0;
+  /* Needed for ellipsis to work inside flex/grid child */
+  min-width: 0;
+  max-width: 100%;
 }
 
 .custom-card-title-link {
   text-decoration: none;
   color: inherit;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-
+/* ============================================================
+   PRICE
+   ============================================================ */
+.custom-card-price-wrapper {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
 
 .custom-card-price {
   font-family: "Jost", sans-serif;
   font-weight: 700;
-  color: #1A1209; /* Deep blackish color */
-  font-size: 1.55rem; /* Strict hardcoded REM (~20px) */
+  color: #1A1209;
+  /* Fluid: 14px → 24px */
+  font-size: clamp(0.875rem, 2.8vw, 1.55rem);
   display: inline-block;
+  white-space: nowrap;
 }
 
-/* Meta Area (Rating & Badge Row) */
+.custom-card-compare {
+  font-family: "Jost", sans-serif;
+  color: var(--color-text-secondary, #A0AEC0);
+  /* Fluid: 12px → 18px */
+  font-size: clamp(0.75rem, 2vw, 1.125rem);
+  font-weight: 400;
+  text-decoration: line-through;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   META — RATING + TAGS
+   ============================================================ */
 .custom-card-meta {
   display: flex;
   align-items: center;
-  gap: 12px; /* Spacing between rating and delivery badge */
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  min-height: 24px;
+  /* Prevents overflow from pushing out the card */
+  overflow: hidden;
 }
 
 .custom-card-rating {
   font-family: "Jost", sans-serif;
-  font-size: 0.9375rem; /* Strict hardcoded REM (~15px) */
-  color: #71717A; /* Muted gray for the rating text */
+  /* Fluid: 12px → 15px */
+  font-size: clamp(0.75rem, 1.8vw, 0.9375rem);
+  color: #71717A;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .custom-rating-star {
-  color: #EAB308; /* Perfect gold for the star */
-  font-size: 1rem;
+  color: #EAB308;
+  font-size: 1em; /* relative to rating font-size, so it scales too */
+  line-height: 1;
 }
 
 .custom-rating-count {
-  color: #A0AEC0; /* Slightly lighter gray for the bracket text */
+  color: #A0AEC0;
+}
+
+/* ============================================================
+   TAGS
+   ============================================================ */
+.custom-tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  /* Prevents tags from stretching card width */
+  min-width: 0;
+  overflow: hidden;
 }
 
 .custom-delivery-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background-color: #F5EEFF; /* Very light lavender/purple background */
-  color: #6D28D9; /* Deep violet/purple text matching reference */
-  padding: 4px 8px;
+  gap: 4px;
+  padding: 3px 7px;
   border-radius: 4px;
   font-family: "Jost", sans-serif;
-  font-size: 0.75rem; /* Strict hardcoded REM (~12px) */
+  font-size: clamp(0.625rem, 1.5vw, 0.75rem);
   font-weight: 600;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .custom-delivery-badge svg {
   flex-shrink: 0;
+  width: 12px;
+  height: 12px;
 }
 
-/* ============================
-   MODAL STYLES (Preserved exactly as requested)
-   ============================ */
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Small mobile: ≤ 360px — tighten all spacing */
+@media (max-width: 360px) {
+  .custom-card-content {
+    padding: 6px 8px 8px;
+  }
+
+  .custom-card-meta {
+    gap: 5px;
+  }
+
+  .custom-delivery-badge {
+    padding: 2px 5px;
+  }
+}
+
+/* Mobile landscape + small tablets: 481px–767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .custom-card-title {
+    font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+  }
+}
+
+/* Tablet: 768px–1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .custom-card-content {
+    padding: 8px 14px 14px;
+  }
+}
+
+/* Desktop: 1024px+ — restore original hardcoded sizes */
+@media (min-width: 1024px) {
+  .custom-card-title {
+    font-size: 1.625rem;
+  }
+
+  .custom-card-price {
+    font-size: 1.55rem;
+  }
+
+  .custom-card-rating {
+    font-size: 0.9375rem;
+  }
+
+  .custom-delivery-badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .custom-card-content {
+    padding: 12px 12px 12px 12px;
+  }
+}
+
+/* ============================================================
+   MODAL STYLES
+   ============================================================ */
 .qa-modal {
   position: fixed;
   top: 0;
@@ -183,6 +354,10 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
+  /* Prevents modal from being pushed by virtual keyboard on mobile */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+  box-sizing: border-box;
 }
 
 .qa-modal.is-open {
@@ -198,18 +373,23 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .qa-modal__content {
   position: relative;
   background: #fff;
-  width: 90%;
+  width: 92%;
   max-width: 700px;
+  /* Max height with scroll for small screens */
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   transform: translateY(20px);
   transition: transform 0.3s ease;
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 .qa-modal.is-open .qa-modal__content {
@@ -226,6 +406,10 @@
   cursor: pointer;
   z-index: 10;
   line-height: 1;
+  /* Larger tap target on mobile */
+  padding: 4px 8px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .qa-modal__body {
@@ -237,11 +421,24 @@
   .qa-modal__body {
     flex-direction: row;
   }
+
+  .qa-product-image,
+  .qa-product-details {
+    flex: 1;
+  }
 }
 
 .qa-product-image {
-  flex: 1;
   background: #f4f4f4;
+  /* Fixed height on mobile so image doesn't dominate */
+  max-height: 280px;
+  overflow: hidden;
+}
+
+@media (min-width: 750px) {
+  .qa-product-image {
+    max-height: none;
+  }
 }
 
 .qa-product-image img {
@@ -252,21 +449,26 @@
 }
 
 .qa-product-details {
-  flex: 1;
-  padding: 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+@media (min-width: 750px) {
+  .qa-product-details {
+    padding: 30px;
+  }
+}
+
 #qa-title {
   margin: 0 0 10px;
-  font-size: 22px;
+  font-size: clamp(16px, 3.5vw, 22px);
 }
 
 .qa-price-wrapper {
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: clamp(14px, 3vw, 18px);
 }
 
 #qa-price {
@@ -277,7 +479,7 @@
   text-decoration: line-through;
   color: #888;
   margin-left: 10px;
-  font-size: 16px;
+  font-size: clamp(13px, 2.5vw, 16px);
 }
 
 .qa-variant-group {
@@ -297,6 +499,9 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 14px;
+  /* Prevents iOS zoom on focus (requires font-size ≥ 16px or this) */
+  font-size: max(16px, 1em);
 }
 
 .qa-add-btn {
@@ -310,6 +515,8 @@
   cursor: pointer;
   margin-top: 10px;
   transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .qa-add-btn:hover {
@@ -326,8 +533,4 @@
   font-size: 12px;
   margin-top: 10px;
   display: none;
-}
-.custom-wishlist-btn.is-wishlisted svg {
-  fill: #FF4466;
-  stroke: #FF4466;
 }

@@ -1,90 +1,87 @@
-{% comment %}
-  Renders product variant-picker
-
-  Accepts:
-  - product: {Object} product object.
-  - block: {Object} passing the block information.
-  - product_form_id: {String} Id of the product form to which the variant picker is associated.
-  Usage:
-  {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
-{% endcomment %}
 {%- unless product.has_only_default_variant -%}
+  {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'component-product-variant-picker.js' | asset_url }}" defer="defer"></script>
+
   <variant-selects
     id="variant-selects-{{ section.id }}"
     data-section="{{ section.id }}"
     {{ block.shopify_attributes }}
   >
     {%- for option in product.options_with_values -%}
-      {%- liquid
-        assign swatch_count = option.values | map: 'swatch' | compact | size
-        assign picker_type = block.settings.picker_type
+      <fieldset class="js product-form__input gs-variant-fieldset">
+        <legend class="form__label gs-variant-label">{{ option.name }}</legend>
 
-        if swatch_count > 0 and block.settings.swatch_shape != 'none'
-          if block.settings.picker_type == 'dropdown'
-            assign picker_type = 'swatch_dropdown'
-          else
-            assign picker_type = 'swatch'
-          endif
-        endif
-      -%}
-      {%- if picker_type == 'swatch' -%}
-        <fieldset class="js product-form__input product-form__input--swatch">
-          <legend class="form__label">
-            {{ option.name }}:
-            <span data-selected-value>
-              {{- option.selected_value -}}
-            </span>
-          </legend>
-          {% render 'product-variant-options',
-            product: product,
-            option: option,
-            block: block,
-            picker_type: picker_type
-          %}
-        </fieldset>
-      {%- elsif picker_type == 'button' -%}
-        <fieldset class="js product-form__input product-form__input--pill">
-          <legend class="form__label">{{ option.name }}</legend>
-          {% render 'product-variant-options',
-            product: product,
-            option: option,
-            block: block,
-            picker_type: picker_type
-          %}
-        </fieldset>
-      {%- else -%}
-        <div class="product-form__input product-form__input--dropdown">
-          <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
-            {{ option.name }}
-          </label>
-          <div class="select">
-            {%- if picker_type == 'swatch_dropdown' -%}
-              <span
-                data-selected-value
-                class="dropdown-swatch"
-              >
-                {% render 'swatch', swatch: option.selected_value.swatch, shape: block.settings.swatch_shape %}
-              </span>
-            {%- endif -%}
-            <select
-              id="Option-{{ section.id }}-{{ forloop.index0 }}"
-              class="select__select"
-              name="options[{{ option.name | escape }}]"
-              form="{{ product_form_id }}"
-            >
-              {% render 'product-variant-options',
-                product: product,
-                option: option,
-                block: block,
-                picker_type: picker_type
-              %}
-            </select>
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+        <div class="gs-variant-carousel" id="gs-variant-carousel-{{ option.position }}">
+          <!-- Previous Button -->
+          <button type="button" class="gs-variant-nav gs-variant-nav--prev" aria-label="Previous variants">
+            <svg viewBox="0 0 14 10" fill="none" class="icon icon-caret">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
+            </svg>
+          </button>
+
+          <!-- Carousel Track -->
+          <div class="gs-variant-track">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign val_string = value.name | default: value
+
+                # Find matching variant for image/price
+                assign target_variant = blank
+                for v in product.variants
+                  if option.position == 1 and v.option1 == val_string
+                    assign target_variant = v
+                    break
+                  elsif option.position == 2 and v.option2 == val_string
+                    assign target_variant = v
+                    break
+                  elsif option.position == 3 and v.option3 == val_string
+                    assign target_variant = v
+                    break
+                  endif
+                endfor
+
+                assign variant_image = target_variant.featured_media | default: product.featured_media
+                assign variant_price = target_variant.price | money
+              -%}
+
+              <div class="gs-variant-slide">
+                <input
+                  type="radio"
+                  id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                  name="{{ option.name }}"
+                  value="{{ val_string | escape }}"
+                  form="{{ product_form_id }}"
+                  {% if option.selected_value == val_string %}
+                    checked
+                  {% endif %}
+                  data-option-value-id="{{ value.id | default: val_string | escape }}"
+                  class="gs-variant-radio visually-hidden"
+                >
+                <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" class="gs-variant-card">
+                  <div class="gs-variant-card__image-wrap">
+                    {{
+                      variant_image
+                      | image_url: width: 300
+                      | image_tag: loading: 'lazy', class: 'gs-variant-card__img', alt: val_string
+                    }}
+                  </div>
+                  <div class="gs-variant-card__info">
+                    <span class="gs-variant-card__title">{{ val_string }}</span>
+                    <span class="gs-variant-card__price">{{ variant_price }}</span>
+                  </div>
+                </label>
+              </div>
+            {%- endfor -%}
           </div>
+
+          <!-- Next Button -->
+          <button type="button" class="gs-variant-nav gs-variant-nav--next" aria-label="Next variants">
+            <svg viewBox="0 0 14 10" fill="none" class="icon icon-caret">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
+            </svg>
+          </button>
         </div>
-      {%- endif -%}
+      </fieldset>
     {%- endfor -%}
 
     <script type="application/json" data-selected-variant>

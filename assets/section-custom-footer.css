@@ -1,156 +1,331 @@
-.gs-footer {
-  background-color: #030811; /* Deep navy/black from the image */
-  color: #FFFFFF;
-  padding: 60px 0;
+/* ============================================================================
+   CUSTOM FOOTER BASE
+   ============================================================================ */
+.gs-custom-footer {
   width: 100%;
+  overflow: hidden;
+  background-color: #F8F9FA; /* Light grey matching your first image */
 }
 
-.gs-footer__wrapper {
+.gs-footer-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
-/* --- Top Logo Row --- */
-.gs-footer__top {
-  margin-bottom: 50px;
+/* ============================================================================
+   1. INLINE LINK GROUPS (Category/Manual links)
+   ============================================================================ */
+.gs-footer-links-area {
+  background-color: #F8F9FA;
+  padding: 30px 0;
 }
 
-.gs-footer__logo {
-  max-width: 260px; /* Adjust based on your actual logo image size */
-  height: auto;
-  display: block;
+.gs-link-group {
+  margin-bottom: 32px;
 }
 
-.gs-footer__logo-text {
-  font-family: "Cormorant Garamond", serif;
-  color: #fff;
-  font-size: 24px;
-  margin: 0;
-}
-
-/* --- Main Grid Layout --- */
-.gs-footer__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
-}
-
-@media screen and (min-width: 768px) {
-  .gs-footer__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  .gs-footer__grid {
-    /* Proportions explicitly matching the 5 columns in the image */
-    grid-template-columns: 1.5fr 1fr 1.2fr 1.5fr 1fr; 
-    gap: 30px;
-    align-items: start;
-  }
-}
-
-/* --- Column 1: Contact --- */
-.gs-contact-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.gs-contact-item:last-child {
+.gs-link-group:last-child {
   margin-bottom: 0;
 }
 
-.gs-contact-icon {
-  width: 44px;
-  height: 44px;
-  background-color: #FDF6EE; /* Light cream */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.gs-link-group__title {
+  font-family: "Jost", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1A1209;
+  margin: 0 0 12px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
-.gs-contact-icon svg {
-  width: 20px;
-  height: 20px;
-  color: #030811; /* Dark icon color */
-}
-
-.gs-contact-item a {
-  font-family: 'Jost', sans-serif;
-  color: #FFFFFF;
-  font-size: 15px;
-  font-weight: 500;
-  text-decoration: none;
-  letter-spacing: 0.3px;
-  transition: opacity 0.3s ease;
-}
-
-.gs-contact-item a:hover {
-  opacity: 0.7;
-}
-
-/* --- Menu Columns --- */
-.gs-footer-menu {
+.gs-link-group__list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: column;
-  gap: 20px; /* Generous gap to match image */
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 8px;
 }
 
-.gs-footer-menu a {
-  font-family: 'Jost', sans-serif;
-  color: #FFFFFF;
-  font-size: 15px;
-  font-weight: 500;
+.gs-link-group__list li {
+  display: flex;
+  align-items: center;
+}
+
+/* The Pipe Separator | */
+.gs-link-group__list li:not(:last-child)::after {
+  content: '|';
+  color: #A0A0A0;
+  font-size: 0.875rem;
+  margin: 0 12px;
+  font-weight: 300;
+}
+
+.gs-link-group__list a {
+  font-family: "Jost", sans-serif;
+  font-size: 1.15rem;
+  color: #4A4A4A;
   text-decoration: none;
-  letter-spacing: 0.3px;
-  transition: opacity 0.3s ease;
+  transition: color 0.2s ease;
 }
 
-.gs-footer-menu a:hover {
-  opacity: 0.7;
+.gs-link-group__list a:hover {
+  color: #D32F2F; /* Accent red */
 }
 
-/* --- Column 5: Social --- */
-.gs-social-title {
-  font-family: 'Jost', sans-serif;
-  color: #FFFFFF;
-  font-size: 15px;
+/* ============================================================================
+   2. STATS SECTION
+   ============================================================================ */
+.gs-footer-stats-area {
+  background-color: #FFFFFF;
+  padding: 60px 0;
+  border-top: 1px solid #E5E5E5;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.gs-stats-flex {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.gs-stats-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.gs-stats-banner__title {
+  font-family: "Jost", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #D32F2F;
+  text-transform: uppercase;
+  transform: rotate(-90deg);
+  margin: 0 -30px 0 0;
+}
+
+.gs-stats-banner__line {
+  width: 8px;
+  height: 140px;
+  background-color: #D32F2F;
+  border-radius: 4px;
+}
+
+.gs-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  width: 100%;
+}
+
+.gs-stat-block {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gs-stat-block__number {
+  font-family: "Jost", sans-serif;
+  font-size: 5.5rem;
+  font-weight: 600;
+  color: #BDBDBD;
+  line-height: 1;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.gs-stat-small {
+  font-size: 1.75rem;
+  color: #9E9E9E;
+  margin: 0 6px;
   font-weight: 500;
-  margin: 0 0 20px 0;
 }
 
-.gs-social-icons {
+.gs-stat-block__text {
+      font-family: Jost,sans-serif;
+    font-size: 2.025rem;
+    font-weight: 600;
+    color: #d32f2f;
+    line-height: 23px;
+    margin: 0;
+    letter-spacing: 0px;
+}
+
+/* ============================================================================
+   3. BOTTOM AREA (Apps, Logo, Socials)
+   ============================================================================ */
+.gs-footer-bottom-area {
+  background-color: #F8F9FA;
+  padding: 20px 0 20px 0;
+}
+
+.gs-bottom-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #E5E5E5;
+  padding-bottom: 40px;
+  margin-bottom: 24px;
+}
+
+.gs-bottom-heading {
+  font-family: "Jost", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1A1209;
+  margin: 0 0 16px 0;
+}
+
+.gs-app-badges {
   display: flex;
   gap: 16px;
 }
 
-.gs-social-icons a {
-  width: 44px;
-  height: 44px;
-  background-color: #FDF6EE; /* Light cream */
-  border-radius: 50%;
+.gs-app-badges img {
+  display: block;
+}
+
+.gs-bottom-logo img {
+  max-width: 140px;
+  height: auto;
+}
+
+.gs-bottom-logo-text {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3rem;
+  color: #D32F2F;
+  margin: 0;
+  text-decoration: none;
+}
+
+.gs-social-badges {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Ensures custom icons behave correctly without inline CSS */
+.gs-custom-icon {
+  object-fit: contain;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.gs-custom-icon:hover {
+  transform: translateY(-3px);
+}
+
+/* ============================================================================
+   4. COPYRIGHT & PAYMENTS
+   ============================================================================ */
+.gs-bottom-copyright-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  justify-content: space-between;
 }
 
-.gs-social-icons a svg {
-  width: 18px;
-  height: 18px;
-  color: #030811; /* Dark icon color */
+.gs-copyright {
+  font-family: "Jost", sans-serif;
+  font-size: 1.275rem;
+  color: #757575;
+  margin: 0;
 }
 
-.gs-social-icons a:hover {
-  transform: translateY(-3px);
-  background-color: #EBDDCB; /* Slightly darker cream on hover */
+.gs-payments-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gs-payments-title {
+  font-family: "Jost", sans-serif;
+  font-size: 1rem;
+  color: #1A1209;
+  font-weight: 500;
+}
+
+.gs-payment-badges {
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================================
+   RESPONSIVE OVERRIDES
+   ============================================================================ */
+@media screen and (max-width: 1100px) {
+  .gs-stats-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .gs-stats-banner {
+    flex-direction: column;
+  }
+
+  .gs-stats-banner__title {
+    transform: none;
+    margin: 0;
+  }
+
+  .gs-stats-banner__line {
+    width: 120px;
+    height: 6px;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .gs-bottom-main-row {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .gs-app-badges,
+  .gs-social-badges {
+    justify-content: center;
+  }
+
+  .gs-bottom-copyright-row {
+    flex-direction: column-reverse;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .gs-payments-wrapper {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .gs-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .gs-stat-block__number {
+    font-size: 4.5rem;
+  }
+  
+  .gs-link-group__list {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* Remove the pipe separator on mobile since links are stacked vertically */
+  .gs-link-group__list li:not(:last-child)::after {
+    display: none;
+  }
+
+  .gs-stat-block__text {
+        font-size: 1.425rem;
+  }
 }

@@ -2,6 +2,8 @@
   Renders a product card strictly matching the provided reference image.
   Accepts:
   - card_product: {Object} Product Liquid object
+
+  Note: Display toggles are controlled globally via Theme Settings > Product Cards
 {% endcomment %}
 
 {%- if card_product and card_product != empty -%}
@@ -15,32 +17,36 @@
   {{ 'component-card-custom.css' | asset_url | stylesheet_tag }}
 
   <div class="custom-card-wrapper">
-    <div class="custom-product-card">
-      <div class="custom-card-image-container">
-        <!-- Wishlist / Heart Button (Top Right) -->
-        <button
-          type="button"
-          class="custom-wishlist-btn gs-wishlist-btn"
-          data-product-id="{{ card_product.id }}"
-          data-product-title="{{ card_product.title | escape }}"
-          data-product-image="{{ card_product.featured_media | image_url: width: 600 }}"
-          data-product-url="{{ card_product.url }}"
-          data-product-price="{{ card_product.price | money }}"
-          aria-label="Add {{ card_product.title | escape }} to wishlist"
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+    <div
+      class="custom-product-card hover-{{ settings.card_hover_effect }}"
+      style="--custom-product-card-radius: {{ settings.card_border_radius }}px; --custom-product-card-content-padding: {{ settings.card_content_padding }}px;"
+    >
+      <div class="custom-card-image-container ratio-{{ settings.card_image_ratio }}">
+        {%- if settings.card_show_wishlist -%}
+          <button
+            type="button"
+            class="custom-wishlist-btn gs-wishlist-btn"
+            data-product-id="{{ card_product.id }}"
+            data-product-title="{{ card_product.title | escape }}"
+            data-product-image="{{ card_product.featured_media | image_url: width: 600 }}"
+            data-product-url="{{ card_product.url }}"
+            data-product-price="{{ card_product.price | money }}"
+            aria-label="Add {{ card_product.title | escape }} to wishlist"
           >
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        </button>
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+        {%- endif -%}
 
         <a href="{{ card_product.url }}" class="custom-card-link">
           {%- if card_product.featured_media -%}
@@ -52,8 +58,7 @@
               width="{{ card_product.featured_media.width }}"
               height="{{ card_product.featured_media.height }}"
             >
-
-            {%- if card_product.media[1] != null -%}
+            {%- if card_product.media[1] != null and settings.card_show_hover_image -%}
               <img
                 src="{{ card_product.media[1] | image_url: width: 800 }}"
                 alt="{{ card_product.media[1].alt | escape }}"
@@ -70,91 +75,129 @@
       </div>
 
       <div class="custom-card-content">
-        <!-- Title -->
         <h3 class="custom-card-title">
           <a href="{{ card_product.url }}" class="custom-card-title-link">
-            {{ card_product.title | escape | default: 'Snow-Kissed Strawberry Delight' }}
+            {{ card_product.title | escape }}
           </a>
         </h3>
 
-        <!-- Price -->
         <div class="custom-card-price-wrapper">
-          <span class="custom-card-price">{{ price | default: 74500 | money }}</span>
-        </div>
-
-        <!-- Rating & Delivery Badge Row -->
-        <div class="custom-card-meta">
-          <!--
-            Mocking Rating to match image. You can replace with {{ card_product.metafields.reviews.rating.value }}
-          -->
-          <div class="custom-card-rating">
-            4.3 <span class="custom-rating-star">★</span> <span class="custom-rating-count">(4)</span>
-          </div>
-
-          <div class="custom-delivery-badge">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+          <span class="custom-card-price">{{ price | money }}</span>
+          {%- if settings.card_show_compare_at_price and compare_at_price > price -%}
+            <span class="custom-card-compare"
+              ><s>{{ compare_at_price | money }}</s></span
             >
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-            Same Day Delivery
-          </div>
+          {%- endif -%}
         </div>
+
+        {%- if settings.card_show_rating or settings.card_show_tags -%}
+          <div class="custom-card-meta">
+            {%- if settings.card_show_rating -%}
+              {%- liquid
+                assign rating_value = card_product.metafields.reviews.rating.value | strip
+                assign rating_count = card_product.metafields.reviews.rating_count | strip
+              -%}
+              {%- if rating_value != blank -%}
+                <div class="custom-card-rating">
+                  {{ rating_value }}
+                  <span class="custom-rating-star">★</span>
+                  <span class="custom-rating-count">({{ rating_count }})</span>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if settings.card_show_tags and card_product.tags.size > 0 -%}
+              {%- liquid
+                assign tag_styles_raw = shop.metafields.custom.tag_styles.value
+              -%}
+              <div class="custom-tags-wrapper">
+                {%- for tag in card_product.tags limit: settings.card_max_tags -%}
+                  {%- liquid
+                    assign tag_key = tag | handleize
+                    assign tag_config = null
+                    if tag_styles_raw != blank
+                      assign tag_config = tag_styles_raw[tag_key]
+                    endif
+                    assign tag_label = tag
+                    assign tag_bg = '#F5EEFF'
+                    assign tag_color = '#6D28D9'
+                    assign tag_border = 'transparent'
+                    assign tag_icon = ''
+                    if tag_config != blank
+                      assign tag_label = tag_config.label | default: tag
+                      assign tag_bg = tag_config.bg | default: '#F5EEFF'
+                      assign tag_color = tag_config.color | default: '#6D28D9'
+                      assign tag_border = tag_config.border | default: 'transparent'
+                      assign tag_icon = tag_config.icon | default: ''
+                    endif
+                  -%}
+                  <div
+                    class="custom-delivery-badge"
+                    style="background-color: {{ tag_bg }}; color: {{ tag_color }}; border: 1px solid {{ tag_border }};"
+                  >
+                    {%- unless tag_icon == blank -%}
+                      <img
+                        src="{{ tag_icon }}"
+                        alt=""
+                        width="12"
+                        height="12"
+                        style="width:12px;height:12px;object-fit:contain;flex-shrink:0;"
+                        loading="lazy"
+                      >
+                    {%- endunless -%}
+                    {{ tag_label }}
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </div>
 
 {%- else -%}
-  <!-- Empty State strictly matching the image -->
   <div class="custom-card-wrapper">
-    <div class="custom-product-card">
-      <div class="custom-card-image-container">
+    <div
+      class="custom-product-card hover-{{ settings.card_hover_effect }}"
+      style="--custom-product-card-radius: {{ settings.card_border_radius }}px; --custom-product-card-content-padding: {{ settings.card_content_padding }}px;"
+    >
+      <div class="custom-card-image-container ratio-{{ settings.card_image_ratio }}">
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg custom-card-image' }}
       </div>
       <div class="custom-card-content">
         <h3 class="custom-card-title">Snow-Kissed Strawberry Delight</h3>
         <div class="custom-card-price-wrapper">
           <span class="custom-card-price">₹ 745</span>
+          {%- if settings.card_show_compare_at_price -%}
+            <span class="custom-card-compare"><s>₹ 999</s></span>
+          {%- endif -%}
         </div>
-        <div class="custom-card-meta">
-          <div class="custom-card-rating">
-            4.3 <span class="custom-rating-star">★</span> <span class="custom-rating-count">(4)</span>
+        {%- if settings.card_show_rating or settings.card_show_tags -%}
+          <div class="custom-card-meta">
+            {%- if settings.card_show_rating -%}
+              <div class="custom-card-rating">
+                4.3 <span class="custom-rating-star">★</span>
+                <span class="custom-rating-count">(4)</span>
+              </div>
+            {%- endif -%}
+            {%- if settings.card_show_tags -%}
+              <div class="custom-tags-wrapper">
+                <div
+                  class="custom-delivery-badge"
+                  style="background-color:#F5EEFF;color:#6D28D9;border:1px solid transparent;"
+                >
+                  Same Day Delivery
+                </div>
+              </div>
+            {%- endif -%}
           </div>
-          <div class="custom-delivery-badge">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-            Same Day Delivery
-          </div>
-        </div>
+        {%- endif -%}
       </div>
     </div>
   </div>
 {%- endif -%}
 
-<!-- SHARED MODAL STRUCTURE (Preserved from your original code to avoid breaking existing JS) -->
 {% unless request.design_mode %}
   <div id="quick-add-modal" class="qa-modal" aria-hidden="true">
     <div class="qa-modal__overlay"></div>

@@ -50,11 +50,49 @@
         "logo_width": 100,
         "drawer_menu": "main-menu"
       }
+    },
+    "section_marquee_69eBKe": {
+      "type": "section-marquee",
+      "blocks": {
+        "text_hhXamt": {
+          "type": "text",
+          "settings": {
+            "text": "Curated With Love"
+          }
+        },
+        "text_R8AqrP": {
+          "type": "text",
+          "settings": {
+            "text": "Premium Corporate Gifting"
+          }
+        },
+        "text_wcHbwb": {
+          "type": "text",
+          "settings": {
+            "text": "Worldwide Shipping"
+          }
+        }
+      },
+      "block_order": [
+        "text_hhXamt",
+        "text_R8AqrP",
+        "text_wcHbwb"
+      ],
+      "name": "Moving Marquee",
+      "settings": {
+        "bg_color": "#F5EFE6",
+        "text_color": "#1A1209",
+        "border_color": "#D9CABB",
+        "accent_color": "#C49A3C",
+        "speed": 20,
+        "direction": "left"
+      }
     }
   },
   "order": [
     "announcement-bar",
     "header",
-    "section_header_BHJfF8"
+    "section_header_BHJfF8",
+    "section_marquee_69eBKe"
   ]
 }

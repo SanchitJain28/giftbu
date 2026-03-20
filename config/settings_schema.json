@@ -1,5 +1,91 @@
 [
   {
+    "name": "Custom Product Cards",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "card_show_wishlist",
+        "label": "Show wishlist button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_compare_at_price",
+        "label": "Show compare-at price",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_rating",
+        "label": "Show product rating",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_tags",
+        "label": "Show product tags",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "card_max_tags",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "label": "Maximum tags to show",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "card_border_radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Card border radius",
+        "default": 16
+      },
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image aspect ratio",
+        "options": [
+          { "value": "square", "label": "Square (1:1)" },
+          { "value": "portrait", "label": "Portrait (4:5)" },
+          { "value": "tall", "label": "Tall (2:3)" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "select",
+        "id": "card_hover_effect",
+        "label": "Card hover effect",
+        "options": [
+          { "value": "lift", "label": "Lift (translate up)" },
+          { "value": "shadow", "label": "Shadow only" },
+          { "value": "none", "label": "None" }
+        ],
+        "default": "lift"
+      },
+      {
+        "type": "range",
+        "id": "card_content_padding",
+        "min": 8,
+        "max": 24,
+        "step": 4,
+        "unit": "px",
+        "label": "Card content padding",
+        "default": 12
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_hover_image",
+        "label": "Show secondary image on hover",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Cloudinary",
     "settings": [
       {

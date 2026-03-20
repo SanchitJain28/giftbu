@@ -43,27 +43,29 @@
           <button type="button" class="gs-pers-modal__reset-btn">Reset All</button>
         </div>
 
-        <!-- Info & Progress -->
-        <div class="gs-pers-modal__info-row">
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
-          <span>It takes just about a minute</span>
-        </div>
+        <!-- Info & Progress (Only show if multiple steps exist) -->
+        {% if config.fields.size > 1 %}
+          <div class="gs-pers-modal__info-row">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>It takes just about a minute</span>
+          </div>
 
-        <div class="gs-pers-modal__progress-bar">
-          <div class="gs-pers-modal__progress-fill" id="gs-pers-progress" style="width: 100%"></div>
-        </div>
+          <div class="gs-pers-modal__progress-bar">
+            <div class="gs-pers-modal__progress-fill" id="gs-pers-progress" style="width: 0%"></div>
+          </div>
+        {% endif %}
 
         <!-- Fields -->
         <div class="gs-pers-modal__fields" id="gs-pers-fields">
@@ -72,7 +74,7 @@
               <label class="gs-pers-modal__label" for="gs-pers-field-{{ forloop.index0 }}">
                 {{ field.label }}
                 {% if field.type == 'text' %}
-                  (Upto {{ field.maxChars }} characters)
+                  (<span id="gs-counter-{{ forloop.index0 }}">0</span>/{{ field.maxChars }})
                 {% endif %}
               </label>
 
@@ -103,9 +105,10 @@
                     aria-label="{{ field.label }}"
                   >
                   <label class="gs-pers-modal__upload-label" for="gs-pers-field-{{ forloop.index0 }}">
-                    <span class="gs-pers-modal__upload-text" id="gs-upload-text-{{ forloop.index0 }}"
-                      >Click to upload photo</span
-                    >
+                    <span class="gs-pers-modal__btn">Choose File</span>
+                    <span class="gs-pers-modal__upload-text" id="gs-upload-text-{{ forloop.index0 }}">
+                      No file chosen
+                    </span>
                   </label>
                 </div>
               {% endif %}

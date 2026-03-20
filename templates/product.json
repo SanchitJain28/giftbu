@@ -16,9 +16,78 @@
           "type": "breadcrumb",
           "settings": {}
         },
+        "highlight_badge_rMBAGE": {
+          "type": "highlight_badge",
+          "settings": {
+            "required_tag": "candles",
+            "icon": "shopify://shop_images/candle.png",
+            "text": "candles",
+            "bg_color": "#fff8e7",
+            "text_color": "#4e342e"
+          }
+        },
+        "highlight_badge_L3dhEU": {
+          "type": "highlight_badge",
+          "settings": {
+            "required_tag": "india",
+            "icon": "shopify://shop_images/gate-of-india.png",
+            "text": "india",
+            "bg_color": "#fff3e0",
+            "text_color": "#1a237e"
+          }
+        },
+        "highlight_badge_qUecmi": {
+          "type": "highlight_badge",
+          "settings": {
+            "required_tag": "home-decor",
+            "icon": "shopify://shop_images/shelf.png",
+            "text": "home-decor",
+            "bg_color": "#f5f5dc",
+            "text_color": "#5c4033"
+          }
+        },
+        "highlight_badge_nQEP3W": {
+          "type": "highlight_badge",
+          "settings": {
+            "required_tag": "gifting",
+            "icon": "shopify://shop_images/gift_1.png",
+            "text": "gifting",
+            "bg_color": "#722f37",
+            "text_color": "#d4af37"
+          }
+        },
+        "highlight_badge_fBNeCt": {
+          "type": "highlight_badge",
+          "settings": {
+            "required_tag": "premium",
+            "icon": "shopify://shop_images/premium.png",
+            "text": "premium",
+            "bg_color": "#c9a227",
+            "text_color": "#000000"
+          }
+        },
+        "highlight_badge_yGNrfa": {
+          "type": "highlight_badge",
+          "settings": {
+            "required_tag": "personalizable",
+            "icon": "shopify://shop_images/pencil_1.png",
+            "text": "personalizable",
+            "bg_color": "#6b4bcc",
+            "text_color": "#ffffff"
+          }
+        },
         "title": {
           "type": "title",
           "settings": {}
+        },
+        "custom_rating_VQqzrM": {
+          "type": "custom_rating",
+          "settings": {
+            "rating_value": "4.5",
+            "ratings_count": "10",
+            "reviews_count": "1",
+            "star_color": "#fabb04"
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -61,7 +130,14 @@
       },
       "block_order": [
         "breadcrumb_mqb4WA",
+        "highlight_badge_rMBAGE",
+        "highlight_badge_L3dhEU",
+        "highlight_badge_qUecmi",
+        "highlight_badge_nQEP3W",
+        "highlight_badge_fBNeCt",
+        "highlight_badge_yGNrfa",
         "title",
+        "custom_rating_VQqzrM",
         "variant_picker",
         "price_and_quantity_riUhmC",
         "promo_banner_n8wQgq",
@@ -81,7 +157,7 @@
         "image_zoom": "lightbox",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 36,
+        "padding_top": 12,
         "padding_bottom": 12
       }
     },

@@ -1,0 +1,635 @@
+/* section-cart.css */
+.gs-cart-page {
+  min-height: 100vh;
+  padding-bottom: 120px; /* Space for sticky footer */
+}
+
+.gs-cart-container {
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+/* Header Section */
+.gs-cart-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.gs-cart-title {
+  font-family: var(--font-heading-family, "Cormorant Garamond", serif);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 12px 0;
+}
+
+.gs-cart-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  font-family: "Jost", sans-serif;
+}
+
+.gs-cart-location svg {
+  width: 16px;
+  height: 16px;
+  fill: #8D7BFF; /* Matching the purple map pin */
+}
+
+.gs-location-badge {
+  border: 1px solid #8D7BFF;
+  color: #8D7BFF;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Empty Cart Visibility Logic */
+.gs-cart-empty {
+  display: none; 
+  text-align: center;
+  padding: 64px 0;
+}
+
+.is-empty .gs-cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gs-cart-empty__icon {
+  margin-bottom: 24px;
+  color: var(--color-border);
+}
+
+.gs-cart-empty h2 {
+  font-family: var(--font-heading-family, "Cormorant Garamond", serif);
+  font-size: 32px;
+  color: var(--color-text-primary);
+  margin: 0 0 12px 0;
+}
+
+.gs-cart-empty p {
+  font-family: "Jost", sans-serif;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  margin: 0 0 32px 0;
+  max-width: 400px;
+}
+
+.gs-cart-empty-btn {
+  background-color: var(--color-accent-gold, #C49A3C);
+  color: #fff;
+  padding: 16px 40px;
+  border-radius: 4px;
+  font-family: "Jost", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.gs-cart-empty-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.is-empty .gs-cart-contents,
+.is-empty .gs-cart-header,
+.is-empty #main-cart-footer {
+  display: none !important;
+}
+
+/* Cart Items Wrapper */
+.gs-cart-items-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cart__items--disabled {
+  pointer-events: none;
+}
+
+/* Individual Cart Item */
+.gs-cart-item-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 10px;
+}
+
+.gs-cart-item-card {
+      flex: 1;
+    display: flex;
+    gap: 24px;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--color-shadow);
+    position: relative;
+    /* background-color: var(--color-surface, #FDFAF6); */
+    overflow: hidden;
+    border: 1px solid #d5d5d5;
+}
+
+.gs-cart-item-card.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.gs-cart-item__media {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.gs-cart-item__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Item Details */
+.gs-cart-item__details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 8px;
+}
+
+.gs-cart-item__name {
+  font-family: "Jost", sans-serif;
+  font-size: 18px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.gs-cart-item__name:hover {
+  text-decoration: underline;
+}
+
+.gs-cart-item__props {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+}
+
+/* Price & Quantity */
+.gs-cart-item__price-qty {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 8px;
+}
+
+.gs-cart-item__price {
+  font-family: "Jost", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #DD3355; 
+  text-align: right;
+}
+
+/* Quantity Input */
+.gs-cart-qty {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  height: 36px;
+  background: var(--color-surface);
+}
+
+.gs-cart-qty__btn {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  transition: opacity 0.2s;
+}
+
+.gs-cart-qty__btn:hover {
+  opacity: 0.6;
+}
+
+.gs-cart-qty__input {
+  width: 32px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-family: "Jost", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0;
+  color: var(--color-text-primary);
+  -moz-appearance: textfield;
+}
+
+.gs-cart-qty__input::-webkit-outer-spin-button,
+.gs-cart-qty__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Side Action Buttons */
+.gs-cart-item__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gs-action-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-surface, #FDFAF6);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px var(--color-shadow);
+  transition: all 0.2s ease;
+  color: var(--color-text-primary);
+}
+
+.gs-action-btn:hover {
+  background: var(--color-bg-primary);
+  transform: translateY(-2px);
+}
+
+.gs-action-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* Sticky Footer */
+.gs-cart-footer-sticky {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--color-surface, #FDFAF6);
+  box-shadow: 0 -4px 16px var(--color-shadow);
+  z-index: 100;
+  padding: 20px 0;
+}
+
+.gs-cart-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gs-cart-footer__totals {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gs-cart-footer__label {
+  font-family: "Jost", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.gs-cart-footer__price {
+  font-family: "Jost", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #DD3355; 
+}
+
+.gs-cart-footer__checkout-btn {
+  background-color: #DD3355;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 16px 48px;
+  font-family: "Jost", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.3s ease;
+}
+
+.gs-cart-footer__checkout-btn:hover {
+  background-color: #B92845;
+}
+
+.gs-cart-footer__checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Beautiful Loading Spinner Overlay */
+.loading__spinner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(253, 250, 246, 0.75); 
+  backdrop-filter: blur(2px);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: none; 
+}
+
+.loading__spinner.hidden {
+  display: none !important;
+}
+
+/* Stop Dawn from hiding elements when loading */
+.gs-cart-item-card .loading__spinner:not(.hidden) ~ * {
+  visibility: visible !important;
+  opacity: 0.5; 
+  pointer-events: none;
+}
+
+.loading__spinner svg {
+  width: 40px;
+  height: 40px;
+  color: var(--color-accent-gold, #C49A3C);
+  animation: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes spinner { 
+  0% { transform: rotate(0deg); } 
+  100% { transform: rotate(360deg); } 
+}
+
+/* --- MOBILE ADAPTATIONS (UPDATED FOR COMPACT INLINE LAYOUT) --- */
+@media screen and (max-width: 768px) {
+  .gs-cart-page {
+    padding-bottom: 90px; /* Less space needed for smaller footer */
+  }
+  .gs-cart-container {
+    padding: 16px 12px; /* Remove bulky container padding */
+  }
+  .gs-cart-header {
+    margin-bottom: 24px;
+  }
+  .gs-cart-title {
+    font-size: 28px;
+  }
+  
+  /* Row Wrap */
+  .gs-cart-item-row {
+    flex-direction: row; /* Force actions to stay on the right */
+    align-items: center;
+    gap: 10px; /* Tighter gap to actions */
+  }
+  
+  /* Card Layout via CSS Grid */
+  .gs-cart-item-card {
+        display: grid;
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px 12px;
+    padding: 12px;
+    margin: 0px 8px;
+  }
+  
+  .gs-cart-item__media {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 80px; /* Smaller image */
+    height: 80px;
+  }
+  
+  .gs-cart-item__details {
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 0;
+  }
+  
+  .gs-cart-item__name {
+    font-size: 15px; /* Smaller text */
+    margin-bottom: 4px;
+  }
+  
+  .gs-cart-item__price-qty {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    flex-direction: row; /* Force Price and Qty inline */
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
+  }
+  
+  .gs-cart-item__price {
+    font-size: 16px; /* Smaller price */
+    text-align: left;
+  }
+  
+  .gs-cart-qty {
+    height: 32px; /* Smaller quantity box */
+  }
+  .gs-cart-qty__btn {
+    width: 28px;
+  }
+  .gs-cart-qty__input {
+    width: 28px;
+    font-size: 14px;
+  }
+  
+  /* Action Buttons (Right Side) */
+  .gs-cart-item__actions {
+    flex-direction: column; /* Stacked just like desktop */
+    gap: 8px;
+  }
+  .gs-action-btn {
+    width: 36px; /* Smaller action buttons */
+    height: 36px;
+  }
+  .gs-action-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Compact Footer */
+  .gs-cart-footer-sticky {
+    padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+  }
+  .gs-cart-footer__inner {
+    flex-direction: row; /* Force inline layout */
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .gs-cart-footer__totals {
+    flex-direction: column; /* Stack Label and Price to save horizontal space */
+    align-items: flex-start;
+    gap: 0px;
+  }
+  .gs-cart-footer__label {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  .gs-cart-footer__price {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+  .gs-cart-footer__checkout {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .gs-cart-footer__checkout-btn {
+    width: auto;
+    padding: 12px 16px;
+    font-size: 13px;
+    white-space: nowrap; /* Prevent checkout text from wrapping */
+  }
+}
+
+/* ============================================================
+   Cart Item Properties (Personalization Details)
+   ============================================================ */
+.gs-cart-item__props-wrapper {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gs-cart-item__props-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-accent-gold, #C49A3C);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.gs-cart-item__props-list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gs-cart-prop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text-secondary, #6B5744);
+}
+
+.gs-cart-prop__label {
+  font-weight: 500;
+  margin: 0;
+}
+
+.gs-cart-prop__value {
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Uploaded Image Thumbnail Styling */
+.gs-cart-prop__img-link {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--color-border, #D9CABB);
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+  background: #fff;
+}
+
+.gs-cart-prop__img-link:hover {
+  opacity: 0.85;
+  border-color: var(--color-accent-gold, #C49A3C);
+}
+
+.gs-cart-prop__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Quick Preview Link */
+.gs-cart-preview-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-accent-gold, #C49A3C);
+  text-decoration: none;
+  margin-top: 4px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.gs-cart-preview-link:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Fixes: Quantity Input, Wishlist Active state, Location
+   ============================================================ */
+
+/* Fixes Dawn's global.js SVG click absorption issue */
+.gs-cart-qty__btn svg {
+  pointer-events: none;
+}
+
+/* Active Wishlist icon fill */
+.gs-wishlist-btn.is-wishlisted svg {
+  fill: #DD3355; 
+  stroke: #DD3355;
+  transition: all 0.3s ease;
+}
+
+/* Format location badge properly as a button */
+.gs-cart-location .gs-location-badge {
+  color: #8D7BFF;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.gs-cart-location .gs-location-badge:hover {
+  opacity: 0.8;
+}

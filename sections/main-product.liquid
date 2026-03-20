@@ -93,6 +93,104 @@
 
           {%- for block in section.blocks -%}
             {%- case block.type -%}
+              {%- when 'custom_rating' -%}
+                {%- liquid
+                  assign rating_val = block.settings.rating_value | plus: 0 | default: 5
+                  assign ratings_count = block.settings.ratings_count | default: '0'
+                  assign reviews_count = block.settings.reviews_count | default: '0'
+                  assign reviews_num = reviews_count | plus: 0
+
+                  assign full_stars = rating_val | floor
+                  assign decimal = rating_val | modulo: 1
+                  assign half_star = 0
+                  if decimal >= 0.3 and decimal <= 0.7
+                    assign half_star = 1
+                  elsif decimal > 0.7
+                    assign full_stars = full_stars | plus: 1
+                  endif
+                  assign empty_stars = 5 | minus: full_stars | minus: half_star
+                -%}
+
+                <div
+                  class="gs-custom-rating"
+                  style="--star-color: {{ block.settings.star_color }};"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="gs-stars" aria-label="{{ rating_val }} out of 5 stars">
+                    {%- for i in (1..full_stars) -%}
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="gs-star-icon">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                    {%- endfor -%}
+
+                    {%- if half_star == 1 -%}
+                      <svg width="18" height="18" viewBox="0 0 24 24" class="gs-star-icon">
+                        <defs><linearGradient id="half-{{ block.id }}"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="#E0E0E0"/></linearGradient></defs>
+                        <path fill="url(#half-{{ block.id }})" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                    {%- endif -%}
+
+                    {%- if empty_stars > 0 -%}
+                      {%- for i in (1..empty_stars) -%}
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#E0E0E0" class="gs-star-icon">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                      {%- endfor -%}
+                    {%- endif -%}
+                  </div>
+
+                  <span class="gs-rating-dot">•</span>
+                  <span class="gs-rating-count">{{ ratings_count }} ratings</span>
+                  <span class="gs-rating-dot">•</span>
+                  <a href="#Reviews-{{ section.id }}" class="gs-review-count">
+                    {{ reviews_count }} review{% if reviews_num != 1 %}s{% endif %}
+                  </a>
+                </div>
+              {%- when 'highlight_badge' -%}
+                {%- liquid
+                  assign required_tag = block.settings.required_tag | strip
+                  assign should_show = false
+
+                  if required_tag != blank
+                    for tag in product.tags
+                      assign downcase_tag = tag | downcase
+                      assign downcase_required = required_tag | downcase
+                      if downcase_tag == downcase_required
+                        assign should_show = true
+                        break
+                      endif
+                    endfor
+                  endif
+                -%}
+
+                {%- if should_show -%}
+                  <div class="gs-highlight-badge-wrapper" {{ block.shopify_attributes }}>
+                    <div
+                      class="gs-highlight-badge"
+                      style="--badge-bg: {{ block.settings.bg_color }}; --badge-text: {{ block.settings.text_color }};"
+                    >
+                      {%- if block.settings.icon != blank -%}
+                        {{
+                          block.settings.icon
+                          | image_url: width: 32
+                          | image_tag: loading: 'lazy', class: 'gs-highlight-icon'
+                        }}
+                      {%- else -%}
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="gs-highlight-icon-svg"
+                        >
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                        </svg>
+                      {%- endif -%}
+                      <span class="gs-highlight-text">{{ block.settings.text }}</span>
+                    </div>
+                  </div>
+                {%- endif -%}
               {%- when 'promo_banner' -%}
                 <div
                   class="gs-promo-banner"
@@ -156,15 +254,13 @@
                 </div>
               {%- when 'price_and_quantity' -%}
                 <div class="gs-price-qty-row" {{ block.shopify_attributes }}>
-                  <!-- Price Section (Using dynamic ID so Dawn JS auto-updates it) -->
+                  <!-- Price Section -->
                   <div id="price-{{ section.id }}" role="status" class="gs-price-container">
                     {%- assign target = product.selected_or_first_available_variant -%}
                     <div class="gs-custom-price">
                       <span class="gs-price-current">{{ target.price | money }}</span>
-
                       {%- if target.compare_at_price > target.price -%}
                         <span class="gs-price-compare">{{ target.compare_at_price | money }}</span>
-
                         {%- assign saving = target.compare_at_price
                           | minus: target.price
                           | times: 100.0
@@ -176,12 +272,9 @@
                     </div>
                   </div>
 
-                  <!-- Quantity Selector Section -->
+                  <!-- Custom Quantity Selector Section -->
                   <div class="gs-custom-qty">
-                    {%- assign cart_qty = cart
-                      | item_count_for_variant: product.selected_or_first_available_variant.id
-                    -%}
-                    <quantity-input class="gs-quantity" data-url="{{ product.url }}" data-section="{{ section.id }}">
+                    <gs-quantity class="gs-quantity">
                       <button class="gs-quantity__button gs-quantity__minus" name="minus" type="button">
                         <span class="visually-hidden">Decrease</span>
                         <svg width="14" height="2" viewBox="0 0 14 2" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -194,11 +287,8 @@
                         type="number"
                         name="quantity"
                         id="Quantity-{{ section.id }}"
-                        data-cart-quantity="{{ cart_qty }}"
-                        data-min="{{ target.quantity_rule.min | default: 1 }}"
                         min="{{ target.quantity_rule.min | default: 1 }}"
                         {% if target.quantity_rule.max != null %}
-                          data-max="{{ target.quantity_rule.max }}"
                           max="{{ target.quantity_rule.max }}"
                         {% endif %}
                         step="{{ target.quantity_rule.increment | default: 1 }}"
@@ -212,9 +302,43 @@
                           <path d="M7 0V14M0 7H14" stroke="currentColor" stroke-width="1.5"/>
                         </svg>
                       </button>
-                    </quantity-input>
+                    </gs-quantity>
                   </div>
                 </div>
+
+                <!-- Custom Vanilla JS for Quantity -->
+                <script>
+                  if (!customElements.get('gs-quantity')) {
+                    class GsQuantity extends HTMLElement {
+                      constructor() {
+                        super();
+                        this.input = this.querySelector('input');
+                        this.changeEvent = new Event('change', { bubbles: true });
+
+                        this.querySelectorAll('button').forEach((button) =>
+                          button.addEventListener('click', this.onButtonClick.bind(this))
+                        );
+                      }
+
+                      onButtonClick(event) {
+                        event.preventDefault();
+                        const previousValue = this.input.value;
+                        const buttonName = event.currentTarget.name;
+
+                        if (buttonName === 'plus') {
+                          this.input.stepUp();
+                        } else {
+                          this.input.stepDown();
+                        }
+
+                        if (previousValue !== this.input.value) {
+                          this.input.dispatchEvent(this.changeEvent);
+                        }
+                      }
+                    }
+                    customElements.define('gs-quantity', GsQuantity);
+                  }
+                </script>
               {%- when 'product_tabs' -%}
                 {%- liquid
                   assign has_description = false
@@ -313,56 +437,65 @@
                   </div>
                 {%- endif -%}
               {%- when 'breadcrumb' -%}
-                <nav class="gs-breadcrumb" aria-label="breadcrumbs" {{ block.shopify_attributes }}>
-                  <a href="{{ routes.root_url }}" class="gs-breadcrumb__link">Home</a>
+                <div class="gs-breadcrumb-wrapper">
+                  <nav class="gs-breadcrumb" aria-label="breadcrumbs" {{ block.shopify_attributes }}>
+                    <ol class="gs-breadcrumb__list">
+                      <li class="gs-breadcrumb__item">
+                        <a href="{{ routes.root_url }}" class="gs-breadcrumb__link">Home</a>
+                      </li>
 
-                  <span class="gs-breadcrumb__separator">
-                    <svg
-                      viewBox="0 0 14 10"
-                      fill="none"
-                      aria-hidden="true"
-                      focusable="false"
-                      class="icon icon-caret"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
-                    </svg>
-                  </span>
+                      <li class="gs-breadcrumb__separator" aria-hidden="true">
+                        <svg
+                          viewBox="0 0 14 10"
+                          fill="none"
+                          focusable="false"
+                          class="icon icon-caret"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"/>
+                        </svg>
+                      </li>
 
-                  {%- if collection.url -%}
-                    <a href="{{ collection.url }}" class="gs-breadcrumb__link">{{ collection.title }}</a>
-                    <span class="gs-breadcrumb__separator">
-                      <svg
-                        viewBox="0 0 14 10"
-                        fill="none"
-                        aria-hidden="true"
-                        focusable="false"
-                        class="icon icon-caret"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
-                      </svg>
-                    </span>
-                  {%- elsif product.collections.size > 0 -%}
-                    <a href="{{ product.collections.first.url }}" class="gs-breadcrumb__link">
-                      {{- product.collections.first.title -}}
-                    </a>
-                    <span class="gs-breadcrumb__separator">
-                      <svg
-                        viewBox="0 0 14 10"
-                        fill="none"
-                        aria-hidden="true"
-                        focusable="false"
-                        class="icon icon-caret"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"></path>
-                      </svg>
-                    </span>
-                  {%- endif -%}
+                      {%- if collection.url -%}
+                        <li class="gs-breadcrumb__item">
+                          <a href="{{ collection.url }}" class="gs-breadcrumb__link">{{ collection.title }}</a>
+                        </li>
+                        <li class="gs-breadcrumb__separator" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 14 10"
+                            fill="none"
+                            focusable="false"
+                            class="icon icon-caret"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"/>
+                          </svg>
+                        </li>
+                      {%- elsif product.collections.size > 0 -%}
+                        <li class="gs-breadcrumb__item">
+                          <a href="{{ product.collections.first.url }}" class="gs-breadcrumb__link">
+                            {{- product.collections.first.title -}}
+                          </a>
+                        </li>
+                        <li class="gs-breadcrumb__separator" aria-hidden="true">
+                          <svg
+                            viewBox="0 0 14 10"
+                            fill="none"
+                            focusable="false"
+                            class="icon icon-caret"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.957 3.543 7 7.5 3.043 3.543l.914-.914L7 5.672l3.043-3.043.914.914Z" fill="currentColor"/>
+                          </svg>
+                        </li>
+                      {%- endif -%}
 
-                  <span class="gs-breadcrumb__current" aria-current="page">{{ product.title }}</span>
-                </nav>
+                      <li class="gs-breadcrumb__item">
+                        <span class="gs-breadcrumb__current" aria-current="page">{{ product.title }}</span>
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
               {%- when '@app' -%}
                 {% render block %}
               {%- when 'text' -%}
@@ -1044,6 +1177,76 @@
   "tag": "section",
   "class": "section",
   "blocks": [
+    {
+      "type": "custom_rating",
+      "name": "Custom Rating",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "rating_value",
+          "label": "Rating Value (1-5)",
+          "default": "5",
+          "info": "Enter a number (e.g., 4.5). Connect to a Product Metafield using the dynamic source icon."
+        },
+        {
+          "type": "text",
+          "id": "ratings_count",
+          "label": "Total Ratings Count",
+          "default": "140",
+          "info": "Enter the number of ratings."
+        },
+        {
+          "type": "text",
+          "id": "reviews_count",
+          "label": "Total Reviews Count",
+          "default": "1",
+          "info": "Enter the number of written reviews."
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Star Color",
+          "default": "#FABB04"
+        }
+      ]
+    },
+    {
+      "type": "highlight_badge",
+      "name": "Highlight Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "required_tag",
+          "label": "Required Product Tag",
+          "info": "The badge will ONLY show if the product has this exact tag. If left blank, the badge will remain hidden."
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Custom Icon (Optional)",
+          "info": "Upload a small icon (e.g., 24x24px png/svg)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Badge Text",
+          "default": "60-Min Delivery"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#6B4BCC"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#FFFFFF"
+        }
+      ]
+    },
     {
       "type": "promo_banner",
       "name": "Promo Banner",

@@ -63,6 +63,13 @@
         {%- endif -%}
       </a>
 
+      <button class="gs-location-badge js-location-open" aria-label="Set delivery location">
+        <span class="gs-location-badge__flag">🇮🇳</span>
+        <span class="gs-location-badge__text">
+          <span class="gs-location-badge__label js-location-label">Choose location</span>
+        </span>
+      </button>
+
       <!-- Desktop nav sits here, hidden on mobile via CSS -->
       <nav class="gs-header__desktop-nav" aria-label="Main navigation">
         {%- for link in linklists[section.settings.drawer_menu].links -%}
@@ -171,3 +178,71 @@
     {%- endif -%}
   </div>
 </nav>
+
+<!-- Location Modal -->
+<div class="gs-location-overlay js-location-overlay" aria-hidden="true"></div>
+<div class="gs-location-modal js-location-modal" role="dialog" aria-modal="true" aria-label="Set delivery location">
+  <button class="gs-location-modal__close js-location-close" aria-label="Close">
+    <!-- Replaced FA with a clean SVG 'X' -->
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#000000"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="gs-location-modal__icon">
+    <!-- Replace this src with the actual URL of your map illustration -->
+    <img
+      src="https://cdn1.igp.com/igp/assets/svg-icons/map_icon-5.svg"
+      alt="Location Map"
+      class="gs-location-modal__image"
+    >
+  </div>
+
+  <h2 class="gs-location-modal__title">Where to deliver?</h2>
+  <p class="gs-location-modal__subtitle">Enter location for personalized delivery choices</p>
+
+  <div class="gs-location-modal__input-row">
+    <div class="gs-location-modal__country">
+      <div class="gs-location-modal__country-info">
+        <span>🇮🇳</span>
+        <span>India</span>
+      </div>
+      <!-- Added Dropdown Arrow -->
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#000000"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+
+    <div class="gs-location-modal__divider"></div>
+
+    <input
+      type="tel"
+      class="gs-location-modal__pincode js-location-pincode"
+      placeholder="122011"
+      maxlength="6"
+      aria-label="Pincode"
+    >
+  </div>
+  <p class="gs-location-modal__error js-location-error" hidden>Please enter a valid 6-digit pincode.</p>
+
+  <button class="gs-location-modal__apply js-location-apply">APPLY</button>
+</div>

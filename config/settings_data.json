@@ -9,6 +9,13 @@
  */
 {
   "current": {
+    "card_show_wishlist": true,
+    "card_show_compare_at_price": true,
+    "card_show_rating": true,
+    "card_max_tags": 3,
+    "card_border_radius": 0,
+    "card_image_ratio": "square",
+    "card_content_padding": 12,
     "cloudinary_cloud_name": "dop4n2qpk",
     "cloudinary_upload_preset": "giftbu_public",
     "logo_width": 90,

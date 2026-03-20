@@ -196,4 +196,108 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the search class
   new GsPredictiveSearch();
+
+  // =========================================================================
+  // LOCATION PICKER
+  // =========================================================================
+  const PINCODE_JSON_URL =
+    "https://cdn.shopify.com/s/files/1/0757/5928/8493/files/pincode-city.json?v=1773820916";
+
+  const locationOpen = document.querySelectorAll(".js-location-open");
+  const locationClose = document.querySelector(".js-location-close");
+  const locationOverlay = document.querySelector(".js-location-overlay");
+  const locationModal = document.querySelector(".js-location-modal");
+  const locationApply = document.querySelector(".js-location-apply");
+  const locationPincode = document.querySelector(".js-location-pincode");
+  const locationLabel = document.querySelector(".js-location-label");
+  const locationError = document.querySelector(".js-location-error");
+
+  let pincodeMap = null;
+
+  async function loadPincodeMap() {
+    if (pincodeMap) return pincodeMap;
+    const res = await fetch(PINCODE_JSON_URL);
+    pincodeMap = await res.json();
+    return pincodeMap;
+  }
+
+  function openLocationModal() {
+    locationModal.classList.add("is-active");
+    locationOverlay.classList.add("is-active");
+    document.body.style.overflow = "hidden";
+    locationPincode.focus();
+  }
+
+  function closeLocationModal() {
+    locationModal.classList.remove("is-active");
+    locationOverlay.classList.remove("is-active");
+    document.body.style.overflow = "";
+    locationError.hidden = true;
+  }
+
+  function updateBadge(city, pincode) {
+    locationLabel.textContent = `${city} · ${pincode}`;
+  }
+
+  function initLocationBadge() {
+    const saved = localStorage.getItem("gs_delivery_location");
+    if (saved) {
+      const { city, pincode } = JSON.parse(saved);
+      updateBadge(city, pincode);
+    } else if (!sessionStorage.getItem("gs_location_dismissed")) {
+      openLocationModal();
+    }
+  }
+
+  locationOpen.forEach((btn) =>
+    btn.addEventListener("click", openLocationModal),
+  );
+  locationClose.addEventListener("click", closeLocationModal);
+  locationOverlay.addEventListener("click", closeLocationModal);
+
+  locationApply.addEventListener("click", async () => {
+    const pin = locationPincode.value.trim();
+    if (!/^\d{6}$/.test(pin)) {
+      locationError.hidden = false;
+      return;
+    }
+    locationError.hidden = true;
+    locationApply.textContent = "Checking...";
+
+    const map = await loadPincodeMap();
+    const city = map[pin];
+
+    if (!city) {
+      locationError.textContent = "Pincode not found. Please try another.";
+      locationError.hidden = false;
+      locationApply.textContent = "APPLY";
+      return;
+    }
+
+    localStorage.setItem(
+      "gs_delivery_location",
+      JSON.stringify({ city, pincode: pin }),
+    );
+    updateBadge(city, pin);
+    locationApply.textContent = "APPLY";
+    closeLocationModal();
+  });
+
+  locationPincode.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") locationApply.click();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLocationModal();
+  });
+
+  // Dismiss tracking so modal doesn't re-open this session after manual close
+  locationClose.addEventListener("click", () => {
+    sessionStorage.setItem("gs_location_dismissed", "1");
+  });
+  locationOverlay.addEventListener("click", () => {
+    sessionStorage.setItem("gs_location_dismissed", "1");
+  });
+
+  initLocationBadge();
 });

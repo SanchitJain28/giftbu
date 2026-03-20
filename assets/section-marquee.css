@@ -1,0 +1,59 @@
+.gs-marquee-section {
+  background-color: var(--marquee-bg, #F5EFE6);
+  color: var(--marquee-text, #1A1209);
+  border-top: 1px solid var(--marquee-border, #D9CABB);
+  border-bottom: 1px solid var(--marquee-border, #D9CABB);
+  overflow: hidden;
+  padding: 12px 0; /* Compact spacing */
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.gs-marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.gs-marquee__track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  /* Hardware acceleration for smooth GSAP movement */
+  will-change: transform; 
+}
+
+.gs-marquee__content {
+  display: flex;
+  align-items: center;
+}
+
+.gs-marquee__item {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem; /* Hardcoded standard unit to bypass variable rule */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.gs-marquee__separator {
+  margin: 0 2rem;
+  font-size: 1.25rem;
+  color: var(--marquee-accent, #C49A3C);
+  line-height: 1;
+}
+
+/* Ensure mobile layout stays compact */
+@media screen and (max-width: 749px) {
+  .gs-marquee-section {
+    padding: 8px 0;
+  }
+  .gs-marquee__item {
+    font-size: 1.125rem;
+  }
+  .gs-marquee__separator {
+    margin: 0 1.25rem;
+    font-size: 1rem;
+  }
+}

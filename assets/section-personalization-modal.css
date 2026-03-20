@@ -17,11 +17,12 @@
 .gs-pers-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3); /* Lighter dark wash to let the background show through */
-  backdrop-filter: blur(8px);     /* Creates the blur effect */
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-/* Drawer Layout: Preview taking space on left, Form sliding to right */
+
+/* Drawer Layout */
 .gs-pers-modal__panel {
   position: relative;
   z-index: 1;
@@ -32,6 +33,7 @@
 
 /* 1. Left: Canvas Preview Container */
 .gs-pers-modal__preview {
+  position: relative; /* Crucial for overlay loader */
   flex: 1;
   display: flex;
   align-items: center;
@@ -48,6 +50,49 @@
   object-fit: contain;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   display: block;
+  transition: opacity 0.3s ease;
+}
+
+/* Loading State Overlay */
+.gs-pers-modal__loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(253, 250, 246, 0.75); /* var(--color-surface) with opacity */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* CRITICAL FIX: Ensure 'hidden' attribute overrides display: flex */
+.gs-pers-modal__loader[hidden] {
+  display: none !important;
+}
+
+.gs-pers-modal__loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.gs-pers-modal__loader-ring {
+  animation: gs-spin 1s linear infinite;
+  color: var(--color-accent-gold, #C49A3C);
+}
+
+@keyframes gs-spin {
+  100% { transform: rotate(360deg); }
+}
+
+.gs-pers-modal__loader-text {
+  font-family: var(--font-body-family, "Jost", sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #1A1209);
+  letter-spacing: 0.5px;
 }
 
 /* 2. Right: White Form Drawer */
@@ -62,7 +107,7 @@
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Header (Title & Close) */
+/* Header */
 .gs-pers-modal__header {
   display: flex;
   justify-content: space-between;
@@ -100,7 +145,7 @@
   color: #111827;
 }
 
-/* Subheader (Start Personalizing & Reset) */
+/* Subheader */
 .gs-pers-modal__subheader {
   display: flex;
   justify-content: space-between;
@@ -122,6 +167,10 @@
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+.gs-pers-modal__reset-btn:hover {
+  text-decoration: underline;
 }
 
 /* Info Row */
@@ -204,6 +253,58 @@
   background: #BAE6FD;
 }
 
+/* Custom File Upload Styling */
+.gs-pers-modal__upload-wrap {
+  position: relative;
+}
+
+.gs-pers-modal__upload-input {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.gs-pers-modal__upload-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.gs-pers-modal__btn {
+  background: #F3F4F6;
+  border: 1px solid #D1D5DB;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.gs-pers-modal__upload-label:hover .gs-pers-modal__btn {
+  background: #E5E7EB;
+  border-color: #9CA3AF;
+}
+
+.gs-pers-modal__upload-input:focus + .gs-pers-modal__upload-label .gs-pers-modal__btn {
+  outline: 2px solid #38B2AC;
+  outline-offset: 2px;
+}
+
+.gs-pers-modal__upload-text {
+  font-size: 14px;
+  color: #4B5563;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
 /* Notes List */
 .gs-pers-modal__notes {
   margin: 32px 0 0 0;
@@ -218,9 +319,9 @@
   margin-bottom: 4px;
 }
 
-/* Sticky Bottom Action (Save & Review) */
+/* Sticky Bottom Action */
 .gs-pers-modal__save {
-  margin-top: auto; /* Pushes to the bottom */
+  margin-top: auto;
   width: 100%;
   padding: 16px;
   background: #ffffff;
