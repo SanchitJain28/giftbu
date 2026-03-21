@@ -8,4 +8,3 @@
 3. enchance the collection page
 
 # 20th March
-1. Change the UI of the persolization modal
