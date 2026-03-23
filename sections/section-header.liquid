@@ -61,9 +61,8 @@
           {{
             section.settings.logo
             | image_url: width: 300
-            | image_tag: alt: shop.name, class: 'gs-logo-img', style: 'width: '
-            | append: section.settings.logo_width
-            | append: 'px;'
+            | image_tag: alt: shop.name, class: 'gs-logo-img', style: 'width: __WIDTH__px;'
+            | replace: '__WIDTH__', section.settings.logo_width
           }}
         {%- else -%}
           <span class="gs-header__logo-text">{{ shop.name }}</span>

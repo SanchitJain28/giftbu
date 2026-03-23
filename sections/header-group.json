@@ -47,7 +47,9 @@
       "type": "section-header",
       "name": "Global Header",
       "settings": {
-        "logo_width": 100,
+        "logo": "shopify://shop_images/WhatsApp_Image_2026-03-21_at_22.47.48.jpg",
+        "logo_width": 75,
+        "auto_menu": true,
         "drawer_menu": "main-menu"
       }
     },
@@ -80,10 +82,10 @@
       ],
       "name": "Moving Marquee",
       "settings": {
-        "bg_color": "#F5EFE6",
-        "text_color": "#1A1209",
-        "border_color": "#D9CABB",
-        "accent_color": "#C49A3C",
+        "bg_color": "#f5efe6",
+        "text_color": "#1a1209",
+        "border_color": "#d9cabb",
+        "accent_color": "#c49a3c",
         "speed": 20,
         "direction": "left"
       }

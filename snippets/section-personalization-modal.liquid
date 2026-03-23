@@ -171,6 +171,15 @@
                         >No file chosen</span
                       >
                     </label>
+                    <label class="gs-pers-modal__bg-removal-label">
+                      <input
+                        type="checkbox"
+                        class="gs-bg-removal-checkbox"
+                        data-field-index="{{ forloop.index0 }}"
+                        id="gs-bg-remove-{{ forloop.index0 }}"
+                      >
+                      <span>Remove Background</span>
+                    </label>
                   </div>
                 {% endif %}
               </div>

@@ -22,7 +22,7 @@
 .gs-header__left {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 5px;
   flex-shrink: 0;
 }
 
@@ -38,6 +38,11 @@
   display: block;
   height: auto;
   max-width: 100%;
+}
+
+.gs-header__logo .gs-logo-img {
+  max-height: 50px; /* Adjust this value as needed */
+  object-fit: contain;
 }
 
 /* Hamburger — always visible */

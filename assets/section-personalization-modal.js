@@ -1,6 +1,6 @@
 /* global TGSPersonalization */
 (function () {
-  "use strict";
+  ("use strict");
 
   const cfg = window.TGSPersonalization;
 
@@ -60,6 +60,7 @@
   let savedData = {};
   let isSaved = false;
   let uploadedFileMap = {};
+  let isBgRemovalChecked = {}; // <-- ADD THIS LINE
 
   /* ── Loader ───────────────────────────────────────── */
   const loader = document.createElement("div");
@@ -114,21 +115,32 @@
           const val = domField.value.trim();
           if (!val) return null;
 
-          const font = (field.fontFamily || "Arial").replace(/ /g, "%20");
+          let font = (field.fontFamily || "Arial").replace(/ /g, "%20");
+          const isCustomFont = /\.(ttf|otf|woff2)$/i.test(font);
+
+          if (isCustomFont) {
+            font = font.replace(/\//g, ":");
+          }
+
           const color = (field.textColor || "C49A3C").replace("#", "");
+
           const weight =
-            field.fontWeight && field.fontWeight !== "normal"
+            !isCustomFont && field.fontWeight && field.fontWeight !== "normal"
               ? `_${field.fontWeight}`
               : "";
-          const italic = field.fontStyle === "italic" ? "_italic" : "";
+          const italic =
+            !isCustomFont && field.fontStyle === "italic" ? "_italic" : "";
           const decoration =
             field.textDecoration && field.textDecoration !== "none"
               ? `_${field.textDecoration}`
               : "";
+
+          // Internal text alignment
           const align =
             field.textAlign && field.textAlign !== "left"
-              ? `_text_align_${field.textAlign}`
+              ? `_${field.textAlign}`
               : "";
+
           const lspacing = field.letterSpacing
             ? `_letter_spacing_${field.letterSpacing}`
             : "";
@@ -141,40 +153,116 @@
             val.toUpperCase().replace(/,/g, "%2C"),
           );
 
+          // Calculate safe bounding box & gravity based on alignment
+          let gravity = "g_north_west";
+          let xStr = (field.xPercent / 100).toFixed(4);
+          let yStr = (field.yPercent / 100).toFixed(4);
+          let safeWidth = 1.0;
+
+          if (field.textAlign === "center") {
+            gravity = "g_north";
+            xStr = (field.xPercent / 100 - 0.5).toFixed(4);
+            // Safe width is double the distance to the closest edge
+            safeWidth =
+              (Math.min(field.xPercent, 100 - field.xPercent) * 2) / 100;
+          } else if (field.textAlign === "right") {
+            gravity = "g_north_east";
+            xStr = (1 - field.xPercent / 100).toFixed(4);
+            // Safe width is distance from anchor to left edge
+            safeWidth = field.xPercent / 100;
+          } else {
+            // Left alignment
+            gravity = "g_north_west";
+            // Safe width is distance from anchor to right edge
+            safeWidth = (100 - field.xPercent) / 100;
+          }
+
           return [
             `co_rgb:${color}`,
             `l_text:${textStyle}:${encoded}`,
+            `c_fit`, // Forces word wrapping
+            `w_${safeWidth.toFixed(4)}`, // Sets maximum text boundary
             `fl_relative`,
-            `g_north_west`,
-            `x_${(field.xPercent / 100).toFixed(2)}`,
-            `y_${(field.yPercent / 100).toFixed(2)}`,
+            gravity,
+            `x_${xStr}`,
+            `y_${yStr}`,
           ].join(",");
         }
+
+        // Inside your storefront-implementation -> buildCloudinaryUrl function
 
         if (field.type === "image") {
           const uploadData = uploadedFileMap[domField.id];
+          // If no image has been uploaded by the customer yet, don't render a layer.
           if (!uploadData || !uploadData.public_id) return null;
 
           const publicId = uploadData.public_id.replace(/\//g, ":");
-          const width = field.widthPercent || 30;
 
-          return [
-            `l_${publicId}`,
-            `c_scale`,
-            `w_${(width / 100).toFixed(2)}`,
+          // --- Start of Layer Generation ---
+          const baseTransformations = [];
+
+          // 1. Apply the CUSTOMER'S interactive crop data first.
+          // This comes from the upload widget on the storefront.
+          const cropCoords = uploadData.coordinates?.custom?.[0];
+          if (cropCoords) {
+            baseTransformations.push(
+              `x_${cropCoords[0]}`,
+              `y_${cropCoords[1]}`,
+              `w_${cropCoords[2]}`,
+              `h_${cropCoords[3]}`,
+              `c_crop`,
+            );
+          }
+
+          // 2. Then, scale and fit the (potentially cropped) image into the MERCHANT-DEFINED area.
+          // We use c_fill to ensure the photo always fills the box, cropping any minor excess.
+          baseTransformations.push(
+            `c_fill`,
+            `w_${(field.areaWidth / 100).toFixed(4)}`,
+            `h_${(field.areaHeight / 100).toFixed(4)}`,
             `fl_relative`,
-            `g_north_west`,
-            `x_${(field.xPercent / 100).toFixed(2)}`,
-            `y_${(field.yPercent / 100).toFixed(2)}`,
-          ].join(",");
-        }
+          );
 
+          // Apply border radius if defined by the merchant.
+          const radius =
+            field.borderRadius && field.borderRadius !== "none"
+              ? `r_${field.borderRadius}`
+              : "";
+          if (radius) baseTransformations.push(radius);
+
+          const baseTransformString = baseTransformations
+            .filter(Boolean)
+            .join(",");
+
+          // 3. Apply the merchant's optional shape mask.
+          let maskLayer = "";
+          if (field.maskPublicId) {
+            const maskId = field.maskPublicId.replace(/\//g, ":");
+            maskLayer = `/l_${maskId}/c_scale,w_1.0,h_1.0,fl_region_relative/fl_layer_apply,fl_cutter`;
+          }
+
+          // 4. Apply the final rotation and position the entire transformed layer.
+          const angle = field.rotationAngle ? `a_${field.rotationAngle}` : "";
+          const positioning = [
+            angle,
+            `g_north_west`,
+            `x_${(field.areaX / 100).toFixed(4)}`,
+            `y_${(field.areaY / 100).toFixed(4)}`,
+            `fl_layer_apply`,
+          ]
+            .filter(Boolean)
+            .join(",");
+
+          // Assemble the final, powerful layer string.
+          const finalLayer = `l_${publicId}/${baseTransformString}${maskLayer}/${positioning}`;
+
+          return finalLayer;
+        }
         return null;
       })
       .filter(Boolean)
       .join("/");
 
-    // console.log("[TGS] Transformation layers:", layers);
     if (!layers) return absoluteUrl;
 
     const finalUrl = `${baseUrl}/${layers}/f_auto,q_auto/${encodeURIComponent(absoluteUrl)}`;
@@ -183,110 +271,109 @@
   }
 
   /* ── Update preview ───────────────────────────────── */
-   function updatePreview() {
+  function updatePreview() {
     //  console.log("[TGS DEBUG] --- updatePreview() Started ---");
-     const previewImg = getPreviewImg();
+    const previewImg = getPreviewImg();
 
-     if (!previewImg) {
-       console.error("[TGS DEBUG] #gs-pers-preview-img not in DOM");
-       hideLoader();
-       return;
-     }
+    if (!previewImg) {
+      console.error("[TGS DEBUG] #gs-pers-preview-img not in DOM");
+      hideLoader();
+      return;
+    }
 
-     const anyFilled = fields.some((f) => {
-       if (f.dataset.fieldType === "text") return f.value.trim().length > 0;
-       if (f.dataset.fieldType === "image")
-         return uploadedFileMap[f.id] != null;
-       return false;
-     });
+    const anyFilled = fields.some((f) => {
+      if (f.dataset.fieldType === "text") return f.value.trim().length > 0;
+      if (f.dataset.fieldType === "image") return uploadedFileMap[f.id] != null;
+      return false;
+    });
 
     //  console.log("[TGS DEBUG] Are any fields filled?", anyFilled);
 
-     if (!anyFilled) {
+    if (!anyFilled) {
       //  console.log("[TGS DEBUG] No inputs — resetting to base preview image");
-       previewImg.src = cfg.previewImageUrl || "";
+      previewImg.src = cfg.previewImageUrl || "";
 
-       hideLoader();
+      hideLoader();
 
-       const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
-       if (thumbWrap) thumbWrap.setAttribute("hidden", "");
-       return;
-     }
+      const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
+      if (thumbWrap) thumbWrap.setAttribute("hidden", "");
+      return;
+    }
 
     //  console.log(
     //    "[TGS DEBUG] Inputs exist. Calling showLoader() and building URL...",
     //  );
-     showLoader();
+    showLoader();
 
-     let url;
-     try {
-       url = buildCloudinaryUrl();
+    let url;
+    try {
+      url = buildCloudinaryUrl();
       //  console.log("[TGS DEBUG] URL built successfully:", url);
-     } catch (err) {
-       console.error("[TGS DEBUG] Error building Cloudinary URL:", err);
-       hideLoader();
-       return;
-     }
+    } catch (err) {
+      console.error("[TGS DEBUG] Error building Cloudinary URL:", err);
+      hideLoader();
+      return;
+    }
 
-     const tempImg = new Image();
+    const tempImg = new Image();
 
-     // Safety timeout just in case Cloudinary hangs
-     const loadTimeout = setTimeout(() => {
-       console.warn(
-         "[TGS DEBUG] Preview image load TIMED OUT after 10 seconds.",
-       );
-       hideLoader();
-     }, 10000);
+    // Safety timeout just in case Cloudinary hangs
+    const loadTimeout = setTimeout(() => {
+      console.warn(
+        "[TGS DEBUG] Preview image load TIMED OUT after 10 seconds.",
+      );
+      hideLoader();
+    }, 10000);
 
-     tempImg.onload = () => {
+    tempImg.onload = () => {
       //  console.log(
       //    "[TGS DEBUG] tempImg.onload FIRED - image loaded from Cloudinary",
       //  );
-       clearTimeout(loadTimeout);
-       const pi = getPreviewImg();
-       if (pi) pi.src = url;
-       hideLoader();
+      clearTimeout(loadTimeout);
+      const pi = getPreviewImg();
+      if (pi) pi.src = url;
+      hideLoader();
 
-       // Feed the image into the product media gallery placeholders
-       const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
-       const thumbImg = document.getElementById("gs-pers-gallery-thumb-img");
-       const mainSlide = document.getElementById("GsSlide-pers-preview");
-       const mainImg = document.getElementById("gs-pers-gallery-main-img");
+      // Feed the image into the product media gallery placeholders
+      const thumbWrap = document.getElementById("gs-pers-gallery-thumb-wrap");
+      const thumbImg = document.getElementById("gs-pers-gallery-thumb-img");
+      const mainSlide = document.getElementById("GsSlide-pers-preview");
+      const mainImg = document.getElementById("gs-pers-gallery-main-img");
 
-       if (thumbWrap && thumbImg && mainSlide && mainImg) {
-         thumbImg.src = url;
-         mainImg.src = url;
-         thumbWrap.removeAttribute("hidden");
-       }
-     };
+      if (thumbWrap && thumbImg && mainSlide && mainImg) {
+        thumbImg.src = url;
+        mainImg.src = url;
+        thumbWrap.removeAttribute("hidden");
+      }
+    };
 
-     tempImg.onerror = () => {
-       console.error(
-         "[TGS DEBUG] tempImg.onerror FIRED - failed to load URL:",
-         url,
-       );
-       clearTimeout(loadTimeout);
-       const pi = getPreviewImg();
-       if (pi) pi.src = cfg.previewImageUrl || "";
-       hideLoader();
-     };
+    tempImg.onerror = () => {
+      console.error(
+        "[TGS DEBUG] tempImg.onerror FIRED - failed to load URL:",
+        url,
+      );
+      clearTimeout(loadTimeout);
+      const pi = getPreviewImg();
+      if (pi) pi.src = cfg.previewImageUrl || "";
+      hideLoader();
+    };
 
     //  console.log(
     //    "[TGS DEBUG] Setting tempImg.src to trigger browser network request...",
     //  );
-     tempImg.src = url;
-   }
+    tempImg.src = url;
+  }
 
   /* ── Debounce ─────────────────────────────────────── */
-    let previewTimer = null;
-    function schedulePreview() {
-      // console.log("[TGS DEBUG] schedulePreview() triggered. Waiting 600ms...");
-      clearTimeout(previewTimer);
-      previewTimer = setTimeout(() => {
-        // console.log("[TGS DEBUG] Debounce finished, executing updatePreview()");
-        updatePreview();
-      }, 600);
-    }
+  let previewTimer = null;
+  function schedulePreview() {
+    // console.log("[TGS DEBUG] schedulePreview() triggered. Waiting 600ms...");
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(() => {
+      // console.log("[TGS DEBUG] Debounce finished, executing updatePreview()");
+      updatePreview();
+    }, 600);
+  }
 
   /* ── Progress ─────────────────────────────────────── */
   function updateProgress() {
@@ -391,6 +478,54 @@
     return data;
   }
 
+  /* ── Cloudinary Upload Widget ───────────────────── */
+  function openUploadWidget(fieldConfig, fieldId, fieldIndex) {
+    // Calculate the required aspect ratio from the merchant's config
+    let requiredAspectRatio = null;
+    if (fieldConfig.areaWidth && fieldConfig.areaHeight) {
+      requiredAspectRatio = fieldConfig.areaWidth / fieldConfig.areaHeight;
+    }
+
+    const uploadText = document.getElementById("gs-upload-text-" + fieldIndex);
+
+    window.cloudinary
+      .createUploadWidget(
+        {
+          cloudName: cfg.cloudName,
+          uploadPreset: cfg.uploadPreset,
+          sources: ["local", "url", "camera", "facebook", "instagram"],
+          cropping: true,
+          croppingAspectRatio: requiredAspectRatio,
+          croppingShowDimensions: true,
+        },
+        (error, result) => {
+          if (error) {
+            console.error("[TGS] Upload Widget Error:", error);
+            if (uploadText) uploadText.textContent = "Upload Failed";
+            hideLoader();
+            return;
+          }
+
+          if (result && result.event === "success") {
+            console.log("[TGS] Upload success:", result.info);
+
+            // Update state with the full upload data, including coordinates
+            uploadedFileMap[fieldId] = result.info;
+
+            // Update the button text to show the file is loaded
+            if (uploadText) uploadText.textContent = "Image ready";
+            document
+              .getElementById("gs-upload-btn-" + fieldIndex)
+              ?.classList.add("is-uploaded");
+
+            updateProgress();
+            schedulePreview(); // This will handle the loader
+          }
+        },
+      )
+      .open();
+  }
+
   /* ── Save & Review ────────────────────────────────── */
   saveBtn.addEventListener("click", async () => {
     console.log("[TGS] Save clicked — isSaved:", isSaved);
@@ -490,8 +625,10 @@
 
   /* ── Inject line item properties into Main Form ───── */
   function injectPropertiesToForm() {
-    const atcForm = document.querySelector('gs-product-form form') || document.querySelector('form[data-type="add-to-cart-form"]');
-    
+    const atcForm =
+      document.querySelector("gs-product-form form") ||
+      document.querySelector('form[data-type="add-to-cart-form"]');
+
     console.log("[TGS] Injecting properties to form:", !!atcForm);
 
     if (!atcForm) {
@@ -501,7 +638,7 @@
 
     // First, clear out any old properties in case they edited their personalization
     const oldInputs = atcForm.querySelectorAll('input[name^="properties["]');
-    oldInputs.forEach(input => input.remove());
+    oldInputs.forEach((input) => input.remove());
 
     // Now, inject the fresh properties
     Object.entries(savedData).forEach(([label, value]) => {
@@ -517,8 +654,10 @@
   /* ── Apply line item properties ───────────────────── */
   function applyToCart() {
     //? get our custom form or get the default form
-    const atcForm = document.querySelector('gs-product-form form') || document.querySelector('form[data-type="add-to-cart-form"]');
-    
+    const atcForm =
+      document.querySelector("gs-product-form form") ||
+      document.querySelector('form[data-type="add-to-cart-form"]');
+
     console.log(
       "[TGS] applyToCart — form found:",
       !!atcForm,
@@ -527,7 +666,9 @@
     );
 
     if (!atcForm) {
-      console.error("[TGS] ATC form not found. Check if gs-product-form exists in the DOM.");
+      console.error(
+        "[TGS] ATC form not found. Check if gs-product-form exists in the DOM.",
+      );
       return;
     }
 
@@ -544,11 +685,11 @@
     });
 
     closeModal();
-    
+
     // Target the actual submit button inside your form
     const atcBtn = atcForm.querySelector('button[type="submit"][name="add"]');
     console.log("[TGS] ATC button found:", !!atcBtn);
-    
+
     // Trigger the click, which your gs-product-form JS will intercept for the AJAX add!
     if (atcBtn) atcBtn.click();
   }
@@ -585,7 +726,7 @@
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       // console.log("[TGS DEBUG] Reset All clicked!");
-      
+
       // CRITICAL: Kill any pending delayed previews from rapid typing
       clearTimeout(previewTimer);
 
@@ -620,9 +761,9 @@
       updateProgress();
       // console.log("[TGS DEBUG] Forcing updatePreview() after reset");
       updatePreview();
-      
+
       // console.log("[TGS DEBUG] Forcing hideLoader() after reset");
-      hideLoader(); 
+      hideLoader();
     });
   }
 
